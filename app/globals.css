@@ -20,8 +20,16 @@
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     scrollbar-width: none;
+  }
+
+  button,
+  a,
+  [role="button"],
+  [role="tab"] {
+    touch-action: manipulation;
   }
 
   html::-webkit-scrollbar {

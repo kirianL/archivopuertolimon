@@ -8,6 +8,8 @@ import {
   motion,
   useReducedMotion,
 } from "framer-motion";
+import "slot-text/style.css";
+import { SlotText } from "slot-text/react";
 import { Highlight } from "@/components/ui/Highlight";
 import {
   Bay,
@@ -18,7 +20,9 @@ import {
 } from "@/components/ui/Shapes";
 import imgExpresion from "@/public/Limón - images/ExpresionCultura.png";
 import imgCarnaval from "@/public/Limón - images/Carnaval.png";
-import imgFerguson from "@/public/Limón - images/a-Ferguson1.jpg";
+import imgFerguson from "@/public/Limón - images/walter-ferguson.jpg";
+import imgTapeVol1 from "@/public/Limón - images/ferguson-tape-vol1.jpg";
+import imgTapeVol2 from "@/public/Limón - images/ferguson-tape-vol2.jpg";
 import imgPatty from "@/public/Limón - images/patty.jpg";
 import imgCalypsonian from "@/public/Limón - images/Parade/Musicos y cantantes/539902822_754962860647126_9178661086593066020_n.jpg";
 import imgMaracas from "@/public/Limón - images/Parade/Musicos y cantantes/540004486_754962117313867_1346397361303001633_n.jpg";
@@ -30,92 +34,144 @@ const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 type CarnivalPillar = {
   id: string;
   number: string;
+  shortLabel: string;
   title: string;
   detail: string;
   caption: string;
-  credit?: string;
+  credit: string;
   dotClass: string;
+  accentBarClass: string;
   image: StaticImageData;
   secondaryImage: StaticImageData;
   alt: string;
   secondaryAlt: string;
   filterClass: string;
   tintClass: string;
-  filterLabel: string;
 };
 
 const carnivalPillars: readonly CarnivalPillar[] = [
   {
     id: "comparsas",
     number: "01",
+    shortLabel: "Comparsas y desfiles",
     title: "Comparsas y desfiles",
-    detail: "Tambores, penachos y coreografías que toman las avenidas del puerto en octubre.",
-    caption: "Recorrido principal del Carnaval de Limón alrededor del Día de las Culturas.",
+    detail:
+      "Tambores, penachos y coreografías que toman las avenidas del puerto cada octubre.",
+    caption:
+      "Recorrido principal del Carnaval alrededor del Día de las Culturas.",
     credit: "Foto: Xavier Sandí Castillo",
     dotClass: "bg-moss",
+    accentBarClass: "bg-moss",
     image: imgCarnaval,
     secondaryImage: imgComparsaFeather,
     alt: "Sonrisa y traje tradicional durante el desfile del Carnaval de Limón",
-    secondaryAlt: "Integrante de comparsa con penacho de plumas y bastón ceremonial",
+    secondaryAlt:
+      "Integrante de comparsa con penacho de plumas y bastón ceremonial",
     filterClass: "contrast-[1.08] saturate-[1.14] sepia-[0.06]",
     tintClass: "bg-sand/10 mix-blend-multiply",
-    filterLabel: "Cálido Kodachrome",
   },
   {
     id: "musica",
     number: "02",
+    shortLabel: "Música en vivo",
     title: "Música en vivo (calipso, reggae, soca)",
-    detail: "Tarimas abiertas y esquinas donde el bajo caribeño y las maracas marcan el paso.",
-    caption: "Músicos y calipseros en vivo durante las jornadas culturales del puerto.",
+    detail:
+      "Tarimas abiertas y esquinas donde el bajo caribeño y las maracas marcan el paso.",
+    caption:
+      "Calipseros y percusión en vivo durante las jornadas culturales del puerto.",
     credit: "Foto: Xavier Sandí Castillo",
     dotClass: "bg-sky",
+    accentBarClass: "bg-sky",
     image: imgCalypsonian,
     secondaryImage: imgMaracas,
     alt: "Calipsero limonense cantando con guitarra en vivo",
     secondaryAlt: "Músico tocando maracas en tarima durante el carnaval",
     filterClass: "grayscale contrast-125 brightness-95",
     tintClass: "bg-sky/15 mix-blend-multiply",
-    filterLabel: "Archivo monocromo",
   },
   {
     id: "baile",
     number: "03",
+    shortLabel: "Baile, color y tradición",
     title: "Baile, color y tradición",
-    detail: "Vestuarios de gala, turbantes y herencia afrocaribeña transmitida entre generaciones.",
-    caption: "Indumentaria tradicional y coronas artesanales en las calles de Limón.",
+    detail:
+      "Vestuarios de gala, turbantes y herencia afrocaribeña transmitida entre generaciones.",
+    caption:
+      "Indumentaria tradicional y coronas artesanales en las calles de Limón.",
     credit: "Foto: Xavier Sandí Castillo",
     dotClass: "bg-ember",
+    accentBarClass: "bg-ember",
     image: imgGalaCrown,
     secondaryImage: imgCarnaval,
     alt: "Joven con corona artesanal y vestido tradicional en el desfile",
     secondaryAlt: "Vestimenta colorida en las calles de Puerto Limón",
     filterClass: "contrast-[1.1] saturate-[1.08] sepia-[0.12]",
     tintClass: "bg-ember/10 mix-blend-multiply",
-    filterLabel: "Dorado editorial",
   },
   {
     id: "gastronomia",
     number: "04",
+    shortLabel: "Gastronomía local",
     title: "Gastronomía local",
-    detail: "Patty recién horneado con chile panameño, plantain tart, rice & beans y agua de sapo.",
-    caption: "Sabores afrocaribeños que acompañan cada esquina de la fiesta limonense.",
+    detail:
+      "Patty recién horneado con chile panameño, plantain tart, rice & beans y agua de sapo.",
+    caption:
+      "Sabores afrocaribeños que acompañan cada esquina de la fiesta limonense.",
+    credit: "Archivo gastronómico de Limón",
     dotClass: "bg-sand",
+    accentBarClass: "bg-sand",
     image: imgPatty,
     secondaryImage: imgExpresion,
     alt: "Patty limonense recién horneado junto a chiles panameños",
     secondaryAlt: "Ambiente festivo en las calles del centro de Limón",
     filterClass: "contrast-[1.12] saturate-[1.15]",
     tintClass: "bg-sand/15 mix-blend-multiply",
-    filterLabel: "Alto contraste",
+  },
+] as const;
+
+type TapeAlbum = {
+  id: string;
+  vol: string;
+  title: string;
+  format: string;
+  description: string;
+  cover: StaticImageData;
+  alt: string;
+  accentClass: string;
+};
+
+const fergusonAlbums: readonly TapeAlbum[] = [
+  {
+    id: "vol-1",
+    vol: "Vol. 1",
+    title: "The Legendary Tape Recordings Vol. 1",
+    format: "Casete C-60 grabado en Cahuita",
+    description:
+      "Primer rescate de las cintas caseras que Mr. Gavitt grababa con guitarra acústica desde su porche.",
+    cover: imgTapeVol1,
+    alt: "Portada del álbum Walter Gavitt Ferguson — King of Calypso Limonense, The Legendary Tape Recordings Vol. 1",
+    accentClass: "bg-ember",
+  },
+  {
+    id: "vol-2",
+    vol: "Vol. 2",
+    title: "The Legendary Tape Recordings Vol. 2",
+    format: "Archivo sonoro de cintas originales",
+    description:
+      "Segunda entrega de crónicas humorísticas y cotidianas del Caribe sur preservadas de sus casetes.",
+    cover: imgTapeVol2,
+    alt: "Portada del álbum Walter Gavitt Ferguson — King of Calypso Limonense, The Legendary Tape Recordings Vol. 2",
+    accentClass: "bg-sky",
   },
 ] as const;
 
 export default function Culture() {
   const shouldReduceMotion = useReducedMotion();
   const [activePillarIndex, setActivePillarIndex] = useState(0);
-  const [archivalMono, setArchivalMono] = useState(true);
+  const [activeAlbumIndex, setActiveAlbumIndex] = useState(0);
 
   const activePillar = carnivalPillars[activePillarIndex];
+  const activeAlbum = fergusonAlbums[activeAlbumIndex];
 
   return (
     <MotionConfig reducedMotion="user">
@@ -130,7 +186,7 @@ export default function Culture() {
         <div className="bg-clay py-14 text-cream md:py-28">
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
             {/* Manifiesto de apertura */}
-            <div className="grid gap-8 border-b border-cream/20 pb-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:gap-14 lg:pb-20">
+            <div className="grid gap-6 border-b border-cream/20 pb-10 sm:gap-8 sm:pb-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:gap-14 lg:pb-20">
               <div>
                 <h2
                   id="culture-title"
@@ -141,11 +197,11 @@ export default function Culture() {
               </div>
 
               <div className="relative isolate">
-                <ChalkStrokes className="pointer-events-none absolute -top-6 -left-4 -z-10 h-20 w-56 text-sand/25 sm:h-24 sm:w-64" />
+                <ChalkStrokes className="pointer-events-none absolute -top-4 -left-2 -z-10 h-16 w-48 text-sand/20 sm:-top-6 sm:-left-4 sm:h-24 sm:w-64" />
                 <p className="font-display text-3xl text-sand sm:text-4xl md:text-5xl">
                   “Limón no se resume: se vive.”
                 </p>
-                <p className="mt-4 max-w-[50ch] text-sm leading-relaxed text-pretty text-cream/90 sm:text-base">
+                <p className="mt-3 max-w-[50ch] text-sm leading-relaxed text-pretty text-cream/90 sm:mt-4 sm:text-base">
                   La cultura de Puerto Limón no se muestra: se vive. Está en la
                   música que suena desde una casa, en una partida de dominó bajo
                   la sombra, en el saludo entre vecinos y en frases que reflejan
@@ -157,77 +213,78 @@ export default function Culture() {
             </div>
 
             {/* Historia 1: Ritmo, música y expresión cultural */}
-            <div className="mt-12 grid items-center gap-10 lg:mt-20 lg:grid-cols-[1.12fr_0.88fr] lg:gap-14">
-              {/* Collage asimétrico de 3 fotografías con filtros contrastados (Color analógico + B&N de archivo) */}
-              <div className="relative isolate mx-auto grid w-full max-w-md grid-cols-[1.25fr_1fr] gap-2.5 sm:max-w-xl sm:gap-3.5 lg:max-w-none">
-                <BrushStroke className="pointer-events-none absolute -top-5 left-[6%] -z-10 h-14 w-[52%] rotate-[-4deg] text-sand" />
-                <BrushStroke className="pointer-events-none absolute -bottom-5 left-[12%] -z-10 h-14 w-[48%] rotate-[-7deg] text-moss" />
-                <BrushStroke className="pointer-events-none absolute top-[28%] -right-5 -z-10 h-12 w-[36%] rotate-[6deg] text-sky/80" />
+            <div className="mt-10 grid items-center gap-8 sm:mt-12 lg:mt-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+              {/* Collage mobile-first */}
+              <figure className="w-full">
+                <div className="relative isolate grid grid-cols-2 gap-2.5 sm:grid-cols-[1.22fr_1fr] sm:gap-3.5">
+                  <BrushStroke className="pointer-events-none absolute -top-4 left-[6%] -z-10 h-12 w-[48%] rotate-[-4deg] text-sand sm:-top-5 sm:h-14" />
+                  <BrushStroke className="pointer-events-none absolute -bottom-4 left-[10%] -z-10 h-12 w-[44%] rotate-[-7deg] text-moss sm:-bottom-5 sm:h-14" />
+                  <BrushStroke className="pointer-events-none absolute top-[32%] -right-4 -z-10 hidden h-12 w-[34%] rotate-[6deg] text-sky/80 sm:block" />
 
-                {/* Foto principal vertical: Cálido analógico */}
-                <figure className="relative mt-6 aspect-[3/4] overflow-hidden rounded-2xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:mt-8">
-                  <Image
-                    src={imgExpresion}
-                    alt="Joven música con platillos en las calles de Puerto Limón"
-                    fill
-                    placeholder="blur"
-                    sizes="(max-width: 1024px) 55vw, 30vw"
-                    className="object-cover contrast-[1.08] saturate-[1.12] sepia-[0.08]"
-                  />
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 bg-sand/10 mix-blend-multiply"
-                  />
-                  <figcaption className="absolute bottom-2.5 left-2.5 rounded bg-ink/85 px-2.5 py-1 text-[11px] font-medium tracking-wide text-cream/95">
-                    Foto: Xavier Sandí Castillo
-                  </figcaption>
-                </figure>
-
-                {/* Columna derecha del collage: B&N de alto contraste + Duotono cálido */}
-                <div className="grid gap-2.5 sm:gap-3.5">
-                  <figure className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink/30 ring-1 ring-white/15 ring-inset">
+                  {/* Foto 1: Protagonista */}
+                  <div className="relative col-span-2 aspect-[4/3] overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:col-span-1 sm:mt-6 sm:aspect-[3/4]">
                     <Image
-                      src={imgCalypsonian}
-                      alt="Calipsero limonense interpretando con su guitarra"
+                      src={imgExpresion}
+                      alt="Joven música con platillos en las calles de Puerto Limón"
                       fill
                       placeholder="blur"
-                      sizes="(max-width: 1024px) 45vw, 24vw"
-                      className="object-cover grayscale contrast-125 brightness-95"
+                      sizes="(max-width: 640px) 92vw, (max-width: 1024px) 52vw, 30vw"
+                      className="object-cover contrast-[1.08] saturate-[1.12] sepia-[0.08]"
                     />
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute inset-0 bg-sand/20 mix-blend-multiply"
+                      className="pointer-events-none absolute inset-0 bg-sand/10 mix-blend-multiply"
                     />
-                    <span className="font-display absolute top-2.5 right-2.5 rounded bg-cream px-2 py-0.5 text-xs text-ink">
-                      Calipso
-                    </span>
-                  </figure>
+                  </div>
 
-                  <figure className="relative aspect-[4/3] w-[88%] overflow-hidden rounded-2xl bg-ink/30 ring-1 ring-white/15 ring-inset">
-                    <Image
-                      src={imgMaracas}
-                      alt="Percusionista con maracas en celebración comunitaria"
-                      fill
-                      placeholder="blur"
-                      sizes="(max-width: 1024px) 40vw, 20vw"
-                      className="object-cover contrast-[1.1] saturate-[1.15] sepia-[0.1]"
-                    />
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-0 bg-ink/15 mix-blend-multiply"
-                    />
-                  </figure>
+                  {/* Fotos 2 y 3 */}
+                  <div className="col-span-2 grid grid-cols-2 gap-2.5 sm:col-span-1 sm:grid-cols-1 sm:gap-3.5">
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset">
+                      <Image
+                        src={imgCalypsonian}
+                        alt="Calipsero limonense interpretando con su guitarra"
+                        fill
+                        placeholder="blur"
+                        sizes="(max-width: 640px) 45vw, 24vw"
+                        className="object-cover grayscale contrast-125 brightness-95"
+                      />
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 bg-sand/20 mix-blend-multiply"
+                      />
+                    </div>
+
+                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:w-[88%]">
+                      <Image
+                        src={imgMaracas}
+                        alt="Percusionista con maracas en celebración comunitaria"
+                        fill
+                        placeholder="blur"
+                        sizes="(max-width: 640px) 45vw, 20vw"
+                        className="object-cover contrast-[1.1] saturate-[1.15] sepia-[0.1]"
+                      />
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 bg-ink/15 mix-blend-multiply"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              {/* Columna editorial + Tarjeta póster estilo referencia "ID. Know Yourself" */}
+                <figcaption className="mt-3.5 flex items-center justify-between border-t border-cream/20 pt-2.5 text-xs text-cream/75">
+                  <span>Calipso, reggae y expresión de calle</span>
+                  <span>Foto: Xavier Sandí Castillo</span>
+                </figcaption>
+              </figure>
+
+              {/* Columna editorial + Tarjeta póster */}
               <div className="flex flex-col justify-between gap-6">
                 <div>
                   <h3 className="font-display isolate text-4xl text-balance sm:text-5xl md:text-6xl">
                     Ritmo, música y{" "}
                     <Highlight color="text-moss">expresión cultural</Highlight>
                   </h3>
-                  <p className="mt-4 text-sm leading-relaxed text-pretty text-cream/90 sm:text-base">
+                  <p className="mt-3 text-sm leading-relaxed text-pretty text-cream/90 sm:mt-4 sm:text-base">
                     La música es una extensión del carácter limonense. El
                     calipso, el reggae y otros ritmos caribeños acompañan
                     celebraciones, reuniones familiares y actividades
@@ -235,32 +292,31 @@ export default function Culture() {
                   </p>
                 </div>
 
-                {/* Póster tipográfico inspirado en la referencia "ID. Know Yourself" */}
-                <div className="relative isolate overflow-hidden rounded-2xl bg-moss px-6 py-7 text-cream ring-1 ring-white/15 ring-inset sm:px-8 sm:py-9">
+                <div className="relative isolate overflow-hidden rounded-2xl bg-moss px-5 py-6 text-cream ring-1 ring-white/15 ring-inset sm:px-8 sm:py-8">
                   <HalfRing
                     side="left"
-                    className="pointer-events-none absolute top-1/2 -left-10 -z-10 h-40 -translate-y-1/2 text-ink/25 sm:h-48"
+                    className="pointer-events-none absolute top-1/2 -left-14 -z-10 h-36 -translate-y-1/2 text-ink/20 sm:-left-10 sm:h-44"
                   />
                   <HalfRing
                     side="right"
-                    className="pointer-events-none absolute top-1/2 -right-10 -z-10 h-40 -translate-y-1/2 text-ink/25 sm:h-48"
+                    className="pointer-events-none absolute top-1/2 -right-14 -z-10 h-36 -translate-y-1/2 text-ink/20 sm:-right-10 sm:h-44"
                   />
 
                   <div className="flex items-center justify-between text-ink">
-                    <span className="font-display text-sm tracking-wider uppercase">
-                      Puerto Limón · Sonido vivo
+                    <span className="font-display text-xs tracking-wider uppercase sm:text-sm">
+                      Sonido vivo del Caribe
                     </span>
-                    <PlusIcon className="size-4 text-ink" />
+                    <PlusIcon className="size-3.5 text-ink sm:size-4" />
                   </div>
 
-                  <blockquote className="mt-6 text-center sm:mt-8">
-                    <p className="font-display mx-auto max-w-[18ch] text-3xl leading-[0.95] text-balance text-cream sm:text-4xl">
+                  <blockquote className="mt-5 text-center sm:mt-7">
+                    <p className="font-display mx-auto max-w-[18ch] text-2xl leading-[0.96] text-balance text-cream sm:text-4xl">
                       “En Limón, la música no se programa: simplemente sucede.”
                     </p>
                   </blockquote>
 
-                  <div className="mt-6 flex justify-center">
-                    <Bay className="h-6 w-14 text-ink/35" />
+                  <div className="mt-5 flex justify-center sm:mt-6">
+                    <Bay className="h-5 w-12 text-ink/35 sm:h-6 sm:w-14" />
                   </div>
                 </div>
               </div>
@@ -269,47 +325,71 @@ export default function Culture() {
         </div>
 
         {/* =====================================================================
-            BANDA 2: CARNAVAL DE LIMÓN (CREMA EDITORIAL + GRILLA ARQUITECTÓNICA)
+            BANDA 2: CARNAVAL DE LIMÓN (ALTURA FIJA SIN SALTOS + SLOTTEXT)
            ===================================================================== */}
         <div className="bg-cream py-14 text-ink md:py-28">
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
-            {/* Encabezado + Escenario visual interactivo con filtros */}
-            <div className="grid items-center gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
+            <div className="grid items-start gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-14">
               <div>
                 <h3 className="font-display isolate text-4xl text-balance sm:text-6xl md:text-7xl">
                   Carnaval de Limón:{" "}
                   <Highlight color="text-ember">orgullo que se baila</Highlight>
                 </h3>
-                <p className="mt-4 max-w-[48ch] text-sm leading-relaxed text-pretty text-ink/80 sm:text-base">
+                <p className="mt-3 max-w-[48ch] text-sm leading-relaxed text-pretty text-ink/80 sm:mt-4 sm:text-base">
                   Celebrado en octubre alrededor del Día de las Culturas, es la
                   mayor expresión cultural de la provincia. El carnaval no es
                   solo una fiesta: es memoria, identidad y resistencia cultural.
                 </p>
 
-                {/* Tarjeta flotante de contexto activo (inspirada en referencia 2 y 4) */}
-                <div className="mt-7 border-t border-ink/15 pt-5">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <span className="font-display text-2xl text-ember sm:text-3xl">
-                      {activePillar.number} · {activePillar.title}
-                    </span>
-                    <span className="rounded-full bg-ink/8 px-3 py-1 text-[11px] font-bold tracking-wider text-ink/70 uppercase">
-                      Filtro: {activePillar.filterLabel}
-                    </span>
+                {/* Panel de lectura con SlotText y altura bloqueada */}
+                <div
+                  aria-live="polite"
+                  className="mt-6 border-t border-ink/15 pt-5 sm:mt-8 sm:pt-6"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="relative isolate shrink-0 pr-1">
+                      <BrushStroke className="pointer-events-none absolute top-1/2 -left-2 -z-10 h-9 w-16 -translate-y-1/2 rotate-[-6deg] text-sand sm:h-10 sm:w-20" />
+                      <span className="font-display block text-4xl text-ink sm:text-5xl">
+                        <SlotText
+                          text={activePillar.number}
+                          options={{ rollBy: "character", duration: 260 }}
+                        />
+                      </span>
+                    </div>
+
+                    <div className="min-h-[116px] flex-1 sm:min-h-[104px]">
+                      <p className="font-display slot-text-multiline text-2xl leading-[0.98] text-ink sm:text-3xl">
+                        <SlotText
+                          text={activePillar.title}
+                          options={{
+                            rollBy: "word",
+                            duration: 320,
+                            stagger: 12,
+                          }}
+                        />
+                      </p>
+                      <div className="slot-text-multiline mt-2 max-w-[44ch] text-xs leading-relaxed text-pretty text-ink/75 sm:text-sm">
+                        <SlotText
+                          text={activePillar.detail}
+                          options={{
+                            rollBy: "word",
+                            duration: 360,
+                            stagger: 12,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <p className="mt-2 max-w-[46ch] text-sm leading-relaxed text-pretty text-ink/75">
-                    {activePillar.detail}
-                  </p>
                 </div>
               </div>
 
-              {/* Escenario fotográfico doble con cambio de filtro e imagen por pilar */}
-              <div className="relative isolate mx-auto w-full max-w-xl lg:max-w-none">
-                <BrushStroke className="pointer-events-none absolute -top-5 right-[8%] -z-10 h-14 w-[48%] rotate-[4deg] text-sky" />
-                <BrushStroke className="pointer-events-none absolute -bottom-5 -left-5 -z-10 h-14 w-[45%] rotate-[-6deg] text-ember/80" />
+              {/* Escenario fotográfico */}
+              <figure className="relative isolate w-full">
+                <BrushStroke className="pointer-events-none absolute -top-4 right-[6%] -z-10 h-12 w-[42%] rotate-[3deg] text-sky sm:-top-5 sm:h-14" />
+                <BrushStroke className="pointer-events-none absolute -bottom-4 left-[4%] -z-10 h-12 w-[38%] rotate-[-4deg] text-ember/75 sm:-bottom-5 sm:h-14" />
 
-                <div className="grid grid-cols-[1fr_0.42fr] items-end gap-2.5 sm:gap-3.5">
-                  {/* Imagen principal del pilar activo */}
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-ink/10 ring-1 ring-black/10 ring-inset">
+                <div className="grid grid-cols-[1.45fr_0.55fr] items-stretch gap-2 sm:gap-3.5">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset">
                     <AnimatePresence mode="popLayout" initial={false}>
                       <motion.div
                         key={activePillar.id}
@@ -318,8 +398,8 @@ export default function Culture() {
                             ? { opacity: 0 }
                             : {
                                 opacity: 0,
-                                filter: "blur(2px)",
-                                transform: "scale(0.97)",
+                                filter: "blur(3px)",
+                                transform: "scale(1.03)",
                               }
                         }
                         animate={
@@ -340,7 +420,7 @@ export default function Culture() {
                                 transform: "scale(0.98)",
                               }
                         }
-                        transition={{ duration: 0.24, ease: EASE_OUT }}
+                        transition={{ duration: 0.26, ease: EASE_OUT }}
                         className="absolute inset-0"
                       >
                         <Image
@@ -348,70 +428,94 @@ export default function Culture() {
                           alt={activePillar.alt}
                           fill
                           placeholder="blur"
-                          sizes="(max-width: 1024px) 68vw, 38vw"
+                          sizes="(max-width: 1024px) 65vw, 38vw"
                           className={`object-cover ${activePillar.filterClass}`}
                         />
                         <div
                           aria-hidden
                           className={`pointer-events-none absolute inset-0 ${activePillar.tintClass}`}
                         />
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/85 via-ink/35 to-transparent"
+                        />
                       </motion.div>
                     </AnimatePresence>
 
-                    <span className="font-display absolute top-3 left-3 z-10 rounded bg-cream px-2.5 py-0.5 text-base text-ink shadow-xs">
-                      Octubre · Día de las Culturas
-                    </span>
-
-                    {activePillar.credit && (
-                      <span className="absolute bottom-2.5 left-2.5 z-10 rounded bg-ink/80 px-2.5 py-1 text-[11px] font-medium text-cream">
-                        {activePillar.credit}
-                      </span>
-                    )}
+                    <div className="pointer-events-none absolute inset-x-3 bottom-2.5 z-10 text-cream sm:inset-x-4 sm:bottom-3.5">
+                      <div className="slot-text-multiline text-[11px] leading-snug font-medium text-cream/95 sm:text-xs">
+                        <SlotText
+                          text={activePillar.caption}
+                          options={{
+                            rollBy: "word",
+                            duration: 300,
+                            stagger: 10,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Segunda fotografía en monocromo de contraste (inspirado en referencias 2 y 3) */}
-                  <div className="flex flex-col gap-2.5 sm:gap-3">
-                    <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-ink/10 ring-1 ring-black/10 ring-inset">
-                      <AnimatePresence mode="popLayout" initial={false}>
-                        <motion.div
-                          key={`${activePillar.id}-secondary`}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.22, ease: EASE_OUT }}
-                          className="absolute inset-0"
-                        >
-                          <Image
-                            src={activePillar.secondaryImage}
-                            alt={activePillar.secondaryAlt}
-                            fill
-                            placeholder="blur"
-                            sizes="(max-width: 1024px) 28vw, 16vw"
-                            className="object-cover grayscale contrast-125"
-                          />
-                          <div
-                            aria-hidden
-                            className="pointer-events-none absolute inset-0 bg-sand/20 mix-blend-multiply"
-                          />
-                        </motion.div>
-                      </AnimatePresence>
-                    </div>
-
-                    <div className="rounded-xl bg-ink p-3 text-cream sm:p-3.5">
-                      <p className="text-[11px] leading-snug text-cream/85 sm:text-xs">
-                        {activePillar.caption}
-                      </p>
-                    </div>
+                  <div className="relative overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                      <motion.div
+                        key={`${activePillar.id}-secondary`}
+                        initial={
+                          shouldReduceMotion
+                            ? { opacity: 0 }
+                            : {
+                                opacity: 0,
+                                filter: "blur(2px)",
+                                transform: "scale(1.04)",
+                              }
+                        }
+                        animate={
+                          shouldReduceMotion
+                            ? { opacity: 1 }
+                            : {
+                                opacity: 1,
+                                filter: "blur(0px)",
+                                transform: "scale(1)",
+                              }
+                        }
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.24, ease: EASE_OUT }}
+                        className="absolute inset-0"
+                      >
+                        <Image
+                          src={activePillar.secondaryImage}
+                          alt={activePillar.secondaryAlt}
+                          fill
+                          placeholder="blur"
+                          sizes="(max-width: 1024px) 30vw, 16vw"
+                          className="object-cover grayscale contrast-125"
+                        />
+                        <div
+                          aria-hidden
+                          className="pointer-events-none absolute inset-0 bg-sand/20 mix-blend-multiply"
+                        />
+                      </motion.div>
+                    </AnimatePresence>
                   </div>
                 </div>
-              </div>
+
+                <figcaption className="mt-3 flex items-center justify-between text-xs text-ink/65">
+                  <span>Octubre en Puerto Limón</span>
+                  <span className="slot-text-multiline">
+                    <SlotText
+                      text={activePillar.credit}
+                      options={{ rollBy: "word", duration: 260 }}
+                    />
+                  </span>
+                </figcaption>
+              </figure>
             </div>
 
-            {/* Grilla editorial de 4 pilares (Sin cajas AI-slop; columnas arquitectónicas con círculos desplazados como Architecture.tsx y Referencias 2, 3 y 4) */}
+            {/* Selector de los 4 pilares */}
             <div
               role="tablist"
               aria-label="Pilares del Carnaval de Limón"
-              className="mt-10 grid grid-cols-2 border-t border-ink/15 lg:mt-16 lg:grid-cols-4"
+              className="mt-8 grid grid-cols-2 border-t border-ink/15 sm:mt-12 lg:mt-14 lg:grid-cols-4"
             >
               {carnivalPillars.map((pillar, index) => {
                 const isSelected = index === activePillarIndex;
@@ -422,19 +526,20 @@ export default function Culture() {
                     role="tab"
                     aria-selected={isSelected}
                     onClick={() => setActivePillarIndex(index)}
-                    className={`group relative isolate flex cursor-pointer flex-col justify-between border-b border-ink/15 p-4 text-left transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none [touch-action:manipulation] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ink sm:p-6 odd:border-r odd:border-ink/15 lg:border-r lg:border-b-0 lg:last:border-r-0 ${
+                    className={`group relative isolate flex min-h-[108px] cursor-pointer flex-col justify-between border-b border-ink/15 p-3.5 text-left transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.98] focus:outline-none focus-visible:bg-ink/[0.06] sm:min-h-[124px] sm:p-5 odd:border-r odd:border-ink/15 lg:border-r lg:border-b-0 lg:last:border-r-0 ${
                       isSelected
-                        ? "bg-ink/[0.04]"
+                        ? "bg-ink/[0.045]"
                         : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/[0.025]"
                     }`}
                   >
-                    {/* Indicador superior activo */}
                     <span
                       aria-hidden
-                      className={`pointer-events-none absolute inset-x-0 top-0 h-0.5 origin-left bg-ink transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                      className={`pointer-events-none absolute inset-x-0 top-0 h-[3px] origin-left transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                        pillar.accentBarClass
+                      } ${
                         isSelected
                           ? "scale-x-100"
-                          : "scale-x-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-x-50"
+                          : "scale-x-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-x-45"
                       }`}
                     />
 
@@ -442,30 +547,31 @@ export default function Culture() {
                       <div className="relative isolate pl-1.5">
                         <span
                           aria-hidden
-                          className={`pointer-events-none absolute -top-1 left-0 -z-10 size-7 rounded-full transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] sm:size-9 ${
+                          className={`pointer-events-none absolute -top-0.5 left-0 -z-10 size-6 rounded-full transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] sm:size-8 ${
                             pillar.dotClass
-                          } ${isSelected ? "scale-110" : "opacity-85"}`}
+                          } ${isSelected ? "scale-110" : "opacity-80"}`}
                         />
-                        <span className="font-display text-3xl tracking-tight text-ink sm:text-4xl">
+                        <span className="font-display text-2xl tracking-tight text-ink sm:text-3xl">
                           {pillar.number}
                         </span>
                       </div>
 
                       <PlusIcon
-                        className={`size-3.5 text-ink/60 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                        className={`size-3.5 text-ink/55 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
                           isSelected ? "rotate-45 text-ink" : ""
                         }`}
                       />
                     </div>
 
-                    <div className="mt-5 sm:mt-7">
-                      <p className="font-display text-xl leading-[0.98] text-balance text-ink sm:text-2xl">
-                        {pillar.title}
-                      </p>
-                      <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-pretty text-ink/70 sm:text-sm">
-                        {pillar.detail}
-                      </p>
-                    </div>
+                    <p
+                      className={`font-display mt-3 text-lg leading-[0.98] text-balance transition-colors duration-150 sm:text-2xl ${
+                        isSelected
+                          ? "text-ink"
+                          : "text-ink/70 [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-ink"
+                      }`}
+                    >
+                      {pillar.shortLabel}
+                    </p>
                   </button>
                 );
               })}
@@ -474,80 +580,71 @@ export default function Culture() {
         </div>
 
         {/* =====================================================================
-            BANDA 3: HOMENAJE A WALTER FERGUSON (ARCHIVO NOCTURNO + CITA MONUMENTAL)
+            BANDA 3: HOMENAJE A WALTER FERGUSON + THE LEGENDARY TAPE RECORDINGS
            ===================================================================== */}
         <section
           aria-labelledby="ferguson-title"
-          className="relative overflow-hidden bg-ink py-16 text-cream md:py-28"
+          className="relative overflow-hidden bg-ink py-14 text-cream md:py-28"
         >
           <HalfRing
             side="left"
-            className="pointer-events-none absolute top-10 -right-14 h-56 text-sand/15 md:h-80"
+            className="pointer-events-none absolute top-10 -right-16 h-48 text-sand/15 md:h-80"
           />
 
           <div className="relative mx-auto max-w-6xl px-5 sm:px-6">
-            <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-              {/* Retrato de archivo con filtro gelatina de plata / color conmutable + tarjeta editorial flotante */}
-              <div className="relative isolate mx-auto w-full max-w-md lg:max-w-none">
-                <BrushStroke className="pointer-events-none absolute -top-5 -left-5 -z-10 h-14 w-44 rotate-[-6deg] text-sand/85" />
-                <BrushStroke className="pointer-events-none absolute -right-4 -bottom-5 -z-10 h-14 w-44 rotate-[4deg] text-ember/80" />
+            <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16">
+              {/* Columna izquierda: Retrato limpio + Ficha editorial en 3 columnas (sin puntos '·' genéricos) */}
+              <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+                <div className="relative isolate">
+                  <BrushStroke className="pointer-events-none absolute -top-4 -left-4 -z-10 h-12 w-36 rotate-[-6deg] text-sand/80 sm:-top-5 sm:-left-5 sm:h-14 sm:w-44" />
+                  <BrushStroke className="pointer-events-none absolute -right-3 -bottom-4 -z-10 h-12 w-36 rotate-[4deg] text-ember/80 sm:-right-4 sm:-bottom-5 sm:h-14 sm:w-44" />
 
-                <figure className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-cream/10 ring-1 ring-white/15 ring-inset">
-                  <Image
-                    src={imgFerguson}
-                    alt="Retrato de Walter Ferguson, El Rey del Calipso limonense, junto a su guitarra"
-                    fill
-                    placeholder="blur"
-                    sizes="(max-width: 1024px) 90vw, 42vw"
-                    className={`object-cover object-top transition-[filter] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                      archivalMono
-                        ? "grayscale contrast-125 brightness-95"
-                        : "contrast-[1.06] saturate-[1.08] sepia-[0.08]"
-                    }`}
-                  />
-                  {/* Tinte duotono cálido de papel de archivo */}
-                  <div
-                    aria-hidden
-                    className={`pointer-events-none absolute inset-0 mix-blend-multiply transition-opacity duration-300 ${
-                      archivalMono
-                        ? "bg-sand/25 opacity-100"
-                        : "bg-sand/10 opacity-60"
-                    }`}
-                  />
-
-                  {/* Sello superior e interruptor de filtro de archivo */}
-                  <div className="absolute inset-x-3 top-3 z-10 flex items-center justify-between gap-2">
-                    <span className="font-display rounded bg-cream px-2.5 py-0.5 text-sm text-ink shadow-xs">
-                      1919 – 2023 · Cahuita
-                    </span>
-
-                    <button
-                      type="button"
-                      onClick={() => setArchivalMono((prev) => !prev)}
-                      aria-pressed={archivalMono}
-                      className="cursor-pointer rounded-full bg-ink/85 px-3 py-1 text-[11px] font-semibold tracking-wider text-cream uppercase ring-1 ring-cream/25 transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none [touch-action:manipulation] active:scale-[0.96] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink"
-                    >
-                      {archivalMono ? "Filtro: Archivo B&N" : "Filtro: Cálido"}
-                    </button>
+                  <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-black ring-1 ring-white/15 ring-inset sm:aspect-[4/5]">
+                    <Image
+                      src={imgFerguson}
+                      alt="Walter Ferguson con sombrero cantando frente a un micrófono de estudio"
+                      fill
+                      placeholder="blur"
+                      sizes="(max-width: 1024px) 88vw, 38vw"
+                      className="object-cover object-center contrast-[1.06]"
+                    />
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/80 to-transparent"
+                    />
                   </div>
-                </figure>
-
-                {/* Tarjeta flotante de archivo (inspirada en Chronology.tsx y Referencia 2) */}
-                <div className="relative z-10 -mt-10 ml-auto max-w-[270px] rounded-xl bg-cream p-4 text-ink shadow-md sm:-mt-14 sm:mr-3 sm:max-w-[290px] sm:p-5">
-                  <div className="flex items-center justify-between">
-                    <span className="font-display text-xs tracking-wider text-ember uppercase">
-                      Casete C-60 · Porche de Cahuita
-                    </span>
-                    <PlusIcon className="size-3.5 text-ink" />
-                  </div>
-                  <p className="mt-2 text-xs leading-snug font-medium text-ink/85 sm:text-sm">
-                    Grabaciones caseras vendidas de mano en mano que hoy son
-                    patrimonio sonoro del Caribe centroamericano.
-                  </p>
                 </div>
+
+                {/* Ficha estructurada en 3 columnas limpias en lugar de cadenas con '·' */}
+                <dl className="mt-6 grid grid-cols-3 border-t border-cream/15 pt-4">
+                  <div className="pr-3">
+                    <dt className="text-[10px] font-semibold tracking-wider text-cream/45 uppercase">
+                      Nombre
+                    </dt>
+                    <dd className="font-display mt-1 text-lg text-cream sm:text-xl">
+                      Mr. Gavitt
+                    </dd>
+                  </div>
+                  <div className="border-l border-cream/15 px-3">
+                    <dt className="text-[10px] font-semibold tracking-wider text-cream/45 uppercase">
+                      Hogar
+                    </dt>
+                    <dd className="font-display mt-1 text-lg text-sand sm:text-xl">
+                      Cahuita
+                    </dd>
+                  </div>
+                  <div className="border-l border-cream/15 pl-3">
+                    <dt className="text-[10px] font-semibold tracking-wider text-cream/45 uppercase">
+                      Lengua
+                    </dt>
+                    <dd className="font-display mt-1 text-lg text-cream sm:text-xl">
+                      Mekatelyu
+                    </dd>
+                  </div>
+                </dl>
               </div>
 
-              {/* Historia y monumento tipográfico para la cita */}
+              {/* Columna derecha: Narrativa + Cita + Discografía de casetes */}
               <div>
                 <h3
                   id="ferguson-title"
@@ -556,11 +653,11 @@ export default function Culture() {
                   El Rey del Calipso:{" "}
                   <Highlight color="text-ember">Walter Ferguson</Highlight>
                 </h3>
-                <p className="mt-3 text-xs font-bold tracking-[0.14em] text-sand uppercase sm:text-sm">
-                  Mr. Gavitt · La voz eterna de Cahuita · Leyenda cultural
+                <p className="font-display mt-2 text-2xl text-sand sm:mt-3 sm:text-3xl">
+                  La voz eterna de Cahuita
                 </p>
 
-                <p className="mt-5 max-w-[50ch] text-sm leading-relaxed text-pretty text-cream/85 sm:text-base">
+                <p className="mt-4 max-w-[52ch] text-sm leading-relaxed text-pretty text-cream/85 sm:mt-5 sm:text-base">
                   Walter Ferguson no buscó la fama; la fama lo encontró a él en
                   su porche en Cahuita. Durante décadas, grabó sus composiciones
                   en casetes caseros, vendiéndolos a los turistas que pasaban.
@@ -569,34 +666,127 @@ export default function Culture() {
                   auténtico.
                 </p>
 
-                {/* Cita rediseñada como pieza tipográfica monumental (Cero border-l-4 AI-slop) */}
-                <figure className="relative isolate mt-8 border-t border-cream/15 pt-7 sm:mt-10 sm:pt-9">
-                  <ChalkStrokes className="pointer-events-none absolute top-4 right-0 -z-10 h-24 w-64 text-sand/15 sm:h-28 sm:w-80" />
+                {/* Cita monumental limpia */}
+                <blockquote className="relative isolate mt-7 border-t border-cream/15 pt-6 sm:mt-8 sm:pt-7">
+                  <ChalkStrokes className="pointer-events-none absolute top-2 right-0 -z-10 h-20 w-52 text-sand/15 sm:h-24 sm:w-72" />
 
-                  <div className="flex items-start gap-3 sm:gap-5">
+                  <div className="flex items-start gap-3 sm:gap-4">
                     <span
                       aria-hidden
-                      className="font-display -mt-2 text-6xl leading-none text-ember select-none sm:text-8xl"
+                      className="font-display -mt-2 text-5xl leading-none text-ember select-none sm:text-7xl"
                     >
                       “
                     </span>
-                    <div>
-                      <blockquote className="font-display text-3xl leading-[0.95] text-balance text-cream sm:text-5xl md:text-6xl">
-                        I no go nowhere, I stay{" "}
-                        <Highlight color="text-sand">
-                          right here in Cahuita.
-                        </Highlight>
-                      </blockquote>
-                      <figcaption className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold tracking-wider text-cream/65 uppercase">
-                        <span>Walter Gavitt Ferguson</span>
-                        <span aria-hidden className="text-ember">
-                          ·
+                    <p className="font-display text-3xl leading-[0.95] text-balance text-cream sm:text-5xl">
+                      I no go nowhere, I stay{" "}
+                      <Highlight color="text-sand">
+                        right here in Cahuita.
+                      </Highlight>
+                    </p>
+                  </div>
+                </blockquote>
+
+                {/* Escaparate minimalista de los 2 álbumes: The Legendary Tape Recordings Vol. 1 & Vol. 2 */}
+                <div className="mt-7 border-t border-cream/15 pt-6 sm:mt-9 sm:pt-7">
+                  <div className="grid items-center gap-5 sm:grid-cols-[auto_1fr] sm:gap-6">
+                    {/* Carátulas físicas interactivas (Vol. 1 y Vol. 2) */}
+                    <div
+                      role="tablist"
+                      aria-label="Álbumes The Legendary Tape Recordings de Walter Ferguson"
+                      className="flex items-center gap-3"
+                    >
+                      {fergusonAlbums.map((album, index) => {
+                        const isSelected = index === activeAlbumIndex;
+                        return (
+                          <button
+                            key={album.id}
+                            type="button"
+                            role="tab"
+                            aria-selected={isSelected}
+                            onClick={() => setActiveAlbumIndex(index)}
+                            className={`group relative aspect-square w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none sm:w-28 ${
+                              isSelected
+                                ? "scale-100 opacity-100 ring-2 ring-sand"
+                                : "scale-[0.94] opacity-55 ring-1 ring-white/15 ring-inset [@media(hover:hover)_and_(pointer:fine)]:hover:opacity-85"
+                            }`}
+                          >
+                            <Image
+                              src={album.cover}
+                              alt={album.alt}
+                              fill
+                              placeholder="blur"
+                              sizes="112px"
+                              className="object-cover"
+                            />
+                            <span
+                              aria-hidden
+                              className={`pointer-events-none absolute inset-x-0 bottom-0 h-1 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                                album.accentClass
+                              } ${isSelected ? "scale-x-100" : "scale-x-0"}`}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Información del álbum activo con SlotText y altura fija */}
+                    <div
+                      aria-live="polite"
+                      className="min-h-[108px] sm:min-h-[104px]"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-[11px] font-bold tracking-wider text-sand uppercase">
+                          <SlotText
+                            text={activeAlbum.format}
+                            options={{ rollBy: "word", duration: 260 }}
+                          />
                         </span>
-                        <span>Inglés criollo limonense (Mekatelyu)</span>
-                      </figcaption>
+
+                        <div className="flex items-center gap-1.5">
+                          {fergusonAlbums.map((album, index) => {
+                            const isSelected = index === activeAlbumIndex;
+                            return (
+                              <button
+                                key={album.id}
+                                type="button"
+                                onClick={() => setActiveAlbumIndex(index)}
+                                className={`cursor-pointer rounded px-2 py-0.5 font-display text-sm transition-colors duration-150 select-none active:scale-[0.96] ${
+                                  isSelected
+                                    ? "bg-cream text-ink"
+                                    : "text-cream/55 [@media(hover:hover)_and_(pointer:fine)]:hover:text-cream"
+                                }`}
+                              >
+                                {album.vol}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <p className="font-display slot-text-multiline mt-1.5 text-2xl leading-[0.98] text-cream sm:text-3xl">
+                        <SlotText
+                          text={activeAlbum.title}
+                          options={{
+                            rollBy: "word",
+                            duration: 300,
+                            stagger: 12,
+                          }}
+                        />
+                      </p>
+
+                      <div className="slot-text-multiline mt-1.5 max-w-[44ch] text-xs leading-relaxed text-pretty text-cream/75 sm:text-sm">
+                        <SlotText
+                          text={activeAlbum.description}
+                          options={{
+                            rollBy: "word",
+                            duration: 340,
+                            stagger: 10,
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </figure>
+                </div>
               </div>
             </div>
           </div>
