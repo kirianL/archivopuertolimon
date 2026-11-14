@@ -9,7 +9,7 @@ import {
   motion,
   useInView,
   type PanInfo,
-} from "motion/react";
+} from "framer-motion";
 import "slot-text/style.css";
 import { SlotText } from "slot-text/react";
 import { eras } from "./eras";
