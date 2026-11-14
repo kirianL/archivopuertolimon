@@ -131,10 +131,10 @@ const carnivalPillars: readonly CarnivalPillar[] = [
 
 type TapeAlbum = {
   id: string;
-  vol: string;
-  title: string;
-  format: string;
+  volNumber: string;
+  volLabel: string;
   description: string;
+  format: string;
   cover: StaticImageData;
   alt: string;
   accentClass: string;
@@ -143,22 +143,22 @@ type TapeAlbum = {
 const fergusonAlbums: readonly TapeAlbum[] = [
   {
     id: "vol-1",
-    vol: "Vol. 1",
-    title: "The Legendary Tape Recordings Vol. 1",
-    format: "Casete C-60 grabado en Cahuita",
+    volNumber: "1",
+    volLabel: "Vol. 1",
     description:
       "Primer rescate de las cintas caseras que Mr. Gavitt grababa con guitarra acústica desde su porche.",
+    format: "Casete C-60 grabado en Cahuita",
     cover: imgTapeVol1,
     alt: "Portada del álbum Walter Gavitt Ferguson — King of Calypso Limonense, The Legendary Tape Recordings Vol. 1",
     accentClass: "bg-ember",
   },
   {
     id: "vol-2",
-    vol: "Vol. 2",
-    title: "The Legendary Tape Recordings Vol. 2",
-    format: "Archivo sonoro de cintas originales",
+    volNumber: "2",
+    volLabel: "Vol. 2",
     description:
       "Segunda entrega de crónicas humorísticas y cotidianas del Caribe sur preservadas de sus casetes.",
+    format: "Archivo sonoro de cintas originales",
     cover: imgTapeVol2,
     alt: "Portada del álbum Walter Gavitt Ferguson — King of Calypso Limonense, The Legendary Tape Recordings Vol. 2",
     accentClass: "bg-sky",
@@ -277,7 +277,7 @@ export default function Culture() {
                 </figcaption>
               </figure>
 
-              {/* Columna editorial + Tarjeta póster */}
+              {/* Columna editorial + Tarjeta póster (sin subtítulo encima de la frase) */}
               <div className="flex flex-col justify-between gap-6">
                 <div>
                   <h3 className="font-display isolate text-4xl text-balance sm:text-5xl md:text-6xl">
@@ -302,14 +302,11 @@ export default function Culture() {
                     className="pointer-events-none absolute top-1/2 -right-14 -z-10 h-36 -translate-y-1/2 text-ink/20 sm:-right-10 sm:h-44"
                   />
 
-                  <div className="flex items-center justify-between text-ink">
-                    <span className="font-display text-xs tracking-wider uppercase sm:text-sm">
-                      Sonido vivo del Caribe
-                    </span>
+                  <div className="flex justify-end text-ink">
                     <PlusIcon className="size-3.5 text-ink sm:size-4" />
                   </div>
 
-                  <blockquote className="mt-5 text-center sm:mt-7">
+                  <blockquote className="mt-2 text-center sm:mt-3">
                     <p className="font-display mx-auto max-w-[18ch] text-2xl leading-[0.96] text-balance text-cream sm:text-4xl">
                       “En Limón, la música no se programa: simplemente sucede.”
                     </p>
@@ -325,11 +322,11 @@ export default function Culture() {
         </div>
 
         {/* =====================================================================
-            BANDA 2: CARNAVAL DE LIMÓN (ALTURA FIJA SIN SALTOS + SLOTTEXT)
+            BANDA 2: CARNAVAL DE LIMÓN (ALTURA ESTRICTAMENTE BLOQUEADA + SLOTTEXT)
            ===================================================================== */}
         <div className="bg-cream py-14 text-ink md:py-28">
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
-            <div className="grid items-start gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-14">
+            <div className="grid items-start gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
               <div>
                 <h3 className="font-display isolate text-4xl text-balance sm:text-6xl md:text-7xl">
                   Carnaval de Limón:{" "}
@@ -341,7 +338,7 @@ export default function Culture() {
                   solo una fiesta: es memoria, identidad y resistencia cultural.
                 </p>
 
-                {/* Panel de lectura con SlotText y altura bloqueada */}
+                {/* Panel de lectura con altura natural bloqueada por CSS Grid (sin recortar texto ni mover el layout) */}
                 <div
                   aria-live="polite"
                   className="mt-6 border-t border-ink/15 pt-5 sm:mt-8 sm:pt-6"
@@ -357,26 +354,45 @@ export default function Culture() {
                       </span>
                     </div>
 
-                    <div className="min-h-[116px] flex-1 sm:min-h-[104px]">
-                      <p className="font-display slot-text-multiline text-2xl leading-[0.98] text-ink sm:text-3xl">
-                        <SlotText
-                          text={activePillar.title}
-                          options={{
-                            rollBy: "word",
-                            duration: 320,
-                            stagger: 12,
-                          }}
-                        />
-                      </p>
-                      <div className="slot-text-multiline mt-2 max-w-[44ch] text-xs leading-relaxed text-pretty text-ink/75 sm:text-sm">
-                        <SlotText
-                          text={activePillar.detail}
-                          options={{
-                            rollBy: "word",
-                            duration: 360,
-                            stagger: 12,
-                          }}
-                        />
+                    <div className="grid flex-1">
+                      {/* Reservadores invisibles en la misma celda del grid para fijar el alto al pilar más largo sin overflow-hidden */}
+                      {carnivalPillars.map((pillar) => (
+                        <div
+                          key={pillar.id}
+                          aria-hidden
+                          className="pointer-events-none invisible col-start-1 row-start-1 select-none"
+                        >
+                          <p className="font-display text-2xl leading-[1.08] sm:text-3xl">
+                            {pillar.title}
+                          </p>
+                          <p className="mt-2 max-w-[44ch] text-xs leading-relaxed sm:text-sm">
+                            {pillar.detail}
+                          </p>
+                        </div>
+                      ))}
+
+                      {/* Contenido activo visible en la misma celda */}
+                      <div className="col-start-1 row-start-1">
+                        <p className="font-display slot-text-multiline text-2xl leading-[0.98] text-ink sm:text-3xl">
+                          <SlotText
+                            text={activePillar.title}
+                            options={{
+                              rollBy: "word",
+                              duration: 300,
+                              stagger: 10,
+                            }}
+                          />
+                        </p>
+                        <div className="slot-text-multiline mt-2 max-w-[44ch] text-xs leading-relaxed text-pretty text-ink/75 sm:text-sm">
+                          <SlotText
+                            text={activePillar.detail}
+                            options={{
+                              rollBy: "word",
+                              duration: 320,
+                              stagger: 10,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -448,8 +464,8 @@ export default function Culture() {
                           text={activePillar.caption}
                           options={{
                             rollBy: "word",
-                            duration: 300,
-                            stagger: 10,
+                            duration: 280,
+                            stagger: 8,
                           }}
                         />
                       </div>
@@ -499,12 +515,12 @@ export default function Culture() {
                   </div>
                 </div>
 
-                <figcaption className="mt-3 flex items-center justify-between text-xs text-ink/65">
+                <figcaption className="mt-3 flex h-5 items-center justify-between overflow-hidden text-xs text-ink/65">
                   <span>Octubre en Puerto Limón</span>
                   <span className="slot-text-multiline">
                     <SlotText
                       text={activePillar.credit}
-                      options={{ rollBy: "word", duration: 260 }}
+                      options={{ rollBy: "word", duration: 240 }}
                     />
                   </span>
                 </figcaption>
@@ -592,8 +608,9 @@ export default function Culture() {
           />
 
           <div className="relative mx-auto max-w-6xl px-5 sm:px-6">
-            <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16">
-              {/* Columna izquierda: Retrato limpio + Ficha editorial en 3 columnas (sin puntos '·' genéricos) */}
+            {/* items-start en todas las resoluciones para que NUNCA se recentre ni mueva la columna izquierda */}
+            <div className="grid items-start gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-16">
+              {/* Columna izquierda: Retrato limpio + Ficha con título ARRIBA y descripción ABAJO */}
               <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
                 <div className="relative isolate">
                   <BrushStroke className="pointer-events-none absolute -top-4 -left-4 -z-10 h-12 w-36 rotate-[-6deg] text-sand/80 sm:-top-5 sm:-left-5 sm:h-14 sm:w-44" />
@@ -615,31 +632,34 @@ export default function Culture() {
                   </div>
                 </div>
 
-                {/* Ficha estructurada en 3 columnas limpias en lugar de cadenas con '·' */}
+                {/* Ficha en 3 columnas: Valor display ARRIBA y explicación ABAJO (como Architecture.tsx) */}
                 <dl className="mt-6 grid grid-cols-3 border-t border-cream/15 pt-4">
                   <div className="pr-3">
-                    <dt className="text-[10px] font-semibold tracking-wider text-cream/45 uppercase">
-                      Nombre
-                    </dt>
-                    <dd className="font-display mt-1 text-lg text-cream sm:text-xl">
+                    <dt className="sr-only">Nombre artístico</dt>
+                    <dd className="font-display text-xl text-cream sm:text-2xl">
                       Mr. Gavitt
                     </dd>
+                    <p className="mt-1 text-[11px] leading-snug text-cream/55">
+                      1919 – 2023
+                    </p>
                   </div>
                   <div className="border-l border-cream/15 px-3">
-                    <dt className="text-[10px] font-semibold tracking-wider text-cream/45 uppercase">
-                      Hogar
-                    </dt>
-                    <dd className="font-display mt-1 text-lg text-sand sm:text-xl">
+                    <dt className="sr-only">Hogar</dt>
+                    <dd className="font-display text-xl text-sand sm:text-2xl">
                       Cahuita
                     </dd>
+                    <p className="mt-1 text-[11px] leading-snug text-cream/55">
+                      Caribe sur
+                    </p>
                   </div>
                   <div className="border-l border-cream/15 pl-3">
-                    <dt className="text-[10px] font-semibold tracking-wider text-cream/45 uppercase">
-                      Lengua
-                    </dt>
-                    <dd className="font-display mt-1 text-lg text-cream sm:text-xl">
+                    <dt className="sr-only">Lengua</dt>
+                    <dd className="font-display text-xl text-cream sm:text-2xl">
                       Mekatelyu
                     </dd>
+                    <p className="mt-1 text-[11px] leading-snug text-cream/55">
+                      Inglés criollo
+                    </p>
                   </div>
                 </dl>
               </div>
@@ -666,7 +686,7 @@ export default function Culture() {
                   auténtico.
                 </p>
 
-                {/* Cita monumental limpia */}
+                {/* Cita monumental */}
                 <blockquote className="relative isolate mt-7 border-t border-cream/15 pt-6 sm:mt-8 sm:pt-7">
                   <ChalkStrokes className="pointer-events-none absolute top-2 right-0 -z-10 h-20 w-52 text-sand/15 sm:h-24 sm:w-72" />
 
@@ -686,9 +706,9 @@ export default function Culture() {
                   </div>
                 </blockquote>
 
-                {/* Escaparate minimalista de los 2 álbumes: The Legendary Tape Recordings Vol. 1 & Vol. 2 */}
+                {/* Escaparate minimalista de los 2 álbumes: CERO subtítulos arriba del título y CERO cambio de altura */}
                 <div className="mt-7 border-t border-cream/15 pt-6 sm:mt-9 sm:pt-7">
-                  <div className="grid items-center gap-5 sm:grid-cols-[auto_1fr] sm:gap-6">
+                  <div className="grid items-start gap-5 sm:grid-cols-[auto_1fr] sm:gap-6">
                     {/* Carátulas físicas interactivas (Vol. 1 y Vol. 2) */}
                     <div
                       role="tablist"
@@ -704,7 +724,7 @@ export default function Culture() {
                             role="tab"
                             aria-selected={isSelected}
                             onClick={() => setActiveAlbumIndex(index)}
-                            className={`group relative aspect-square w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity,box-shadow] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none sm:w-28 ${
+                            className={`group relative aspect-square w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none sm:w-28 ${
                               isSelected
                                 ? "scale-100 opacity-100 ring-2 ring-sand"
                                 : "scale-[0.94] opacity-55 ring-1 ring-white/15 ring-inset [@media(hover:hover)_and_(pointer:fine)]:hover:opacity-85"
@@ -729,20 +749,20 @@ export default function Culture() {
                       })}
                     </div>
 
-                    {/* Información del álbum activo con SlotText y altura fija */}
-                    <div
-                      aria-live="polite"
-                      className="min-h-[108px] sm:min-h-[104px]"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-[11px] font-bold tracking-wider text-sand uppercase">
-                          <SlotText
-                            text={activeAlbum.format}
-                            options={{ rollBy: "word", duration: 260 }}
-                          />
-                        </span>
+                    {/* Columna de texto del álbum sin overflow-hidden: usa CSS Grid para mantener altura constante y mostrar todo el contenido completo */}
+                    <div aria-live="polite" className="min-w-0">
+                      <div className="flex items-start justify-between gap-3">
+                        <h4 className="font-display text-2xl leading-[0.98] text-cream sm:text-3xl">
+                          The Legendary Tape Recordings Vol.{" "}
+                          <span className="inline-block w-[1.2ch] text-sand">
+                            <SlotText
+                              text={activeAlbum.volNumber}
+                              options={{ rollBy: "character", duration: 240 }}
+                            />
+                          </span>
+                        </h4>
 
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex shrink-0 items-center gap-1">
                           {fergusonAlbums.map((album, index) => {
                             const isSelected = index === activeAlbumIndex;
                             return (
@@ -756,33 +776,49 @@ export default function Culture() {
                                     : "text-cream/55 [@media(hover:hover)_and_(pointer:fine)]:hover:text-cream"
                                 }`}
                               >
-                                {album.vol}
+                                {album.volLabel}
                               </button>
                             );
                           })}
                         </div>
                       </div>
 
-                      <p className="font-display slot-text-multiline mt-1.5 text-2xl leading-[0.98] text-cream sm:text-3xl">
-                        <SlotText
-                          text={activeAlbum.title}
-                          options={{
-                            rollBy: "word",
-                            duration: 300,
-                            stagger: 12,
-                          }}
-                        />
-                      </p>
+                      {/* Grid stack para fijar el alto exacto al texto más largo sin tapar ni recortar nada */}
+                      <div className="mt-2.5 grid">
+                        {fergusonAlbums.map((album) => (
+                          <div
+                            key={album.id}
+                            aria-hidden
+                            className="pointer-events-none invisible col-start-1 row-start-1 select-none"
+                          >
+                            <p className="max-w-[46ch] text-xs leading-[1.55] sm:text-sm">
+                              {album.description}
+                            </p>
+                            <p className="mt-2 text-[11px] leading-[1.5] font-semibold tracking-wider uppercase">
+                              {album.format}
+                            </p>
+                          </div>
+                        ))}
 
-                      <div className="slot-text-multiline mt-1.5 max-w-[44ch] text-xs leading-relaxed text-pretty text-cream/75 sm:text-sm">
-                        <SlotText
-                          text={activeAlbum.description}
-                          options={{
-                            rollBy: "word",
-                            duration: 340,
-                            stagger: 10,
-                          }}
-                        />
+                        <div className="col-start-1 row-start-1">
+                          <div className="slot-text-multiline max-w-[46ch] text-xs leading-relaxed text-pretty text-cream/85 sm:text-sm">
+                            <SlotText
+                              text={activeAlbum.description}
+                              options={{
+                                rollBy: "word",
+                                duration: 280,
+                                stagger: 8,
+                              }}
+                            />
+                          </div>
+
+                          <p className="slot-text-multiline mt-2 text-[11px] font-semibold tracking-wider text-sand uppercase">
+                            <SlotText
+                              text={activeAlbum.format}
+                              options={{ rollBy: "word", duration: 240 }}
+                            />
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
