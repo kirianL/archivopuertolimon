@@ -25,6 +25,7 @@ import imgFerguson from "@/public/Limón - images/walter-ferguson.jpg";
 import imgTapeVol1 from "@/public/Limón - images/ferguson-tape-vol1.jpg";
 import imgTapeVol2 from "@/public/Limón - images/ferguson-tape-vol2.jpg";
 import imgKryolBook from "@/public/Limón - images/limon-kryol-alfabet.jpg";
+import imgGloriaThompson from "@/public/Limón - images/gloria-thompson.png";
 import imgCaribbeanPattern from "@/public/Limón - images/caribbean-pattern.jpg";
 import imgPatty from "@/public/Limón - images/patty.jpg";
 import imgCalypsonian from "@/public/Limón - images/Parade/Musicos y cantantes/539902822_754962860647126_9178661086593066020_n.jpg";
@@ -1229,31 +1230,53 @@ export default function Culture() {
             </div>
 
             {/* =================================================================
-                PIEZA EDITORIAL DESTACADA: LIBRO "MEK WI RAYT WI LANGWICH"
+                PIEZA EDITORIAL DESTACADA: LIBRO "MEK WI RAYT WI LANGWICH" + GLORIA THOMPSON D.
                ================================================================= */}
             <div className="mt-14 border-t border-ink/15 pt-12 sm:mt-20 sm:pt-16">
-              <div className="grid items-center gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
-                {/* Portada física del libro con trazos de pintura detrás y altura explícita */}
-                <figure className="relative isolate mx-auto w-[250px] sm:w-[290px]">
-                  <BrushStroke className="pointer-events-none absolute -top-4 -left-4 -z-10 h-12 w-36 rotate-[-6deg] text-moss/85 sm:-top-5 sm:-left-6 sm:h-14 sm:w-44" />
-                  <BrushStroke className="pointer-events-none absolute -right-4 -bottom-4 -z-10 h-12 w-36 rotate-[5deg] text-ember/80 sm:-right-6 sm:-bottom-5 sm:h-14 sm:w-44" />
-                  <BrushStroke className="pointer-events-none absolute top-1/2 -left-5 -z-10 h-11 w-32 -translate-y-1/2 rotate-[-10deg] text-sand/85 sm:-left-8 sm:h-12 sm:w-36" />
+              <div className="grid items-center gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
+                {/* Collage editorial: Portada del libro + recorte en B/N granulado de su coeditora Gloria Thompson D. emergiendo de la línea base */}
+                <figure className="mx-auto w-full max-w-[360px] sm:max-w-[440px]">
+                  <div className="relative isolate pt-2">
+                    <BrushStroke className="pointer-events-none absolute top-0 left-0 -z-10 h-12 w-36 rotate-[-6deg] text-moss/85 sm:h-14 sm:w-44" />
+                    <BrushStroke className="pointer-events-none absolute top-[28%] right-2 -z-10 h-14 w-44 rotate-[6deg] text-sand/90 sm:h-16 sm:w-56" />
+                    <ChalkStrokes className="pointer-events-none absolute right-0 bottom-8 -z-10 h-20 w-48 text-ink/15 sm:h-24 sm:w-60" />
 
-                  <div className="relative h-[335px] w-full overflow-hidden rounded-xl bg-ink shadow-md ring-1 ring-black/15 ring-inset sm:h-[388px]">
-                    <Image
-                      src={imgKryolBook}
-                      alt="Portada del libro Mek Wi Rayt Wi Langwich: Limon Kryol Alfabet — Alfabeto ilustrado del criollo limonense, editado por René Zúñiga A. y Gloria Thompson D."
-                      fill
-                      placeholder="blur"
-                      sizes="(max-width: 640px) 250px, 290px"
-                      className="object-cover"
-                    />
-                    {/* Sutil pliegue de lomo de libro a la izquierda */}
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/25 via-white/10 to-transparent"
-                    />
+                    {/* Portada física del libro anclada arriba a la izquierda */}
+                    <div className="relative z-10 ml-1 h-[248px] w-[186px] -rotate-2 overflow-hidden rounded-xl bg-ink shadow-md ring-1 ring-black/15 ring-inset sm:ml-2 sm:h-[312px] sm:w-[234px]">
+                      <Image
+                        src={imgKryolBook}
+                        alt="Portada del libro Mek Wi Rayt Wi Langwich: Limon Kryol Alfabet — Alfabeto ilustrado del criollo limonense, editado por René Zúñiga A. y Gloria Thompson D."
+                        fill
+                        placeholder="blur"
+                        sizes="(max-width: 640px) 186px, 234px"
+                        className="object-cover"
+                      />
+                      {/* Sutil pliegue de lomo de libro a la izquierda */}
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/25 via-white/10 to-transparent"
+                      />
+                    </div>
+
+                    {/* Recorte transparente en B/N granulado de Gloria Thompson D. apoyado sobre la línea editorial inferior */}
+                    <div className="relative z-20 -mt-20 ml-auto h-[176px] w-[240px] sm:-mt-28 sm:h-[220px] sm:w-[300px]">
+                      <BrushStroke className="pointer-events-none absolute right-2 bottom-3 -z-10 h-12 w-44 rotate-[-4deg] text-ember/80 sm:h-14 sm:w-52" />
+                      <Image
+                        src={imgGloriaThompson}
+                        alt="Gloria Thompson D., coeditora de Limon Kryol Alfabet, presentando la obra con micrófono en mano"
+                        fill
+                        sizes="(max-width: 640px) 240px, 300px"
+                        className="object-contain object-bottom drop-shadow-[0_10px_18px_rgba(29,29,27,0.22)]"
+                      />
+                    </div>
                   </div>
+
+                  <figcaption className="relative z-30 flex items-center justify-between gap-3 border-t border-ink/20 pt-2.5 text-xs text-ink/70">
+                    <span>Gloria Thompson D. presentando la obra</span>
+                    <span className="shrink-0 font-medium text-ink/85">
+                      Coeditora de la edición
+                    </span>
+                  </figcaption>
                 </figure>
 
                 {/* Reseña editorial del libro (Título primero, subtítulo y detalles debajo) */}
@@ -1277,11 +1300,11 @@ export default function Culture() {
                     propia.
                   </p>
 
-                  {/* Ficha bibliográfica en 3 columnas: Valor display ARRIBA y rol ABAJO */}
-                  <dl className="mt-7 grid grid-cols-1 gap-4 border-t border-ink/15 pt-5 sm:grid-cols-3 sm:gap-0">
-                    <div className="sm:pr-4">
+                  {/* Ficha bibliográfica en 3 columnas: primera columna con ancho automático sin salto de línea */}
+                  <dl className="mt-7 grid grid-cols-1 gap-4 border-t border-ink/15 pt-5 sm:grid-cols-[auto_1fr_1fr] sm:gap-0">
+                    <div className="sm:pr-5">
                       <dt className="sr-only">Editores</dt>
-                      <dd className="font-display text-xl text-ink sm:text-2xl">
+                      <dd className="font-display text-xl whitespace-nowrap text-ink sm:text-2xl">
                         René Zúñiga A. & Gloria Thompson D.
                       </dd>
                       <p className="mt-1 text-xs leading-snug text-ink/65">
