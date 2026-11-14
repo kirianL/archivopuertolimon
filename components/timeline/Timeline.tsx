@@ -9,7 +9,7 @@ function Intro() {
   const [first, second, third] = eras;
 
   return (
-    <section id="historia" aria-labelledby="intro-title" className="bg-cream py-14 text-ink md:py-32">
+    <section id="historia" aria-labelledby="intro-title" className="overflow-hidden bg-cream py-14 text-ink md:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 md:gap-14 lg:grid-cols-[1.1fr_1fr]">
         {/* Collage; paint swipes peek out from behind the photo corners */}
         <div className="relative isolate mx-auto grid w-full max-w-sm grid-cols-[2fr_3fr] gap-2 md:max-w-none md:gap-3">

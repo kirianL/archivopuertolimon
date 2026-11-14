@@ -106,9 +106,11 @@ function ScrollDrivenBuildings({
     if (!listEl || !viewportEl) return;
 
     const measure = () => {
-      onMaxScrollChange(
-        Math.max(0, listEl.scrollWidth - viewportEl.clientWidth),
+      const viewportWidth = Math.min(
+        viewportEl.clientWidth,
+        window.innerWidth,
       );
+      onMaxScrollChange(Math.max(0, listEl.scrollWidth - viewportWidth));
     };
 
     measure();
@@ -126,48 +128,50 @@ function ScrollDrivenBuildings({
 
   const { scrollYProgress } = useScroll({
     target: scrollTrackRef,
-    offset: ["start 65%", "end end"],
+    offset: ["start 12%", "end end"],
   });
   const x = useTransform(scrollYProgress, [0, 1], [0, -maxScroll]);
 
   return (
     <div
       ref={scrollTrackRef}
-      className="relative"
+      className="relative w-full"
       style={{
         height:
           maxScroll > 0
-            ? `calc(520px + ${Math.round(maxScroll * 0.75)}px)`
+            ? `calc(560px + ${Math.round(maxScroll * 0.85)}px)`
             : "240svh",
       }}
     >
-      <div
-        ref={viewportRef}
-        className="sticky top-10 overflow-hidden pt-3 pb-12 md:top-16 md:pt-4 md:pb-20"
-      >
-        <motion.ol
-          ref={listRef}
-          style={{ x }}
-          className="flex w-max gap-5 px-4 pt-3 pb-4 will-change-transform sm:gap-8 sm:px-6 md:px-[calc((100vw-72rem)/2+1.5rem)]"
+      <div className="sticky top-10 w-full md:top-16">
+        <div
+          ref={viewportRef}
+          className="relative w-full max-w-full overflow-hidden pt-3 pb-12 [contain:layout_paint] touch-pan-y md:pt-4 md:pb-20"
         >
-          {buildings.map((item, index) => (
-            <BuildingCard
-              key={item.id}
-              item={item}
-              index={index}
-              isActive={activeBuildingId === null}
-              onOpen={onOpen}
-            />
-          ))}
-        </motion.ol>
+          <motion.ol
+            ref={listRef}
+            style={{ x }}
+            className="flex w-max gap-5 px-4 pt-3 pb-4 will-change-transform sm:gap-8 sm:px-6 md:px-[calc((100vw-72rem)/2+1.5rem)]"
+          >
+            {buildings.map((item, index) => (
+              <BuildingCard
+                key={item.id}
+                item={item}
+                index={index}
+                isActive={activeBuildingId === null}
+                onOpen={onOpen}
+              />
+            ))}
+          </motion.ol>
 
-        <div className="mx-auto mt-6 w-full max-w-6xl px-4 sm:px-6">
-          <div className="h-1 w-36 overflow-hidden rounded-full bg-ink/10 sm:w-48">
-            <motion.div
-              aria-hidden
-              className="h-full w-full origin-left bg-moss"
-              style={{ scaleX: scrollYProgress }}
-            />
+          <div className="mx-auto mt-6 w-full max-w-6xl px-4 sm:px-6">
+            <div className="h-1 w-36 overflow-hidden rounded-full bg-ink/10 sm:w-48">
+              <motion.div
+                aria-hidden
+                className="h-full w-full origin-left bg-moss"
+                style={{ scaleX: scrollYProgress }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -245,7 +249,7 @@ export default function Architecture() {
         <section
         id="arquitectura"
         aria-labelledby="architecture-title"
-        className="bg-cream pt-14 text-ink md:pt-28"
+        className="overflow-x-clip bg-cream pt-14 text-ink md:pt-28"
       >
         {/* Top block wrapped in overflow-hidden so decorative strokes clip without breaking sticky below */}
         <div className="overflow-hidden pb-2 md:pb-6">

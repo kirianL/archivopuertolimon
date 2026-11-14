@@ -5,7 +5,7 @@ import Timeline from "@/components/timeline/Timeline";
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-clip">
       <Hero />
       <Timeline />
       <Architecture />

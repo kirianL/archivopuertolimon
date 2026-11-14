@@ -24,6 +24,8 @@ import imgCarnaval from "@/public/Limón - images/Carnaval.png";
 import imgFerguson from "@/public/Limón - images/walter-ferguson.jpg";
 import imgTapeVol1 from "@/public/Limón - images/ferguson-tape-vol1.jpg";
 import imgTapeVol2 from "@/public/Limón - images/ferguson-tape-vol2.jpg";
+import imgKryolBook from "@/public/Limón - images/limon-kryol-alfabet.jpg";
+import imgCaribbeanPattern from "@/public/Limón - images/caribbean-pattern.jpg";
 import imgPatty from "@/public/Limón - images/patty.jpg";
 import imgCalypsonian from "@/public/Limón - images/Parade/Musicos y cantantes/539902822_754962860647126_9178661086593066020_n.jpg";
 import imgMaracas from "@/public/Limón - images/Parade/Musicos y cantantes/540004486_754962117313867_1346397361303001633_n.jpg";
@@ -182,13 +184,119 @@ const fergusonAlbums: readonly TapeAlbum[] = [
   },
 ] as const;
 
+type MekatelyuPhrase = {
+  id: string;
+  number: string;
+  phrase: string;
+  translation: string;
+  context: string;
+  dotClass: string;
+  barClass: string;
+};
+
+const mekatelyuPhrases: readonly MekatelyuPhrase[] = [
+  {
+    id: "yah-man",
+    number: "01",
+    phrase: "Yah man",
+    translation: "Sí / Claro / De acuerdo",
+    context: "Expresa afirmación con actitud positiva",
+    dotClass: "bg-moss",
+    barClass: "bg-moss",
+  },
+  {
+    id: "what-a-gwaan",
+    number: "02",
+    phrase: "What a gwaan?",
+    translation: "¿Qué tal? / ¿Qué pasa?",
+    context: "Saludo casual",
+    dotClass: "bg-sky",
+    barClass: "bg-sky",
+  },
+  {
+    id: "everything-irie",
+    number: "03",
+    phrase: "Everything irie",
+    translation: "Todo está bien / Todo en orden",
+    context: "Estado de ánimo positivo",
+    dotClass: "bg-ember",
+    barClass: "bg-ember",
+  },
+  {
+    id: "we-deh-yah",
+    number: "04",
+    phrase: "We deh yah",
+    translation: "Aquí estamos / Todo bien",
+    context: "Resiliencia y presencia",
+    dotClass: "bg-sand",
+    barClass: "bg-sand",
+  },
+  {
+    id: "likkle-more",
+    number: "05",
+    phrase: "Likkle more",
+    translation: "Nos vemos luego",
+    context: "Despedida",
+    dotClass: "bg-moss",
+    barClass: "bg-moss",
+  },
+  {
+    id: "big-up",
+    number: "06",
+    phrase: "Big up",
+    translation: "Respeto / Reconocimiento",
+    context: "Mostrar aprecio",
+    dotClass: "bg-sky",
+    barClass: "bg-sky",
+  },
+  {
+    id: "respect",
+    number: "07",
+    phrase: "Respect",
+    translation: "Gracias / Aprecio",
+    context: "Valor esencial en la comunidad",
+    dotClass: "bg-ember",
+    barClass: "bg-ember",
+  },
+  {
+    id: "tek-it-easy",
+    number: "08",
+    phrase: "Tek it easy",
+    translation: "Tómelo con calma",
+    context: "Filosofía de vida",
+    dotClass: "bg-sand",
+    barClass: "bg-sand",
+  },
+  {
+    id: "mek-wi-go",
+    number: "09",
+    phrase: "Mek wi go",
+    translation: "Vámonos",
+    context: "Acción conjunta",
+    dotClass: "bg-moss",
+    barClass: "bg-moss",
+  },
+] as const;
+
 export default function Culture() {
   const shouldReduceMotion = useReducedMotion();
   const [activePillarIndex, setActivePillarIndex] = useState(0);
   const [activeAlbumIndex, setActiveAlbumIndex] = useState(0);
+  const [activePhraseIndex, setActivePhraseIndex] = useState(0);
 
   const activePillar = carnivalPillars[activePillarIndex];
   const activeAlbum = fergusonAlbums[activeAlbumIndex];
+  const activePhrase = mekatelyuPhrases[activePhraseIndex];
+
+  const selectPrevPhrase = () => {
+    setActivePhraseIndex(
+      (prev) => (prev - 1 + mekatelyuPhrases.length) % mekatelyuPhrases.length,
+    );
+  };
+
+  const selectNextPhrase = () => {
+    setActivePhraseIndex((prev) => (prev + 1) % mekatelyuPhrases.length);
+  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -231,15 +339,15 @@ export default function Culture() {
 
             {/* Historia 1: Ritmo, música y expresión cultural */}
             <div className="mt-10 grid items-center gap-8 sm:mt-12 lg:mt-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
-              {/* Collage mobile-first */}
+              {/* Collage mobile-first con alturas explícitas para evitar colapso en iOS Safari */}
               <figure className="w-full">
                 <div className="relative isolate grid grid-cols-2 gap-2.5 sm:grid-cols-[1.22fr_1fr] sm:gap-3.5">
-                  <BrushStroke className="pointer-events-none absolute -top-4 left-[6%] -z-10 h-12 w-[48%] rotate-[-4deg] text-sand sm:-top-5 sm:h-14" />
-                  <BrushStroke className="pointer-events-none absolute -bottom-4 left-[10%] -z-10 h-12 w-[44%] rotate-[-7deg] text-moss sm:-bottom-5 sm:h-14" />
+                  <BrushStroke className="pointer-events-none absolute -top-3.5 left-[6%] -z-10 h-11 w-[46%] rotate-[-4deg] text-sand sm:-top-5 sm:h-14" />
+                  <BrushStroke className="pointer-events-none absolute -bottom-3.5 left-[10%] -z-10 h-11 w-[42%] rotate-[-7deg] text-moss sm:-bottom-5 sm:h-14" />
                   <BrushStroke className="pointer-events-none absolute top-[32%] -right-4 -z-10 hidden h-12 w-[34%] rotate-[6deg] text-sky/80 sm:block" />
 
                   {/* Foto 1: Protagonista */}
-                  <div className="relative col-span-2 aspect-[4/3] overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:col-span-1 sm:mt-6 sm:aspect-[3/4]">
+                  <div className="relative col-span-2 h-[220px] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:col-span-1 sm:mt-6 sm:h-[340px]">
                     <Image
                       src={imgExpresion}
                       alt="Joven música con platillos en las calles de Puerto Limón"
@@ -256,7 +364,7 @@ export default function Culture() {
 
                   {/* Fotos 2 y 3 */}
                   <div className="col-span-2 grid grid-cols-2 gap-2.5 sm:col-span-1 sm:grid-cols-1 sm:gap-3.5">
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset">
+                    <div className="relative h-[130px] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:h-[163px]">
                       <Image
                         src={imgCalypsonian}
                         alt="Calipsero limonense interpretando con su guitarra"
@@ -271,7 +379,7 @@ export default function Culture() {
                       />
                     </div>
 
-                    <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:w-[88%]">
+                    <div className="relative h-[130px] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:h-[163px] sm:w-[88%]">
                       <Image
                         src={imgMaracas}
                         alt="Percusionista con maracas en celebración comunitaria"
@@ -288,9 +396,9 @@ export default function Culture() {
                   </div>
                 </div>
 
-                <figcaption className="mt-3.5 flex items-center justify-between border-t border-cream/20 pt-2.5 text-xs text-cream/75">
+                <figcaption className="mt-6 flex items-center justify-between gap-3 border-t border-cream/20 pt-2.5 text-xs text-cream/75">
                   <span>Calipso, reggae y expresión de calle</span>
-                  <span>Foto: Xavier Sandí Castillo</span>
+                  <span className="shrink-0">Foto: Xavier Sandí Castillo</span>
                 </figcaption>
               </figure>
 
@@ -360,10 +468,13 @@ export default function Culture() {
                   aria-live="polite"
                   className="mt-6 border-t border-ink/15 pt-5 sm:mt-8 sm:pt-6"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="relative isolate shrink-0 pr-1">
-                      <BrushStroke className="pointer-events-none absolute top-1/2 -left-2 -z-10 h-9 w-16 -translate-y-1/2 rotate-[-6deg] text-sand sm:h-10 sm:w-20" />
-                      <span className="font-display block text-4xl text-ink sm:text-5xl">
+                  <div className="flex items-start gap-3.5 sm:gap-4">
+                    <div className="relative isolate w-11 shrink-0 pl-1.5 sm:w-14 sm:pl-2">
+                      <span
+                        aria-hidden
+                        className={`pointer-events-none absolute top-0.5 left-0 -z-10 size-7 rounded-full transition-colors duration-200 sm:size-9 ${activePillar.dotClass}`}
+                      />
+                      <span className="font-display block text-3xl leading-none text-ink sm:text-5xl">
                         <SlotText
                           text={activePillar.number}
                           options={{ rollBy: "character", duration: 260 }}
@@ -371,26 +482,19 @@ export default function Culture() {
                       </span>
                     </div>
 
-                    <div className="grid flex-1">
-                      {/* Reservadores invisibles en la misma celda del grid para fijar el alto al pilar más largo sin overflow-hidden */}
-                      {carnivalPillars.map((pillar) => (
-                        <div
-                          key={pillar.id}
-                          aria-hidden
-                          className="pointer-events-none invisible col-start-1 row-start-1 select-none"
-                        >
-                          <p className="font-display text-2xl leading-[1.08] sm:text-3xl">
+                    <div className="min-w-0 flex-1">
+                      {/* Fila 1 bloqueada: Título del pilar */}
+                      <div className="grid items-start">
+                        {carnivalPillars.map((pillar) => (
+                          <p
+                            key={pillar.id}
+                            aria-hidden
+                            className="font-display pointer-events-none invisible col-start-1 row-start-1 text-2xl leading-[1.06] select-none sm:text-3xl"
+                          >
                             {pillar.title}
                           </p>
-                          <p className="mt-2 max-w-[44ch] text-xs leading-relaxed sm:text-sm">
-                            {pillar.detail}
-                          </p>
-                        </div>
-                      ))}
-
-                      {/* Contenido activo visible en la misma celda */}
-                      <div className="col-start-1 row-start-1">
-                        <p className="font-display slot-text-multiline text-2xl leading-[0.98] text-ink sm:text-3xl">
+                        ))}
+                        <p className="font-display slot-text-multiline col-start-1 row-start-1 text-2xl leading-[1.06] text-ink sm:text-3xl">
                           <SlotText
                             text={activePillar.title}
                             options={{
@@ -400,7 +504,20 @@ export default function Culture() {
                             }}
                           />
                         </p>
-                        <div className="slot-text-multiline mt-2 max-w-[44ch] text-xs leading-relaxed text-pretty text-ink/75 sm:text-sm">
+                      </div>
+
+                      {/* Fila 2 bloqueada: Descripción del pilar */}
+                      <div className="mt-2 grid items-start">
+                        {carnivalPillars.map((pillar) => (
+                          <p
+                            key={pillar.id}
+                            aria-hidden
+                            className="pointer-events-none invisible col-start-1 row-start-1 max-w-[44ch] text-xs leading-[1.45] select-none sm:text-sm"
+                          >
+                            {pillar.detail}
+                          </p>
+                        ))}
+                        <div className="slot-text-multiline col-start-1 row-start-1 max-w-[44ch] text-xs leading-[1.45] text-pretty text-ink/75 sm:text-sm">
                           <SlotText
                             text={activePillar.detail}
                             options={{
@@ -416,125 +533,127 @@ export default function Culture() {
                 </div>
               </div>
 
-              {/* Escenario fotográfico */}
-              <figure className="relative isolate w-full">
-                <BrushStroke className="pointer-events-none absolute -top-4 right-[6%] -z-10 h-12 w-[42%] rotate-[3deg] text-sky sm:-top-5 sm:h-14" />
-                <BrushStroke className="pointer-events-none absolute -bottom-4 left-[4%] -z-10 h-12 w-[38%] rotate-[-4deg] text-ember/75 sm:-bottom-5 sm:h-14" />
+              {/* Escenario fotográfico con alturas explícitas en ambas celdas para que nunca colapse en iOS Safari */}
+              <figure className="w-full">
+                <div className="relative isolate">
+                  <BrushStroke className="pointer-events-none absolute -top-3.5 right-[6%] -z-10 h-11 w-[40%] rotate-[3deg] text-sky sm:-top-5 sm:h-14" />
+                  <BrushStroke className="pointer-events-none absolute -bottom-3.5 left-[4%] -z-10 h-11 w-[36%] rotate-[-4deg] text-ember/75 sm:-bottom-5 sm:h-14" />
 
-                <div className="grid grid-cols-[1.45fr_0.55fr] items-stretch gap-2 sm:gap-3.5">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset">
-                    <AnimatePresence mode="popLayout" initial={false}>
-                      <motion.div
-                        key={activePillar.id}
-                        initial={
-                          shouldReduceMotion
-                            ? { opacity: 0 }
-                            : {
-                                opacity: 0,
-                                filter: "blur(3px)",
-                                transform: "scale(1.03)",
-                              }
-                        }
-                        animate={
-                          shouldReduceMotion
-                            ? { opacity: 1 }
-                            : {
-                                opacity: 1,
-                                filter: "blur(0px)",
-                                transform: "scale(1)",
-                              }
-                        }
-                        exit={
-                          shouldReduceMotion
-                            ? { opacity: 0 }
-                            : {
-                                opacity: 0,
-                                filter: "blur(2px)",
-                                transform: "scale(0.98)",
-                              }
-                        }
-                        transition={{ duration: 0.26, ease: EASE_OUT }}
-                        className="absolute inset-0"
-                      >
-                        <Image
-                          src={activePillar.image}
-                          alt={activePillar.alt}
-                          fill
-                          placeholder="blur"
-                          sizes="(max-width: 1024px) 65vw, 38vw"
-                          className={`object-cover ${activePillar.filterClass}`}
-                        />
-                        <div
-                          aria-hidden
-                          className={`pointer-events-none absolute inset-0 ${activePillar.tintClass}`}
-                        />
-                        <div
-                          aria-hidden
-                          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/85 via-ink/35 to-transparent"
-                        />
-                      </motion.div>
-                    </AnimatePresence>
+                  <div className="grid grid-cols-[1.45fr_0.55fr] gap-2 sm:gap-3.5">
+                    <div className="relative h-[220px] w-full overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset sm:h-[290px] md:h-[330px]">
+                      <AnimatePresence initial={false}>
+                        <motion.div
+                          key={activePillar.id}
+                          initial={
+                            shouldReduceMotion
+                              ? { opacity: 0 }
+                              : {
+                                  opacity: 0,
+                                  filter: "blur(3px)",
+                                  transform: "scale(1.03)",
+                                }
+                          }
+                          animate={
+                            shouldReduceMotion
+                              ? { opacity: 1 }
+                              : {
+                                  opacity: 1,
+                                  filter: "blur(0px)",
+                                  transform: "scale(1)",
+                                }
+                          }
+                          exit={
+                            shouldReduceMotion
+                              ? { opacity: 0 }
+                              : {
+                                  opacity: 0,
+                                  filter: "blur(2px)",
+                                  transform: "scale(0.98)",
+                                }
+                          }
+                          transition={{ duration: 0.26, ease: EASE_OUT }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={activePillar.image}
+                            alt={activePillar.alt}
+                            fill
+                            placeholder="blur"
+                            sizes="(max-width: 1024px) 65vw, 38vw"
+                            className={`object-cover ${activePillar.filterClass}`}
+                          />
+                          <div
+                            aria-hidden
+                            className={`pointer-events-none absolute inset-0 ${activePillar.tintClass}`}
+                          />
+                          <div
+                            aria-hidden
+                            className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-ink/85 via-ink/35 to-transparent"
+                          />
+                        </motion.div>
+                      </AnimatePresence>
 
-                    <div className="pointer-events-none absolute inset-x-3 bottom-2.5 z-10 text-cream sm:inset-x-4 sm:bottom-3.5">
-                      <div className="slot-text-multiline text-[11px] leading-snug font-medium text-cream/95 sm:text-xs">
-                        <SlotText
-                          text={activePillar.caption}
-                          options={{
-                            rollBy: "word",
-                            duration: 280,
-                            stagger: 8,
-                          }}
-                        />
+                      <div className="pointer-events-none absolute inset-x-3 bottom-2.5 z-10 text-cream sm:inset-x-4 sm:bottom-3.5">
+                        <div className="slot-text-multiline text-[11px] leading-snug font-medium text-cream/95 sm:text-xs">
+                          <SlotText
+                            text={activePillar.caption}
+                            options={{
+                              rollBy: "word",
+                              duration: 280,
+                              stagger: 8,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="relative overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset">
-                    <AnimatePresence mode="popLayout" initial={false}>
-                      <motion.div
-                        key={`${activePillar.id}-secondary`}
-                        initial={
-                          shouldReduceMotion
-                            ? { opacity: 0 }
-                            : {
-                                opacity: 0,
-                                filter: "blur(2px)",
-                                transform: "scale(1.04)",
-                              }
-                        }
-                        animate={
-                          shouldReduceMotion
-                            ? { opacity: 1 }
-                            : {
-                                opacity: 1,
-                                filter: "blur(0px)",
-                                transform: "scale(1)",
-                              }
-                        }
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.24, ease: EASE_OUT }}
-                        className="absolute inset-0"
-                      >
-                        <Image
-                          src={activePillar.secondaryImage}
-                          alt={activePillar.secondaryAlt}
-                          fill
-                          placeholder="blur"
-                          sizes="(max-width: 1024px) 30vw, 16vw"
-                          className="object-cover grayscale contrast-125"
-                        />
-                        <div
-                          aria-hidden
-                          className="pointer-events-none absolute inset-0 bg-sand/20 mix-blend-multiply"
-                        />
-                      </motion.div>
-                    </AnimatePresence>
+                    <div className="relative h-[220px] w-full overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset sm:h-[290px] md:h-[330px]">
+                      <AnimatePresence initial={false}>
+                        <motion.div
+                          key={`${activePillar.id}-secondary`}
+                          initial={
+                            shouldReduceMotion
+                              ? { opacity: 0 }
+                              : {
+                                  opacity: 0,
+                                  filter: "blur(2px)",
+                                  transform: "scale(1.04)",
+                                }
+                          }
+                          animate={
+                            shouldReduceMotion
+                              ? { opacity: 1 }
+                              : {
+                                  opacity: 1,
+                                  filter: "blur(0px)",
+                                  transform: "scale(1)",
+                                }
+                          }
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.24, ease: EASE_OUT }}
+                          className="absolute inset-0"
+                        >
+                          <Image
+                            src={activePillar.secondaryImage}
+                            alt={activePillar.secondaryAlt}
+                            fill
+                            placeholder="blur"
+                            sizes="(max-width: 1024px) 30vw, 16vw"
+                            className="object-cover grayscale contrast-125"
+                          />
+                          <div
+                            aria-hidden
+                            className="pointer-events-none absolute inset-0 bg-sand/20 mix-blend-multiply"
+                          />
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
                   </div>
                 </div>
 
-                <figcaption className="mt-3 flex h-5 items-center justify-between overflow-hidden text-xs text-ink/65">
+                <figcaption className="mt-6 flex items-center justify-between gap-3 border-t border-ink/15 pt-2.5 text-xs text-ink/65">
                   <span>Octubre en Puerto Limón</span>
-                  <span className="slot-text-multiline">
+                  <span className="slot-text-multiline shrink-0">
                     <SlotText
                       text={activePillar.credit}
                       options={{ rollBy: "word", duration: 240 }}
@@ -630,10 +749,10 @@ export default function Culture() {
               {/* Columna izquierda: Retrato limpio + Ficha con título ARRIBA y descripción ABAJO */}
               <div className="mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
                 <div className="relative isolate">
-                  <BrushStroke className="pointer-events-none absolute -top-4 -left-4 -z-10 h-12 w-36 rotate-[-6deg] text-sand/80 sm:-top-5 sm:-left-5 sm:h-14 sm:w-44" />
-                  <BrushStroke className="pointer-events-none absolute -right-3 -bottom-4 -z-10 h-12 w-36 rotate-[4deg] text-ember/80 sm:-right-4 sm:-bottom-5 sm:h-14 sm:w-44" />
+                  <BrushStroke className="pointer-events-none absolute -top-3.5 -left-3 -z-10 h-11 w-32 rotate-[-6deg] text-sand/80 sm:-top-5 sm:-left-5 sm:h-14 sm:w-44" />
+                  <BrushStroke className="pointer-events-none absolute -right-2.5 -bottom-3.5 -z-10 h-11 w-32 rotate-[4deg] text-ember/80 sm:-right-4 sm:-bottom-5 sm:h-14 sm:w-44" />
 
-                  <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-black ring-1 ring-white/15 ring-inset sm:aspect-[4/5]">
+                  <div className="relative h-[360px] w-full overflow-hidden rounded-2xl bg-black ring-1 ring-white/15 ring-inset sm:h-[430px]">
                     <Image
                       src={imgFerguson}
                       alt="Walter Ferguson con sombrero cantando frente a un micrófono de estudio"
@@ -650,7 +769,7 @@ export default function Culture() {
                 </div>
 
                 {/* Ficha en 3 columnas: Valor display ARRIBA y explicación ABAJO (como Architecture.tsx) */}
-                <dl className="mt-6 grid grid-cols-3 border-t border-cream/15 pt-4">
+                <dl className="mt-7 grid grid-cols-3 border-t border-cream/15 pt-4">
                   <div className="pr-3">
                     <dt className="sr-only">Nombre artístico</dt>
                     <dd className="font-display text-xl text-cream sm:text-2xl">
@@ -739,17 +858,17 @@ export default function Culture() {
                             key={album.id}
                             className="flex w-24 shrink-0 flex-col gap-2 sm:w-28"
                           >
-                            <button
-                              type="button"
-                              role="tab"
-                              aria-selected={isSelected}
-                              onClick={() => setActiveAlbumIndex(index)}
-                              className={`group relative aspect-square w-full cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none ${
-                                isSelected
-                                  ? "scale-100 opacity-100 ring-2 ring-sand"
-                                  : "scale-[0.94] opacity-55 ring-1 ring-white/15 ring-inset [@media(hover:hover)_and_(pointer:fine)]:hover:opacity-85"
-                              }`}
-                            >
+                              <button
+                                type="button"
+                                role="tab"
+                                aria-selected={isSelected}
+                                onClick={() => setActiveAlbumIndex(index)}
+                                className={`group relative h-24 w-24 cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none sm:h-28 sm:w-28 ${
+                                  isSelected
+                                    ? "scale-100 opacity-100 ring-2 ring-sand"
+                                    : "scale-[0.94] opacity-55 ring-1 ring-white/15 ring-inset [@media(hover:hover)_and_(pointer:fine)]:hover:opacity-85"
+                                }`}
+                              >
                               <Image
                                 src={album.cover}
                                 alt={album.alt}
@@ -791,7 +910,7 @@ export default function Culture() {
 
                     {/* Columna de texto del álbum sin overflow-hidden: usa CSS Grid para mantener altura constante y mostrar todo el contenido completo */}
                     <div aria-live="polite" className="min-w-0">
-                      <div className="flex items-start justify-between gap-3">
+                      <div className="flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap sm:items-start sm:gap-3">
                         <h4 className="font-display text-2xl leading-[0.98] text-cream sm:text-3xl">
                           The Legendary Tape Recordings Vol.{" "}
                           <span className="inline-block w-[1.2ch] text-sand">
@@ -861,6 +980,350 @@ export default function Culture() {
                         </div>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            BANDA 4: SPEAK LIKE A LIMONENSE (MEKATELYU) + LIBRO KRYOL ALFABET
+           ===================================================================== */}
+        <section
+          aria-labelledby="mekatelyu-title"
+          className="overflow-hidden bg-cream py-14 text-ink md:py-28"
+        >
+          <div className="mx-auto max-w-6xl px-5 sm:px-6">
+            {/* Encabezado: Título primero y contexto debajo */}
+            <div className="grid gap-6 border-b border-ink/15 pb-8 sm:pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
+              <div>
+                <h3
+                  id="mekatelyu-title"
+                  className="font-display isolate text-5xl text-balance sm:text-6xl md:text-8xl"
+                >
+                  Speak like a{" "}
+                  <Highlight color="text-moss">Limonense</Highlight>
+                </h3>
+              </div>
+
+              <p className="max-w-[50ch] text-sm leading-relaxed text-pretty text-ink/80 sm:text-base">
+                En Limón conviven el español y el inglés criollo limonense
+                (mekatelyu). Este idioma sigue vivo en conversaciones
+                cotidianas, reflejando cercanía y respeto.
+              </p>
+            </div>
+
+            {/* Explorador de las 9 expresiones: Póster sonoro interactivo + Matriz arquitectónica 3x3 */}
+            <div className="mt-8 grid items-start gap-8 sm:mt-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
+              {/* Póster interactivo con patrón afrocaribeño de grabado en madera como fondo y filas bloqueadas por CSS Grid */}
+              <div
+                aria-live="polite"
+                className="relative isolate overflow-hidden rounded-2xl bg-moss p-6 text-cream ring-1 ring-black/15 ring-inset sm:p-9"
+              >
+                {/* Patrón caribeño generado con IA (linograbado de cacao, ondas de calipso y geometría limonense) */}
+                <Image
+                  src={imgCaribbeanPattern}
+                  alt=""
+                  aria-hidden
+                  fill
+                  placeholder="blur"
+                  sizes="(max-width: 1024px) 92vw, 48vw"
+                  className="pointer-events-none -z-20 object-cover opacity-[0.26] mix-blend-luminosity contrast-125"
+                />
+                {/* Velo editorial para preservar contraste impecable en la tipografía */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-moss/82 via-moss/72 to-ink/65"
+                />
+
+                {/* Controles superiores minimalistas: Número activo + Navegación anterior/siguiente */}
+                <div className="flex items-center justify-between">
+                  <span className="font-display text-2xl text-sand sm:text-3xl">
+                    <SlotText
+                      text={activePhrase.number}
+                      options={{ rollBy: "character", duration: 240 }}
+                    />{" "}
+                    <span className="text-cream/55">/ 09</span>
+                  </span>
+
+                  <div className="flex items-center gap-2.5">
+                    <button
+                      type="button"
+                      onClick={selectPrevPhrase}
+                      aria-label="Frase anterior en mekatelyu"
+                      className="group/nav inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-ink/35 text-cream ring-1 ring-cream/20 transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.95] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/55"
+                    >
+                      <EditorialArrow
+                        direction="left"
+                        className="h-3 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover/nav:-translate-x-0.5"
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={selectNextPhrase}
+                      aria-label="Siguiente frase en mekatelyu"
+                      className="group/nav inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-ink/35 text-cream ring-1 ring-cream/20 transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.95] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/55"
+                    >
+                      <EditorialArrow
+                        direction="right"
+                        className="h-3 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover/nav:translate-x-0.5"
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Escenario tipográfico con 3 rieles CSS Grid independientes: las comillas van dentro de SlotText para que nunca queden huérfanas y ninguna línea se mueva */}
+                <div className="mt-6 sm:mt-8">
+                  {/* Riel 1: Expresión en Mekatelyu (con comillas unidas a la primera y última palabra) */}
+                  <div className="grid items-center">
+                    {mekatelyuPhrases.map((item) => (
+                      <p
+                        key={item.id}
+                        aria-hidden
+                        className="font-display pointer-events-none invisible col-start-1 row-start-1 text-4xl leading-[1.06] select-none sm:text-5xl md:text-6xl"
+                      >
+                        {`“${item.phrase}”`}
+                      </p>
+                    ))}
+                    <p className="font-display slot-text-multiline col-start-1 row-start-1 text-4xl leading-[1.06] text-cream sm:text-5xl md:text-6xl">
+                      <SlotText
+                        text={`“${activePhrase.phrase}”`}
+                        options={{
+                          rollBy: "word",
+                          duration: 280,
+                          stagger: 10,
+                        }}
+                      />
+                    </p>
+                  </div>
+
+                  {/* Riel 2: Traducción al español */}
+                  <div className="mt-4 grid items-start border-t border-cream/15 pt-3.5 sm:mt-5 sm:pt-4">
+                    {mekatelyuPhrases.map((item) => (
+                      <p
+                        key={item.id}
+                        aria-hidden
+                        className="font-display pointer-events-none invisible col-start-1 row-start-1 text-2xl leading-[1.06] select-none sm:text-3xl"
+                      >
+                        {item.translation}
+                      </p>
+                    ))}
+                    <p className="font-display slot-text-multiline col-start-1 row-start-1 text-2xl leading-[1.06] text-sand sm:text-3xl">
+                      <SlotText
+                        text={activePhrase.translation}
+                        options={{
+                          rollBy: "word",
+                          duration: 280,
+                          stagger: 8,
+                        }}
+                      />
+                    </p>
+                  </div>
+
+                  {/* Riel 3: Uso / Contexto */}
+                  <div className="mt-1.5 grid items-start">
+                    {mekatelyuPhrases.map((item) => (
+                      <p
+                        key={item.id}
+                        aria-hidden
+                        className="pointer-events-none invisible col-start-1 row-start-1 text-sm leading-[1.4] select-none sm:text-base"
+                      >
+                        {item.context}
+                      </p>
+                    ))}
+                    <p className="slot-text-multiline col-start-1 row-start-1 text-sm leading-[1.4] text-cream/85 sm:text-base">
+                      <SlotText
+                        text={activePhrase.context}
+                        options={{
+                          rollBy: "word",
+                          duration: 300,
+                          stagger: 8,
+                        }}
+                      />
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between border-t border-cream/20 pt-4 sm:mt-8">
+                  <Bay className="h-5 w-12 text-sand/70 sm:h-6 sm:w-14" />
+                  <span className="text-xs font-semibold tracking-wider text-cream/85 uppercase">
+                    Inglés criollo limonense
+                  </span>
+                </div>
+              </div>
+
+              {/* Matriz arquitectónica (2 columnas en móvil para evitar textos apretados y 3x3 desde sm) */}
+              <div
+                role="tablist"
+                aria-label="Expresiones en inglés criollo limonense"
+                className="grid grid-cols-2 border-t border-l border-ink/15 sm:grid-cols-3"
+              >
+                {mekatelyuPhrases.map((item, index) => {
+                  const isSelected = index === activePhraseIndex;
+                  const isLastItem = index === mekatelyuPhrases.length - 1;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      onClick={() => setActivePhraseIndex(index)}
+                      className={`group relative isolate flex min-h-[100px] cursor-pointer flex-col justify-between border-r border-b border-ink/15 p-3.5 text-left transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.98] focus:outline-none focus-visible:bg-ink/[0.06] sm:min-h-[112px] sm:p-4 ${
+                        isLastItem ? "col-span-2 sm:col-span-1" : ""
+                      } ${
+                        isSelected
+                          ? "bg-ink/[0.05]"
+                          : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/[0.025]"
+                      }`}
+                    >
+                      <span
+                        aria-hidden
+                        className={`pointer-events-none absolute inset-x-0 top-0 h-[3px] origin-left transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                          item.barClass
+                        } ${
+                          isSelected
+                            ? "scale-x-100"
+                            : "scale-x-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-x-45"
+                        }`}
+                      />
+
+                      <div className="flex items-start justify-between gap-1">
+                        <div className="relative isolate pl-1">
+                          <span
+                            aria-hidden
+                            className={`pointer-events-none absolute -top-0.5 left-0 -z-10 size-5 rounded-full transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] sm:size-6 ${
+                              item.dotClass
+                            } ${isSelected ? "scale-110" : "opacity-75"}`}
+                          />
+                          <span className="font-display text-lg tracking-tight text-ink sm:text-2xl">
+                            {item.number}
+                          </span>
+                        </div>
+
+                        <PlusIcon
+                          className={`size-3 text-ink/45 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                            isSelected ? "rotate-45 text-ink" : ""
+                          }`}
+                        />
+                      </div>
+
+                      <div className="mt-2.5 sm:mt-3">
+                        <p
+                          className={`font-display text-base leading-[0.98] transition-colors duration-150 sm:text-xl ${
+                            isSelected
+                              ? "text-ink"
+                              : "text-ink/80 [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-ink"
+                          }`}
+                        >
+                          “{item.phrase}”
+                        </p>
+                        <p className="mt-1 line-clamp-1 text-[11px] leading-snug text-ink/60 sm:text-xs">
+                          {item.translation}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* =================================================================
+                PIEZA EDITORIAL DESTACADA: LIBRO "MEK WI RAYT WI LANGWICH"
+               ================================================================= */}
+            <div className="mt-14 border-t border-ink/15 pt-12 sm:mt-20 sm:pt-16">
+              <div className="grid items-center gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
+                {/* Portada física del libro con trazos de pintura detrás y altura explícita */}
+                <figure className="relative isolate mx-auto w-[250px] sm:w-[290px]">
+                  <BrushStroke className="pointer-events-none absolute -top-4 -left-4 -z-10 h-12 w-36 rotate-[-6deg] text-moss/85 sm:-top-5 sm:-left-6 sm:h-14 sm:w-44" />
+                  <BrushStroke className="pointer-events-none absolute -right-4 -bottom-4 -z-10 h-12 w-36 rotate-[5deg] text-ember/80 sm:-right-6 sm:-bottom-5 sm:h-14 sm:w-44" />
+                  <BrushStroke className="pointer-events-none absolute top-1/2 -left-5 -z-10 h-11 w-32 -translate-y-1/2 rotate-[-10deg] text-sand/85 sm:-left-8 sm:h-12 sm:w-36" />
+
+                  <div className="relative h-[335px] w-full overflow-hidden rounded-xl bg-ink shadow-md ring-1 ring-black/15 ring-inset sm:h-[388px]">
+                    <Image
+                      src={imgKryolBook}
+                      alt="Portada del libro Mek Wi Rayt Wi Langwich: Limon Kryol Alfabet — Alfabeto ilustrado del criollo limonense, editado por René Zúñiga A. y Gloria Thompson D."
+                      fill
+                      placeholder="blur"
+                      sizes="(max-width: 640px) 250px, 290px"
+                      className="object-cover"
+                    />
+                    {/* Sutil pliegue de lomo de libro a la izquierda */}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/25 via-white/10 to-transparent"
+                    />
+                  </div>
+                </figure>
+
+                {/* Reseña editorial del libro (Título primero, subtítulo y detalles debajo) */}
+                <div>
+                  <h4 className="font-display isolate text-4xl text-balance text-ink sm:text-5xl md:text-6xl">
+                    Mek Wi Rayt Wi Langwich:{" "}
+                    <Highlight color="text-ember">
+                      Limon Kryol Alfabet
+                    </Highlight>
+                  </h4>
+                  <p className="font-display mt-2 text-2xl text-moss sm:mt-3 sm:text-3xl">
+                    Alfabeto ilustrado del criollo limonense
+                  </p>
+
+                  <p className="mt-4 max-w-[54ch] text-sm leading-relaxed text-pretty text-ink/80 sm:mt-5 sm:text-base">
+                    Transmitido durante generaciones desde la oralidad, el canto
+                    y los porches familiares, el inglés criollo limonense cuenta
+                    también con su propio registro escrito. Esta obra reúne la
+                    fonética, la grafía y el imaginario cotidiano de la
+                    provincia para que el mekatelyu se lea y se escriba con voz
+                    propia.
+                  </p>
+
+                  {/* Ficha bibliográfica en 3 columnas: Valor display ARRIBA y rol ABAJO */}
+                  <dl className="mt-7 grid grid-cols-1 gap-4 border-t border-ink/15 pt-5 sm:grid-cols-3 sm:gap-0">
+                    <div className="sm:pr-4">
+                      <dt className="sr-only">Editores</dt>
+                      <dd className="font-display text-xl text-ink sm:text-2xl">
+                        René Zúñiga A. & Gloria Thompson D.
+                      </dd>
+                      <p className="mt-1 text-xs leading-snug text-ink/65">
+                        Editores de la publicación
+                      </p>
+                    </div>
+
+                    <div className="border-t border-ink/15 pt-3 sm:border-t-0 sm:border-l sm:px-4 sm:pt-0">
+                      <dt className="sr-only">Sello editorial</dt>
+                      <dd className="font-display text-xl text-ember sm:text-2xl">
+                        EUNA — UNA
+                      </dd>
+                      <p className="mt-1 text-xs leading-snug text-ink/65">
+                        Editorial Universidad Nacional
+                      </p>
+                    </div>
+
+                    <div className="border-t border-ink/15 pt-3 sm:border-t-0 sm:border-l sm:pl-4 sm:pt-0">
+                      <dt className="sr-only">Aporte cultural</dt>
+                      <dd className="font-display text-xl text-ink sm:text-2xl">
+                        Lengua escrita
+                      </dd>
+                      <p className="mt-1 text-xs leading-snug text-ink/65">
+                        Escribamos nuestra lengua
+                      </p>
+                    </div>
+                  </dl>
+
+                  <div className="mt-5">
+                    <a
+                      href="https://euna.una.ac.cr/index.php/EUNA/catalog/book/211"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Adquirir el libro Mek Wi Rayt Wi Langwich: Limon Kryol Alfabet en la Editorial Universidad Nacional (EUNA)"
+                      className="group/book inline-flex items-center gap-2 text-xs font-bold tracking-wider text-ember uppercase transition-[transform,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.97] [@media(hover:hover)_and_(pointer:fine)]:hover:text-ink"
+                    >
+                      <span>Disponible en el catálogo de EUNA</span>
+                      <EditorialArrow
+                        direction="right"
+                        className="h-3 w-3.5 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover/book:translate-x-0.5"
+                      />
+                    </a>
                   </div>
                 </div>
               </div>

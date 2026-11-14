@@ -23,6 +23,8 @@
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   button,
@@ -40,6 +42,8 @@
     background: var(--color-moss);
     color: var(--color-ink);
     font-family: var(--font-sans);
+    overflow-x: clip;
+    max-width: 100%;
   }
 }
 
@@ -88,13 +92,17 @@
   }
 }
 
-/* Permitir que slot-text haga wrap en párrafos largos multilinea */
+/* Permitir que slot-text haga wrap en párrafos largos multilinea sin romper isSlotLayoutReady (que exige inline-flex en .char-slot) */
 .slot-text-multiline .slot-text {
-  display: inline;
+  display: inline-flex;
+  flex-wrap: wrap;
   white-space: normal;
+  vertical-align: bottom;
 }
 
 .slot-text-multiline .char-slot {
-  display: inline-block;
-  white-space: pre-wrap;
+  display: inline-flex;
+  white-space: pre;
+  height: 1.06em;
+  line-height: 1.06em;
 }
