@@ -31,6 +31,11 @@ const navLinks = [
     label: "Arquitectura",
     note: "12 hitos del casco histórico",
   },
+  {
+    href: "#cultura",
+    label: "Cultura",
+    note: "Calipso, carnaval y vida local",
+  },
 ];
 
 function SiteNav() {
