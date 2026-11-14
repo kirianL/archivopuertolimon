@@ -15,6 +15,7 @@ import {
   Bay,
   BrushStroke,
   ChalkStrokes,
+  EditorialArrow,
   HalfRing,
   PlusIcon,
 } from "@/components/ui/Shapes";
@@ -135,10 +136,24 @@ type TapeAlbum = {
   volLabel: string;
   description: string;
   format: string;
+  spotifyUrl: string;
   cover: StaticImageData;
   alt: string;
   accentClass: string;
 };
+
+function SpotifyIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm4.586 14.424a.622.622 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 0 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857Zm1.224-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.452-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .256 1.072Zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.935.935 0 1 1-.543-1.79c3.533-1.072 9.404-.865 13.115 1.338a.935.935 0 0 1-.954 1.609Z" />
+    </svg>
+  );
+}
 
 const fergusonAlbums: readonly TapeAlbum[] = [
   {
@@ -148,6 +163,7 @@ const fergusonAlbums: readonly TapeAlbum[] = [
     description:
       "Primer rescate de las cintas caseras que Mr. Gavitt grababa con guitarra acústica desde su porche.",
     format: "Casete C-60 grabado en Cahuita",
+    spotifyUrl: "https://open.spotify.com/intl-es/album/5NtaY6RCEG2LVZ24bWMMVN",
     cover: imgTapeVol1,
     alt: "Portada del álbum Walter Gavitt Ferguson — King of Calypso Limonense, The Legendary Tape Recordings Vol. 1",
     accentClass: "bg-ember",
@@ -159,6 +175,7 @@ const fergusonAlbums: readonly TapeAlbum[] = [
     description:
       "Segunda entrega de crónicas humorísticas y cotidianas del Caribe sur preservadas de sus casetes.",
     format: "Archivo sonoro de cintas originales",
+    spotifyUrl: "https://open.spotify.com/intl-es/album/3oBCndnAMseBcWHckOJGQu",
     cover: imgTapeVol2,
     alt: "Portada del álbum Walter Gavitt Ferguson — King of Calypso Limonense, The Legendary Tape Recordings Vol. 2",
     accentClass: "bg-sky",
@@ -709,42 +726,65 @@ export default function Culture() {
                 {/* Escaparate minimalista de los 2 álbumes: CERO subtítulos arriba del título y CERO cambio de altura */}
                 <div className="mt-7 border-t border-cream/15 pt-6 sm:mt-9 sm:pt-7">
                   <div className="grid items-start gap-5 sm:grid-cols-[auto_1fr] sm:gap-6">
-                    {/* Carátulas físicas interactivas (Vol. 1 y Vol. 2) */}
+                    {/* Carátulas físicas interactivas (Vol. 1 y Vol. 2) + link directo a Spotify debajo de cada álbum */}
                     <div
                       role="tablist"
                       aria-label="Álbumes The Legendary Tape Recordings de Walter Ferguson"
-                      className="flex items-center gap-3"
+                      className="flex items-start gap-3"
                     >
                       {fergusonAlbums.map((album, index) => {
                         const isSelected = index === activeAlbumIndex;
                         return (
-                          <button
+                          <div
                             key={album.id}
-                            type="button"
-                            role="tab"
-                            aria-selected={isSelected}
-                            onClick={() => setActiveAlbumIndex(index)}
-                            className={`group relative aspect-square w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none sm:w-28 ${
-                              isSelected
-                                ? "scale-100 opacity-100 ring-2 ring-sand"
-                                : "scale-[0.94] opacity-55 ring-1 ring-white/15 ring-inset [@media(hover:hover)_and_(pointer:fine)]:hover:opacity-85"
-                            }`}
+                            className="flex w-24 shrink-0 flex-col gap-2 sm:w-28"
                           >
-                            <Image
-                              src={album.cover}
-                              alt={album.alt}
-                              fill
-                              placeholder="blur"
-                              sizes="112px"
-                              className="object-cover"
-                            />
-                            <span
-                              aria-hidden
-                              className={`pointer-events-none absolute inset-x-0 bottom-0 h-1 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                                album.accentClass
-                              } ${isSelected ? "scale-x-100" : "scale-x-0"}`}
-                            />
-                          </button>
+                            <button
+                              type="button"
+                              role="tab"
+                              aria-selected={isSelected}
+                              onClick={() => setActiveAlbumIndex(index)}
+                              className={`group relative aspect-square w-full cursor-pointer overflow-hidden rounded-xl bg-cream/10 transition-[transform,opacity] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.96] focus:outline-none ${
+                                isSelected
+                                  ? "scale-100 opacity-100 ring-2 ring-sand"
+                                  : "scale-[0.94] opacity-55 ring-1 ring-white/15 ring-inset [@media(hover:hover)_and_(pointer:fine)]:hover:opacity-85"
+                              }`}
+                            >
+                              <Image
+                                src={album.cover}
+                                alt={album.alt}
+                                fill
+                                placeholder="blur"
+                                sizes="112px"
+                                className="object-cover"
+                              />
+                              <span
+                                aria-hidden
+                                className={`pointer-events-none absolute inset-x-0 bottom-0 h-1 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+                                  album.accentClass
+                                } ${isSelected ? "scale-x-100" : "scale-x-0"}`}
+                              />
+                            </button>
+
+                            <a
+                              href={album.spotifyUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`Escuchar ${album.volLabel} de Walter Ferguson en Spotify`}
+                              className={`group/spotify mt-0.5 inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wider uppercase transition-[transform,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.97] ${
+                                isSelected
+                                  ? "text-sand [@media(hover:hover)_and_(pointer:fine)]:hover:text-cream"
+                                  : "text-cream/55 [@media(hover:hover)_and_(pointer:fine)]:hover:text-cream/90"
+                              }`}
+                            >
+                              <SpotifyIcon className="size-3.5 shrink-0" />
+                              <span>Spotify</span>
+                              <EditorialArrow
+                                direction="right"
+                                className="h-2.5 w-3.5 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover/spotify:translate-x-0.5"
+                              />
+                            </a>
+                          </div>
                         );
                       })}
                     </div>
