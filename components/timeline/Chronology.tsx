@@ -10,8 +10,6 @@ import {
   useInView,
   type PanInfo,
 } from "framer-motion";
-import "slot-text/style.css";
-import { SlotText } from "slot-text/react";
 import { eras } from "./eras";
 
 const AUTOPLAY_MS = 4500;
@@ -199,11 +197,19 @@ export default function Chronology() {
             <span className="grid size-8 place-items-center rounded-full bg-sky text-ink">
               <AsteriskIcon className="size-4" />
             </span>
-            <span className="text-sm font-medium">
-              <SlotText
-                text={era.period}
-                options={{ rollBy: "word", duration: 320 }}
-              />
+            <span className="grid items-center text-sm font-medium">
+              <AnimatePresence initial={false}>
+                <motion.span
+                  key={era.period}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.2, ease }}
+                  className="col-start-1 row-start-1 block"
+                >
+                  {era.period}
+                </motion.span>
+              </AnimatePresence>
             </span>
           </div>
           <span
@@ -216,40 +222,59 @@ export default function Chronology() {
           {/* Note card (desktop) */}
           <div className="absolute right-8 bottom-0 hidden h-[196px] w-64 flex-col justify-start rounded-xl bg-cream p-5 text-ink shadow-sm lg:flex">
             <AsteriskIcon className="size-7 shrink-0 text-moss" />
-            <div className="slot-text-multiline mt-2.5 text-sm leading-snug font-medium">
-              <SlotText
-                text={era.summary}
-                options={{ rollBy: "word", duration: 380, stagger: 15 }}
-              />
+            <div className="mt-2.5 grid text-sm leading-snug font-medium">
+              <AnimatePresence initial={false}>
+                <motion.p
+                  key={era.years}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.22, ease }}
+                  className="col-start-1 row-start-1"
+                >
+                  {era.summary}
+                </motion.p>
+              </AnimatePresence>
             </div>
           </div>
         </motion.div>
 
-        {/* Mobile summary replaces the floating card */}
+        {/* Mobile summary replaces the floating card — height locked via CSS Grid so autoplay never shifts page scroll */}
         <div
-          className="mx-auto mt-4 min-h-[120px] max-w-md px-6 text-center lg:hidden"
+          className="mx-auto mt-4 grid max-w-md px-6 text-center lg:hidden"
           aria-live="polite"
         >
-          <p className="font-display flex flex-wrap items-baseline justify-center gap-x-2.5 text-2xl sm:text-3xl">
-            <span className="text-sky">
-              <SlotText
-                text={era.years}
-                options={{ rollBy: "character", duration: 280 }}
-              />
-            </span>
-            <span className="slot-text-multiline inline">
-              <SlotText
-                text={era.title}
-                options={{ rollBy: "word", duration: 320 }}
-              />
-            </span>
-          </p>
-          <div className="slot-text-multiline mt-2 text-sm leading-relaxed text-pretty text-cream/80">
-            <SlotText
-              text={era.summary}
-              options={{ rollBy: "word", duration: 380, stagger: 15 }}
-            />
-          </div>
+          {eras.map((item) => (
+            <div
+              key={item.years}
+              aria-hidden
+              className="pointer-events-none invisible col-start-1 row-start-1 select-none"
+            >
+              <p className="font-display text-2xl sm:text-3xl">
+                {item.years} {item.title}
+              </p>
+              <p className="mt-2 text-sm leading-relaxed">{item.summary}</p>
+            </div>
+          ))}
+
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={era.years}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.2, ease }}
+              className="col-start-1 row-start-1"
+            >
+              <p className="font-display flex flex-wrap items-baseline justify-center gap-x-2.5 text-2xl sm:text-3xl">
+                <span className="text-sky">{era.years}</span>
+                <span>{era.title}</span>
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-pretty text-cream/80">
+                {era.summary}
+              </p>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* Timeline rail */}

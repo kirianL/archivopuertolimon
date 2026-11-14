@@ -246,16 +246,16 @@ export default function Hero() {
       <section
         id="inicio"
         aria-labelledby="hero-title"
-        className="relative flex min-h-svh h-dvh flex-col justify-between overflow-hidden bg-moss text-ink"
+        className="relative flex min-h-screen min-h-lvh flex-col justify-between overflow-hidden bg-moss text-ink"
       >
         <SiteNav />
 
-        <div className="animate-rise relative flex flex-1 flex-col items-center justify-center px-6 pb-10 text-center sm:pb-14">
+        <div className="animate-rise relative flex flex-1 flex-col items-center justify-center px-6 pb-20 text-center sm:pb-14">
           {/* Half-rings hug viewport edges on mobile so the title stays 3 lines, and flank inline on sm+ */}
           <div className="relative flex w-full items-center justify-center sm:gap-[clamp(1rem,4vw,4rem)]">
             <HalfRing
               side="right"
-              className="pointer-events-none absolute top-1/2 left-0 h-40 -translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(11rem,38svh,26rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
+              className="pointer-events-none absolute top-1/2 left-0 h-40 -translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(11rem,38lvh,26rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
             />
             <h1
               id="hero-title"
@@ -267,7 +267,7 @@ export default function Hero() {
             </h1>
             <HalfRing
               side="left"
-              className="pointer-events-none absolute top-1/2 right-0 h-40 translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(11rem,38svh,26rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
+              className="pointer-events-none absolute top-1/2 right-0 h-40 translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(11rem,38lvh,26rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
             />
           </div>
 

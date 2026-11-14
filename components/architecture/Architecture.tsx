@@ -105,12 +105,19 @@ function ScrollDrivenBuildings({
     const viewportEl = viewportRef.current;
     if (!listEl || !viewportEl) return;
 
+    let lastWidth = 0;
+    let lastScrollWidth = 0;
+
     const measure = () => {
-      const viewportWidth = Math.min(
-        viewportEl.clientWidth,
-        window.innerWidth,
-      );
-      onMaxScrollChange(Math.max(0, listEl.scrollWidth - viewportWidth));
+      const viewportWidth = viewportEl.clientWidth;
+      const scrollWidth = listEl.scrollWidth;
+      // Ignore vertical-only iOS Safari address-bar resize events where widths did not change
+      if (viewportWidth === lastWidth && scrollWidth === lastScrollWidth) {
+        return;
+      }
+      lastWidth = viewportWidth;
+      lastScrollWidth = scrollWidth;
+      onMaxScrollChange(Math.max(0, scrollWidth - viewportWidth));
     };
 
     measure();
@@ -118,17 +125,15 @@ function ScrollDrivenBuildings({
     const observer = new ResizeObserver(measure);
     observer.observe(listEl);
     observer.observe(viewportEl);
-    window.addEventListener("resize", measure, { passive: true });
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("resize", measure);
     };
   }, [onMaxScrollChange]);
 
   const { scrollYProgress } = useScroll({
     target: scrollTrackRef,
-    offset: ["start 12%", "end end"],
+    offset: ["start start", "end end"],
   });
   const x = useTransform(scrollYProgress, [0, 1], [0, -maxScroll]);
 
@@ -140,13 +145,13 @@ function ScrollDrivenBuildings({
         height:
           maxScroll > 0
             ? `calc(560px + ${Math.round(maxScroll * 0.85)}px)`
-            : "240svh",
+            : "240lvh",
       }}
     >
-      <div className="sticky top-10 w-full md:top-16">
+      <div className="sticky top-10 w-full overflow-hidden md:top-16">
         <div
           ref={viewportRef}
-          className="relative w-full max-w-full overflow-hidden pt-3 pb-12 [contain:layout_paint] touch-pan-y md:pt-4 md:pb-20"
+          className="relative w-full max-w-full overflow-hidden pt-3 pb-12 touch-pan-y md:pt-4 md:pb-20"
         >
           <motion.ol
             ref={listRef}

@@ -21,10 +21,6 @@
   html {
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    overflow-x: clip;
-    max-width: 100%;
   }
 
   button,
@@ -34,16 +30,10 @@
     touch-action: manipulation;
   }
 
-  html::-webkit-scrollbar {
-    display: none;
-  }
-
   body {
     background: var(--color-moss);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    overflow-x: clip;
-    max-width: 100%;
   }
 }
 
@@ -55,11 +45,6 @@
     text-transform: uppercase;
     line-height: 0.96;
     letter-spacing: -0.01em;
-  }
-
-  /* Permitir que las tildes en mayúsculas no se recorten en el rodillo de slot-text */
-  .char-slot {
-    line-height: 1.45 !important;
   }
 
   .animate-rise {
@@ -90,19 +75,4 @@
   .reveal {
     animation: none;
   }
-}
-
-/* Permitir que slot-text haga wrap en párrafos largos multilinea sin romper isSlotLayoutReady (que exige inline-flex en .char-slot) */
-.slot-text-multiline .slot-text {
-  display: inline-flex;
-  flex-wrap: wrap;
-  white-space: normal;
-  vertical-align: bottom;
-}
-
-.slot-text-multiline .char-slot {
-  display: inline-flex;
-  white-space: pre;
-  height: 1.06em;
-  line-height: 1.06em;
 }

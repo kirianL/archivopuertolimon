@@ -8,8 +8,6 @@ import {
   motion,
   useReducedMotion,
 } from "framer-motion";
-import "slot-text/style.css";
-import { SlotText } from "slot-text/react";
 import { Highlight } from "@/components/ui/Highlight";
 import {
   Bay,
@@ -26,7 +24,7 @@ import imgTapeVol1 from "@/public/Limón - images/ferguson-tape-vol1.jpg";
 import imgTapeVol2 from "@/public/Limón - images/ferguson-tape-vol2.jpg";
 import imgKryolBook from "@/public/Limón - images/limon-kryol-alfabet.jpg";
 import imgGloriaThompson from "@/public/Limón - images/gloria-thompson.png";
-import imgCaribbeanPattern from "@/public/Limón - images/caribbean-pattern.jpg";
+import imgEunaEditorial from "@/public/Limón - images/euna-editorial.jpg";
 import imgPatty from "@/public/Limón - images/patty.jpg";
 import imgCalypsonian from "@/public/Limón - images/Parade/Musicos y cantantes/539902822_754962860647126_9178661086593066020_n.jpg";
 import imgMaracas from "@/public/Limón - images/Parade/Musicos y cantantes/540004486_754962117313867_1346397361303001633_n.jpg";
@@ -155,6 +153,82 @@ function SpotifyIcon({ className }: { className?: string }) {
     >
       <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2Zm4.586 14.424a.622.622 0 0 1-.857.207c-2.348-1.435-5.304-1.76-8.785-.964a.623.623 0 0 1-.277-1.215c3.809-.87 7.076-.496 9.712 1.115a.623.623 0 0 1 .207.857Zm1.224-2.722a.78.78 0 0 1-1.072.257c-2.687-1.652-6.785-2.131-9.965-1.166a.78.78 0 0 1-.452-1.492c3.632-1.102 8.147-.568 11.233 1.329a.78.78 0 0 1 .256 1.072Zm.105-2.835C14.692 8.95 9.375 8.775 6.297 9.71a.935.935 0 1 1-.543-1.79c3.533-1.072 9.404-.865 13.115 1.338a.935.935 0 0 1-.954 1.609Z" />
     </svg>
+  );
+}
+
+/**
+ * Patrón geométrico caribeño con simetría matemática (inspirado directamente en el tejido
+ * de rombos y espigas concéntricas de las portadas de Walter Ferguson y los calados limonenses).
+ */
+function CaribbeanWeavePattern() {
+  const quadrantLines = (
+    <g
+      stroke="currentColor"
+      strokeWidth="2.4"
+      strokeLinecap="butt"
+      fill="none"
+    >
+      <path d="M2.5 5.5 L5.5 2.5" />
+      <path d="M2.5 11.5 L11.5 2.5" />
+      <path d="M2.5 17.5 L17.5 2.5" />
+      <path d="M2.5 23.5 L23.5 2.5" />
+      <path d="M6.5 25.5 L25.5 6.5" />
+      <path d="M12.5 25.5 L25.5 12.5" />
+      <path d="M18.5 25.5 L25.5 18.5" />
+    </g>
+  );
+
+  return (
+    <svg
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 -z-20 size-full text-sand/[0.18]"
+    >
+      <defs>
+        <pattern
+          id="limon-caribbean-weave"
+          width="56"
+          height="56"
+          patternUnits="userSpaceOnUse"
+        >
+          {quadrantLines}
+          <g transform="translate(56, 0) scale(-1, 1)">{quadrantLines}</g>
+          <g transform="translate(0, 56) scale(1, -1)">{quadrantLines}</g>
+          <g transform="translate(56, 56) scale(-1, -1)">{quadrantLines}</g>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#limon-caribbean-weave)" />
+    </svg>
+  );
+}
+
+/**
+ * Transición nativa y serena de bloque completo (sin dividir por palabra ni usar rebotes elásticos):
+ * desliza suavemente 5px en vertical con opacidad dentro de su celda CSS Grid estática.
+ */
+function SlotRollText({
+  text,
+  durationSec = 0.2,
+}: {
+  text: string;
+  durationSec?: number;
+}) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <span className="grid items-start">
+      <AnimatePresence initial={false}>
+        <motion.span
+          key={text}
+          initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 5 }}
+          animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -5 }}
+          transition={{ duration: durationSec, ease: EASE_OUT }}
+          className="col-start-1 row-start-1 block will-change-[transform,opacity]"
+        >
+          {text}
+        </motion.span>
+      </AnimatePresence>
+    </span>
   );
 }
 
@@ -475,10 +549,10 @@ export default function Culture() {
                         aria-hidden
                         className={`pointer-events-none absolute top-0.5 left-0 -z-10 size-7 rounded-full transition-colors duration-200 sm:size-9 ${activePillar.dotClass}`}
                       />
-                      <span className="font-display block text-3xl leading-none text-ink sm:text-5xl">
-                        <SlotText
+                      <span className="font-display block text-3xl leading-none tabular-nums text-ink sm:text-5xl">
+                        <SlotRollText
                           text={activePillar.number}
-                          options={{ rollBy: "character", duration: 260 }}
+                          durationSec={0.18}
                         />
                       </span>
                     </div>
@@ -495,15 +569,8 @@ export default function Culture() {
                             {pillar.title}
                           </p>
                         ))}
-                        <p className="font-display slot-text-multiline col-start-1 row-start-1 text-2xl leading-[1.06] text-ink sm:text-3xl">
-                          <SlotText
-                            text={activePillar.title}
-                            options={{
-                              rollBy: "word",
-                              duration: 300,
-                              stagger: 10,
-                            }}
-                          />
+                        <p className="font-display col-start-1 row-start-1 text-2xl leading-[1.06] text-ink sm:text-3xl">
+                          <SlotRollText text={activePillar.title} />
                         </p>
                       </div>
 
@@ -518,16 +585,9 @@ export default function Culture() {
                             {pillar.detail}
                           </p>
                         ))}
-                        <div className="slot-text-multiline col-start-1 row-start-1 max-w-[44ch] text-xs leading-[1.45] text-pretty text-ink/75 sm:text-sm">
-                          <SlotText
-                            text={activePillar.detail}
-                            options={{
-                              rollBy: "word",
-                              duration: 320,
-                              stagger: 10,
-                            }}
-                          />
-                        </div>
+                        <p className="col-start-1 row-start-1 max-w-[44ch] text-xs leading-[1.45] text-pretty text-ink/75 sm:text-sm">
+                          <SlotRollText text={activePillar.detail} />
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -595,16 +655,9 @@ export default function Culture() {
                       </AnimatePresence>
 
                       <div className="pointer-events-none absolute inset-x-3 bottom-2.5 z-10 text-cream sm:inset-x-4 sm:bottom-3.5">
-                        <div className="slot-text-multiline text-[11px] leading-snug font-medium text-cream/95 sm:text-xs">
-                          <SlotText
-                            text={activePillar.caption}
-                            options={{
-                              rollBy: "word",
-                              duration: 280,
-                              stagger: 8,
-                            }}
-                          />
-                        </div>
+                        <p className="text-[11px] leading-snug font-medium text-cream/95 sm:text-xs">
+                          <SlotRollText text={activePillar.caption} />
+                        </p>
                       </div>
                     </div>
 
@@ -654,11 +707,8 @@ export default function Culture() {
 
                 <figcaption className="mt-6 flex items-center justify-between gap-3 border-t border-ink/15 pt-2.5 text-xs text-ink/65">
                   <span>Octubre en Puerto Limón</span>
-                  <span className="slot-text-multiline shrink-0">
-                    <SlotText
-                      text={activePillar.credit}
-                      options={{ rollBy: "word", duration: 240 }}
-                    />
+                  <span className="shrink-0">
+                    <SlotRollText text={activePillar.credit} />
                   </span>
                 </figcaption>
               </figure>
@@ -914,10 +964,10 @@ export default function Culture() {
                       <div className="flex flex-wrap items-center justify-between gap-2 sm:flex-nowrap sm:items-start sm:gap-3">
                         <h4 className="font-display text-2xl leading-[0.98] text-cream sm:text-3xl">
                           The Legendary Tape Recordings Vol.{" "}
-                          <span className="inline-block w-[1.2ch] text-sand">
-                            <SlotText
+                          <span className="inline-grid w-[1.2ch] text-sand tabular-nums">
+                            <SlotRollText
                               text={activeAlbum.volNumber}
-                              options={{ rollBy: "character", duration: 240 }}
+                              durationSec={0.18}
                             />
                           </span>
                         </h4>
@@ -961,22 +1011,12 @@ export default function Culture() {
                         ))}
 
                         <div className="col-start-1 row-start-1">
-                          <div className="slot-text-multiline max-w-[46ch] text-xs leading-relaxed text-pretty text-cream/85 sm:text-sm">
-                            <SlotText
-                              text={activeAlbum.description}
-                              options={{
-                                rollBy: "word",
-                                duration: 280,
-                                stagger: 8,
-                              }}
-                            />
-                          </div>
+                          <p className="max-w-[46ch] text-xs leading-[1.55] text-pretty text-cream/85 sm:text-sm">
+                            <SlotRollText text={activeAlbum.description} />
+                          </p>
 
-                          <p className="slot-text-multiline mt-2 text-[11px] font-semibold tracking-wider text-sand uppercase">
-                            <SlotText
-                              text={activeAlbum.format}
-                              options={{ rollBy: "word", duration: 240 }}
-                            />
+                          <p className="mt-2 text-[11px] leading-[1.5] font-semibold tracking-wider text-sand uppercase">
+                            <SlotRollText text={activeAlbum.format} />
                           </p>
                         </div>
                       </div>
@@ -1017,34 +1057,26 @@ export default function Culture() {
 
             {/* Explorador de las 9 expresiones: Póster sonoro interactivo + Matriz arquitectónica 3x3 */}
             <div className="mt-8 grid items-start gap-8 sm:mt-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
-              {/* Póster interactivo con patrón afrocaribeño de grabado en madera como fondo y filas bloqueadas por CSS Grid */}
+              {/* Póster interactivo con patrón geométrico caribeño ordenado (inspirado en las portadas de Walter Ferguson) y rieles fijos */}
               <div
                 aria-live="polite"
                 className="relative isolate overflow-hidden rounded-2xl bg-moss p-6 text-cream ring-1 ring-black/15 ring-inset sm:p-9"
               >
-                {/* Patrón caribeño generado con IA (linograbado de cacao, ondas de calipso y geometría limonense) */}
-                <Image
-                  src={imgCaribbeanPattern}
-                  alt=""
-                  aria-hidden
-                  fill
-                  placeholder="blur"
-                  sizes="(max-width: 1024px) 92vw, 48vw"
-                  className="pointer-events-none -z-20 object-cover opacity-[0.26] mix-blend-luminosity contrast-125"
-                />
-                {/* Velo editorial para preservar contraste impecable en la tipografía */}
+                {/* Patrón geométrico caribeño con simetría matemática (rombos y espigas concéntricas) */}
+                <CaribbeanWeavePattern />
+                {/* Velo suave para preservar contraste en el centro y dejar respirar el patrón en los bordes */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-moss/82 via-moss/72 to-ink/65"
+                  className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_35%_48%,rgba(91,97,40,0.82)_0%,rgba(91,97,40,0.45)_65%,rgba(29,29,27,0.35)_100%)]"
                 />
 
                 {/* Controles superiores minimalistas: Número activo + Navegación anterior/siguiente */}
                 <div className="flex items-center justify-between">
-                  <span className="font-display text-2xl text-sand sm:text-3xl">
-                    <SlotText
+                  <span className="font-display inline-flex items-baseline gap-1.5 text-2xl text-sand tabular-nums sm:text-3xl">
+                    <SlotRollText
                       text={activePhrase.number}
-                      options={{ rollBy: "character", duration: 240 }}
-                    />{" "}
+                      durationSec={0.18}
+                    />
                     <span className="text-cream/55">/ 09</span>
                   </span>
 
@@ -1074,9 +1106,9 @@ export default function Culture() {
                   </div>
                 </div>
 
-                {/* Escenario tipográfico con 3 rieles CSS Grid independientes: las comillas van dentro de SlotText para que nunca queden huérfanas y ninguna línea se mueva */}
+                {/* Escenario tipográfico con 3 rieles CSS Grid independientes y SlotRollText sin reflujo horizontal */}
                 <div className="mt-6 sm:mt-8">
-                  {/* Riel 1: Expresión en Mekatelyu (con comillas unidas a la primera y última palabra) */}
+                  {/* Riel 1: Expresión en Mekatelyu */}
                   <div className="grid items-center">
                     {mekatelyuPhrases.map((item) => (
                       <p
@@ -1087,15 +1119,8 @@ export default function Culture() {
                         {`“${item.phrase}”`}
                       </p>
                     ))}
-                    <p className="font-display slot-text-multiline col-start-1 row-start-1 text-4xl leading-[1.06] text-cream sm:text-5xl md:text-6xl">
-                      <SlotText
-                        text={`“${activePhrase.phrase}”`}
-                        options={{
-                          rollBy: "word",
-                          duration: 280,
-                          stagger: 10,
-                        }}
-                      />
+                    <p className="font-display col-start-1 row-start-1 text-4xl leading-[1.06] text-cream sm:text-5xl md:text-6xl">
+                      <SlotRollText text={`“${activePhrase.phrase}”`} />
                     </p>
                   </div>
 
@@ -1110,15 +1135,8 @@ export default function Culture() {
                         {item.translation}
                       </p>
                     ))}
-                    <p className="font-display slot-text-multiline col-start-1 row-start-1 text-2xl leading-[1.06] text-sand sm:text-3xl">
-                      <SlotText
-                        text={activePhrase.translation}
-                        options={{
-                          rollBy: "word",
-                          duration: 280,
-                          stagger: 8,
-                        }}
-                      />
+                    <p className="font-display col-start-1 row-start-1 text-2xl leading-[1.06] text-sand sm:text-3xl">
+                      <SlotRollText text={activePhrase.translation} />
                     </p>
                   </div>
 
@@ -1133,15 +1151,8 @@ export default function Culture() {
                         {item.context}
                       </p>
                     ))}
-                    <p className="slot-text-multiline col-start-1 row-start-1 text-sm leading-[1.4] text-cream/85 sm:text-base">
-                      <SlotText
-                        text={activePhrase.context}
-                        options={{
-                          rollBy: "word",
-                          duration: 300,
-                          stagger: 8,
-                        }}
-                      />
+                    <p className="col-start-1 row-start-1 text-sm leading-[1.4] text-cream/85 sm:text-base">
+                      <SlotRollText text={activePhrase.context} />
                     </p>
                   </div>
                 </div>
@@ -1300,35 +1311,46 @@ export default function Culture() {
                     propia.
                   </p>
 
-                  {/* Ficha bibliográfica en 3 columnas: primera columna con ancho automático sin salto de línea */}
-                  <dl className="mt-7 grid grid-cols-1 gap-4 border-t border-ink/15 pt-5 sm:grid-cols-[auto_1fr_1fr] sm:gap-0">
-                    <div className="sm:pr-5">
+                  {/* Ficha bibliográfica en 2 bloques: Editores en 2 líneas + Bloque EUNA con fotografía de la editorial integrada de fondo */}
+                  <dl className="mt-7 grid grid-cols-1 items-stretch gap-4 border-t border-ink/15 pt-5 sm:grid-cols-[auto_1fr] sm:gap-0">
+                    <div className="flex flex-col justify-between py-1 sm:pr-7">
                       <dt className="sr-only">Editores</dt>
-                      <dd className="font-display text-xl whitespace-nowrap text-ink sm:text-2xl">
-                        René Zúñiga A. & Gloria Thompson D.
+                      <dd className="font-display text-xl leading-[1.04] text-ink sm:text-2xl">
+                        <span className="block whitespace-nowrap">
+                          René Zúñiga A. &amp;
+                        </span>
+                        <span className="block whitespace-nowrap">
+                          Gloria Thompson D.
+                        </span>
                       </dd>
-                      <p className="mt-1 text-xs leading-snug text-ink/65">
+                      <p className="mt-2 text-xs leading-snug text-ink/65">
                         Editores de la publicación
                       </p>
                     </div>
 
-                    <div className="border-t border-ink/15 pt-3 sm:border-t-0 sm:border-l sm:px-4 sm:pt-0">
-                      <dt className="sr-only">Sello editorial</dt>
-                      <dd className="font-display text-xl text-ember sm:text-2xl">
-                        EUNA — UNA
-                      </dd>
-                      <p className="mt-1 text-xs leading-snug text-ink/65">
-                        Editorial Universidad Nacional
-                      </p>
-                    </div>
+                    <div className="relative isolate flex min-h-[88px] flex-col justify-between overflow-hidden rounded-xl border-t border-ink/15 p-3.5 sm:rounded-l-none sm:rounded-r-xl sm:border-t-0 sm:border-l sm:py-2.5 sm:pr-4 sm:pl-6">
+                      <Image
+                        src={imgEunaEditorial}
+                        alt=""
+                        aria-hidden="true"
+                        fill
+                        placeholder="blur"
+                        sizes="(max-width: 640px) 90vw, 380px"
+                        className="pointer-events-none -z-20 object-cover object-[72%_center] opacity-[0.24] contrast-115 saturate-[0.85] mix-blend-multiply"
+                      />
+                      <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-r from-cream via-cream/70 to-cream/10"
+                      />
 
-                    <div className="border-t border-ink/15 pt-3 sm:border-t-0 sm:border-l sm:pl-4 sm:pt-0">
-                      <dt className="sr-only">Aporte cultural</dt>
-                      <dd className="font-display text-xl text-ink sm:text-2xl">
-                        Lengua escrita
-                      </dd>
-                      <p className="mt-1 text-xs leading-snug text-ink/65">
-                        Escribamos nuestra lengua
+                      <div>
+                        <dt className="sr-only">Sello editorial</dt>
+                        <dd className="font-display text-xl leading-[1.04] text-ember sm:text-2xl">
+                          EUNA — UNA
+                        </dd>
+                      </div>
+                      <p className="mt-2 text-xs leading-snug font-medium text-ink/75">
+                        Editorial Universidad Nacional
                       </p>
                     </div>
                   </dl>
