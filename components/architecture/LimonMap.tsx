@@ -15,7 +15,7 @@ export function LimonMap() {
       <BrushStroke className="pointer-events-none absolute bottom-[12%] left-[22%] z-10 h-10 w-28 rotate-[8deg] text-moss/85 md:h-12 md:w-36" />
 
       <svg
-        viewBox="625 75 250 325"
+        viewBox="625 95 250 298"
         className="w-full overflow-visible drop-shadow-sm"
         aria-hidden
       >

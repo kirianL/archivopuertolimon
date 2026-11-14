@@ -1,12 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef } from "react";
+import {
+  type RefObject,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import "slot-text/style.css";
-import { SlotText } from "slot-text/react";
 import { Highlight } from "@/components/ui/Highlight";
-import { BrushStroke, HalfRing } from "@/components/ui/Shapes";
+import { BrushStroke, EditorialArrow, HalfRing } from "@/components/ui/Shapes";
 import type { AccentColor, Building } from "./buildings";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
@@ -59,12 +64,16 @@ function splitTitle(title: string): { head: string; tail: string } {
 type BuildingNavPreviewProps = {
   item: Building;
   direction: "prev" | "next";
+  isPrimed: boolean;
+  onPrime: (id: string) => void;
   onNavigate: (building: Building) => void;
 };
 
 function BuildingNavPreview({
   item,
   direction,
+  isPrimed,
+  onPrime,
   onNavigate,
 }: BuildingNavPreviewProps) {
   const isNext = direction === "next";
@@ -72,12 +81,19 @@ function BuildingNavPreview({
   return (
     <button
       type="button"
+      onPointerDown={() => onPrime(item.id)}
+      onFocus={() => onPrime(item.id)}
       onClick={() => onNavigate(item)}
       className={`group block w-full cursor-pointer text-left transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 ${
         isNext ? "sm:text-right" : ""
       }`}
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-ink/10 sm:rounded-2xl">
+      <motion.div
+        layoutId={isPrimed ? `building-image-${item.id}` : undefined}
+        style={{ borderRadius: 16 }}
+        transition={IMAGE_SPRING}
+        className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-ink/10 sm:rounded-2xl"
+      >
         <Image
           src={item.image}
           alt={item.name}
@@ -89,23 +105,7 @@ function BuildingNavPreview({
         <span className="font-display absolute top-2.5 left-2.5 rounded bg-cream px-2 py-0.5 text-sm text-ink shadow-xs sm:top-3 sm:left-3 sm:px-2.5 sm:text-base">
           {item.year}
         </span>
-        <span
-          aria-hidden
-          className={`absolute bottom-2.5 grid size-8 place-items-center rounded-full bg-ink text-sm text-cream transition-[background-color,transform] duration-150 ease-out group-active:scale-95 sm:bottom-3 sm:size-9 [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-moss ${
-            isNext ? "right-2.5 sm:right-3" : "left-2.5 sm:left-3"
-          }`}
-        >
-          <span
-            className={`transition-transform duration-200 ease-out ${
-              isNext
-                ? "[@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-0.5"
-                : "[@media(hover:hover)_and_(pointer:fine)]:group-hover:-translate-x-0.5"
-            }`}
-          >
-            {isNext ? "→" : "←"}
-          </span>
-        </span>
-      </div>
+      </motion.div>
 
       <span className="font-display mt-3 block text-xl leading-none text-ink sm:text-2xl md:text-3xl">
         {item.name}
@@ -115,27 +115,38 @@ function BuildingNavPreview({
         {isNext ? (
           <>
             <span>Siguiente · {item.year}</span>
-            <span
-              aria-hidden
-              className="transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-1"
-            >
-              →
-            </span>
+            <EditorialArrow
+              direction="right"
+              className="h-3 w-4 transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-1"
+            />
           </>
         ) : (
           <>
-            <span
-              aria-hidden
-              className="transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:-translate-x-1"
-            >
-              ←
-            </span>
+            <EditorialArrow
+              direction="left"
+              className="h-3 w-4 transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:-translate-x-1"
+            />
             <span>Anterior · {item.year}</span>
           </>
         )}
       </span>
     </button>
   );
+}
+
+function ScrollResetOnNavigate({
+  buildingId,
+  containerRef,
+}: {
+  buildingId: string;
+  containerRef: RefObject<HTMLDivElement | null>;
+}) {
+  useLayoutEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [buildingId, containerRef]);
+  return null;
 }
 
 type BuildingModalPageProps = {
@@ -153,7 +164,7 @@ export function BuildingModalPage({
 }: BuildingModalPageProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const prevOverflowRef = useRef<string | null>(null);
-  const prevBuildingIdRef = useRef<string | null>(null);
+  const [primedPreviewId, setPrimedPreviewId] = useState<string | null>(null);
   const reduceMotion = useReducedMotion();
 
   const buildingId = building?.id ?? null;
@@ -164,6 +175,16 @@ export function BuildingModalPage({
       prevOverflowRef.current = null;
     }
   }, []);
+
+  const handleExitComplete = useCallback(() => {
+    restoreBodyOverflow();
+    setPrimedPreviewId(null);
+  }, [restoreBodyOverflow]);
+
+  const handleNavigate = (target: Building) => {
+    setPrimedPreviewId(target.id);
+    onNavigate(target);
+  };
 
   useEffect(() => {
     if (buildingId && prevOverflowRef.current === null) {
@@ -190,18 +211,6 @@ export function BuildingModalPage({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [buildingId, onClose]);
 
-  useEffect(() => {
-    const prevId = prevBuildingIdRef.current;
-    prevBuildingIdRef.current = buildingId;
-
-    if (prevId && buildingId && prevId !== buildingId) {
-      scrollContainerRef.current?.scrollTo({
-        top: 0,
-        behavior: reduceMotion ? "instant" : "smooth",
-      });
-    }
-  }, [buildingId, reduceMotion]);
-
   const currentIndex = building
     ? buildings.findIndex((item) => item.id === building.id)
     : -1;
@@ -220,7 +229,7 @@ export function BuildingModalPage({
     : { head: "", tail: "" };
 
   return (
-    <AnimatePresence onExitComplete={restoreBodyOverflow}>
+    <AnimatePresence onExitComplete={handleExitComplete}>
       {building && (
         <motion.div
           key="building-backdrop"
@@ -247,6 +256,10 @@ export function BuildingModalPage({
           exit={{ opacity: 0 }}
           transition={{ duration: 0.26, ease: EASE_OUT }}
         >
+          <ScrollResetOnNavigate
+            buildingId={building.id}
+            containerRef={scrollContainerRef}
+          />
           {/* Sticky top bar */}
           <header className="sticky top-0 z-20 border-b border-cream/10 bg-ink/90 backdrop-blur-md">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
@@ -260,7 +273,8 @@ export function BuildingModalPage({
                 onClick={onClose}
                 className="font-display inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-[5px] bg-cream px-3.5 text-base text-ink transition-transform duration-150 ease-out active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream sm:h-10 sm:px-4 sm:text-lg [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-px"
               >
-                <span>← Volver</span>
+                <EditorialArrow direction="left" className="h-3 w-4" />
+                <span>Volver</span>
                 <span className="hidden sm:inline">a arquitectura</span>
               </button>
             </div>
@@ -280,14 +294,14 @@ export function BuildingModalPage({
                   initial={
                     reduceMotion
                       ? { opacity: 0 }
-                      : { opacity: 0, transform: "translate3d(0, 16px, 0)" }
+                      : { opacity: 0, transform: "translate3d(0, -14px, 0)" }
                   }
                   animate={
                     reduceMotion
                       ? { opacity: 1 }
                       : { opacity: 1, transform: "translate3d(0, 0px, 0)" }
                   }
-                  transition={{ duration: 0.32, ease: EASE_OUT, delay: 0.06 }}
+                  transition={{ duration: 0.32, ease: EASE_OUT }}
                   className="font-display isolate text-4xl text-balance text-cream sm:text-6xl md:text-7xl lg:col-start-1 lg:row-start-1 lg:self-end"
                 >
                   {head ? (
@@ -334,38 +348,35 @@ export function BuildingModalPage({
                   initial={
                     reduceMotion
                       ? { opacity: 0 }
-                      : { opacity: 0, transform: "translate3d(0, 16px, 0)" }
+                      : { opacity: 0, transform: "translate3d(0, -14px, 0)" }
                   }
                   animate={
                     reduceMotion
                       ? { opacity: 1 }
                       : { opacity: 1, transform: "translate3d(0, 0px, 0)" }
                   }
-                  transition={{ duration: 0.32, ease: EASE_OUT, delay: 0.06 }}
+                  transition={{ duration: 0.32, ease: EASE_OUT }}
                   className="lg:col-start-1 lg:row-start-2 lg:self-start"
                 >
                   <p className="max-w-[46ch] text-sm leading-relaxed text-pretty text-cream/80 sm:text-base md:text-lg">
                     {building.summary}
                   </p>
 
-                  <dl className="mt-6 grid grid-cols-3 gap-3 sm:mt-8 sm:gap-6">
+                  <dl className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-3 sm:gap-6">
                     {building.highlights.map((item, idx) => (
                       <div
                         key={item.label}
-                        className="relative isolate pl-1.5 sm:pl-2"
+                        className="relative isolate min-w-0 pl-2"
                       >
-                        <dt className="text-[10px] font-semibold tracking-wide text-cream/55 uppercase sm:text-xs">
+                        <dt className="text-[11px] font-semibold tracking-wide text-cream/55 uppercase sm:text-xs">
                           {item.label}
                         </dt>
-                        <dd className="relative mt-1 text-xs leading-snug font-bold text-cream sm:mt-1.5 sm:text-base">
+                        <dd className="relative mt-1 text-sm leading-snug font-bold wrap-break-word text-cream sm:mt-1.5 sm:text-base">
                           <span
                             aria-hidden
-                            className={`pointer-events-none absolute -top-0.5 -left-1.5 -z-10 size-4 rounded-full sm:-top-1 sm:-left-2.5 sm:size-6 ${HIGHLIGHT_DOT_COLORS[idx % HIGHLIGHT_DOT_COLORS.length]}`}
+                            className={`pointer-events-none absolute -top-0.5 -left-2 -z-10 size-5 rounded-full sm:-top-1 sm:-left-2.5 sm:size-6 ${HIGHLIGHT_DOT_COLORS[idx % HIGHLIGHT_DOT_COLORS.length]}`}
                           />
-                          <SlotText
-                            text={item.value}
-                            options={{ rollBy: "word", duration: 280 }}
-                          />
+                          {item.value}
                         </dd>
                       </div>
                     ))}
@@ -384,14 +395,14 @@ export function BuildingModalPage({
               initial={
                 reduceMotion
                   ? { opacity: 0 }
-                  : { opacity: 0, transform: "translate3d(0, 16px, 0)" }
+                  : { opacity: 0, transform: "translate3d(0, -14px, 0)" }
               }
               animate={
                 reduceMotion
                   ? { opacity: 1 }
                   : { opacity: 1, transform: "translate3d(0, 0px, 0)" }
               }
-              transition={{ duration: 0.32, ease: EASE_OUT, delay: 0.06 }}
+              transition={{ duration: 0.32, ease: EASE_OUT }}
               className="bg-cream py-10 text-ink sm:py-14 md:py-20"
             >
               <div className="mx-auto max-w-4xl px-4 sm:px-6">
@@ -421,19 +432,21 @@ export function BuildingModalPage({
                 {/* Bottom Navigation between buildings */}
                 <nav
                   aria-label="Navegación entre edificios"
-                  className="mt-12 grid grid-cols-2 items-start gap-4 border-t border-ink/15 pt-8 sm:gap-8 md:mt-16 md:pt-12 lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-12"
+                  className="mt-12 grid grid-cols-2 items-start gap-4 border-t border-ink/15 pt-8 sm:gap-8 md:mt-16 md:pt-12 lg:grid-cols-[1fr_auto_1fr] lg:gap-12"
                 >
                   {prevBuilding ? (
                     <BuildingNavPreview
                       item={prevBuilding}
                       direction="prev"
-                      onNavigate={onNavigate}
+                      isPrimed={primedPreviewId === prevBuilding.id}
+                      onPrime={setPrimedPreviewId}
+                      onNavigate={handleNavigate}
                     />
                   ) : (
                     <div />
                   )}
 
-                  <div className="order-last col-span-2 flex justify-center pt-2 lg:order-none lg:col-span-1 lg:pt-0">
+                  <div className="order-last col-span-2 flex justify-center pt-2 lg:order-none lg:col-span-1 lg:self-center lg:pt-0">
                     <button
                       type="button"
                       onClick={onClose}
@@ -447,7 +460,9 @@ export function BuildingModalPage({
                     <BuildingNavPreview
                       item={nextBuilding}
                       direction="next"
-                      onNavigate={onNavigate}
+                      isPrimed={primedPreviewId === nextBuilding.id}
+                      onPrime={setPrimedPreviewId}
+                      onNavigate={handleNavigate}
                     />
                   ) : (
                     <div />

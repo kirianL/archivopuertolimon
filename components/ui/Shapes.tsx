@@ -81,3 +81,23 @@ export function PlusIcon({ className }: ShapeProps) {
   );
 }
 
+export function EditorialArrow({
+  className,
+  direction = "right",
+}: ShapeProps & { direction?: "left" | "right" }) {
+  return (
+    <svg
+      viewBox="0 0 24 14"
+      className={`${direction === "left" ? "-scale-x-100" : ""} ${className ?? ""}`}
+      aria-hidden
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M1.5 7h20M15.5 1.5C17.4 4.4 19.6 6.2 22 7c-2.4.8-4.6 2.6-6.5 5.5" />
+    </svg>
+  );
+}
+

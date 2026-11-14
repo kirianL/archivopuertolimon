@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @source not "../.agents";
 
-/* Puerto LimÃ³n â€” design tokens */
+/* Puerto Limón — design tokens */
 
 @theme {
   --color-clay: #8f4f3a;
@@ -20,6 +20,7 @@
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
+    scroll-behavior: smooth;
     scrollbar-width: none;
   }
 
@@ -28,7 +29,7 @@
   }
 
   body {
-    background: var(--color-clay);
+    background: var(--color-moss);
     color: var(--color-ink);
     font-family: var(--font-sans);
   }

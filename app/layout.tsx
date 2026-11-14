@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import "./globals.css";
 
@@ -10,6 +10,10 @@ const archivo = Archivo({
   axes: ["wdth"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  themeColor: "#5e6122",
+};
 
 export const metadata: Metadata = {
   title: "Puerto Limón — Historia y memoria del Caribe",

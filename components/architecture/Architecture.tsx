@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import {
   LayoutGroup,
   MotionConfig,
@@ -11,7 +11,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { Highlight } from "@/components/ui/Highlight";
-import { BrushStroke } from "@/components/ui/Shapes";
+import { BrushStroke, EditorialArrow } from "@/components/ui/Shapes";
 import { BuildingModalPage } from "./BuildingModalPage";
 import { architectureStats, buildings, type Building } from "./buildings";
 import { LimonMap } from "./LimonMap";
@@ -19,11 +19,18 @@ import { LimonMap } from "./LimonMap";
 type BuildingCardProps = {
   item: Building;
   index: number;
+  isActive: boolean;
   onOpen: (building: Building) => void;
   snap?: boolean;
 };
 
-function BuildingCard({ item, index, onOpen, snap = false }: BuildingCardProps) {
+function BuildingCard({
+  item,
+  index,
+  isActive,
+  onOpen,
+  snap = false,
+}: BuildingCardProps) {
   return (
     <li
       className={`relative isolate w-[78vw] max-w-[340px] shrink-0 sm:w-[340px] md:w-[370px] ${
@@ -41,7 +48,7 @@ function BuildingCard({ item, index, onOpen, snap = false }: BuildingCardProps) 
         className="group block w-full cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
       >
         <motion.div
-          layoutId={`building-image-${item.id}`}
+          layoutId={isActive ? `building-image-${item.id}` : undefined}
           style={{ borderRadius: 16 }}
           transition={{ type: "spring", stiffness: 300, damping: 32, mass: 0.85 }}
           className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink/10"
@@ -57,14 +64,6 @@ function BuildingCard({ item, index, onOpen, snap = false }: BuildingCardProps) 
           <span className="font-display absolute top-3 left-3 rounded bg-cream px-2.5 py-0.5 text-lg text-ink shadow-xs">
             {item.year}
           </span>
-          <span
-            aria-hidden
-            className="absolute right-3 bottom-3 grid size-10 place-items-center rounded-full bg-ink text-base text-cream transition-[background-color,transform] duration-150 ease-out group-active:scale-[0.97] [@media(hover:hover)_and_(pointer:fine)]:group-hover:bg-moss"
-          >
-            <span className="transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-0.5 [@media(hover:hover)_and_(pointer:fine)]:group-hover:-translate-y-0.5">
-              ↗
-            </span>
-          </span>
         </motion.div>
 
         <h3 className="font-display mt-4 text-3xl text-ink">{item.name}</h3>
@@ -73,27 +72,33 @@ function BuildingCard({ item, index, onOpen, snap = false }: BuildingCardProps) 
         </p>
         <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold tracking-wide text-moss uppercase">
           <span>{item.style} · Leer historia</span>
-          <span
-            aria-hidden
-            className="transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-1"
-          >
-            →
-          </span>
+          <EditorialArrow
+            direction="right"
+            className="h-3 w-4 transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-1"
+          />
         </p>
       </button>
     </li>
   );
 }
 
-function ScrollDrivenBuildings({
-  onOpen,
-}: {
+type ScrollDrivenBuildingsProps = {
+  activeBuildingId: string | null;
+  scrollTrackRef: RefObject<HTMLDivElement | null>;
+  maxScroll: number;
+  onMaxScrollChange: (maxScroll: number) => void;
   onOpen: (building: Building) => void;
-}) {
-  const scrollTrackRef = useRef<HTMLDivElement>(null);
+};
+
+function ScrollDrivenBuildings({
+  activeBuildingId,
+  scrollTrackRef,
+  maxScroll,
+  onMaxScrollChange,
+  onOpen,
+}: ScrollDrivenBuildingsProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
-  const [maxScroll, setMaxScroll] = useState(0);
 
   useEffect(() => {
     const listEl = listRef.current;
@@ -101,7 +106,9 @@ function ScrollDrivenBuildings({
     if (!listEl || !viewportEl) return;
 
     const measure = () => {
-      setMaxScroll(Math.max(0, listEl.scrollWidth - viewportEl.clientWidth));
+      onMaxScrollChange(
+        Math.max(0, listEl.scrollWidth - viewportEl.clientWidth),
+      );
     };
 
     measure();
@@ -115,11 +122,11 @@ function ScrollDrivenBuildings({
       observer.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, []);
+  }, [onMaxScrollChange]);
 
   const { scrollYProgress } = useScroll({
     target: scrollTrackRef,
-    offset: ["start start", "end end"],
+    offset: ["start 65%", "end end"],
   });
   const x = useTransform(scrollYProgress, [0, 1], [0, -maxScroll]);
 
@@ -128,12 +135,15 @@ function ScrollDrivenBuildings({
       ref={scrollTrackRef}
       className="relative"
       style={{
-        height: maxScroll > 0 ? `calc(100svh + ${maxScroll}px)` : "300svh",
+        height:
+          maxScroll > 0
+            ? `calc(520px + ${Math.round(maxScroll * 0.75)}px)`
+            : "240svh",
       }}
     >
       <div
         ref={viewportRef}
-        className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden py-8"
+        className="sticky top-10 overflow-hidden pt-3 pb-12 md:top-16 md:pt-4 md:pb-20"
       >
         <motion.ol
           ref={listRef}
@@ -145,6 +155,7 @@ function ScrollDrivenBuildings({
               key={item.id}
               item={item}
               index={index}
+              isActive={activeBuildingId === null}
               onOpen={onOpen}
             />
           ))}
@@ -165,6 +176,8 @@ function ScrollDrivenBuildings({
 }
 
 export default function Architecture() {
+  const scrollTrackRef = useRef<HTMLDivElement>(null);
+  const [maxScroll, setMaxScroll] = useState(0);
   const [activeBuilding, setActiveBuilding] = useState<Building | null>(null);
   const reduceMotion = useReducedMotion();
 
@@ -199,6 +212,23 @@ export default function Architecture() {
       "",
       `#edificio-${building.id}`,
     );
+
+    const trackEl = scrollTrackRef.current;
+    if (trackEl && maxScroll > 0) {
+      const index = buildings.findIndex((b) => b.id === building.id);
+      if (index >= 0) {
+        const trackTop =
+          trackEl.getBoundingClientRect().top + window.scrollY;
+        const scrollableDistance = Math.max(
+          0,
+          trackEl.offsetHeight - window.innerHeight,
+        );
+        const targetTop =
+          trackTop +
+          (index / Math.max(1, buildings.length - 1)) * scrollableDistance;
+        window.scrollTo({ top: targetTop, behavior: "instant" });
+      }
+    }
   };
 
   const closeBuilding = () => {
@@ -218,7 +248,7 @@ export default function Architecture() {
         className="bg-cream pt-14 text-ink md:pt-28"
       >
         {/* Top block wrapped in overflow-hidden so decorative strokes clip without breaking sticky below */}
-        <div className="overflow-hidden pb-6 md:pb-12">
+        <div className="overflow-hidden pb-2 md:pb-6">
           <div className="mx-auto max-w-6xl px-6">
             <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
               <div>
@@ -275,13 +305,20 @@ export default function Architecture() {
                 key={item.id}
                 item={item}
                 index={index}
+                isActive={activeBuilding === null}
                 onOpen={openBuilding}
                 snap
               />
             ))}
           </ol>
         ) : (
-          <ScrollDrivenBuildings onOpen={openBuilding} />
+          <ScrollDrivenBuildings
+            activeBuildingId={activeBuilding?.id ?? null}
+            scrollTrackRef={scrollTrackRef}
+            maxScroll={maxScroll}
+            onMaxScrollChange={setMaxScroll}
+            onOpen={openBuilding}
+          />
         )}
       </section>
 

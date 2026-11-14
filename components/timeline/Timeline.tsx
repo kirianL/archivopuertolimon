@@ -9,7 +9,7 @@ function Intro() {
   const [first, second, third] = eras;
 
   return (
-    <section aria-labelledby="intro-title" className="bg-cream py-14 text-ink md:py-32">
+    <section id="historia" aria-labelledby="intro-title" className="bg-cream py-14 text-ink md:py-32">
       <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 md:gap-14 lg:grid-cols-[1.1fr_1fr]">
         {/* Collage; paint swipes peek out from behind the photo corners */}
         <div className="relative isolate mx-auto grid w-full max-w-sm grid-cols-[2fr_3fr] gap-2 md:max-w-none md:gap-3">
@@ -33,12 +33,12 @@ function Intro() {
           <h2 id="intro-title" className="font-display isolate text-5xl text-balance md:text-7xl">
             Un puerto que se hizo <Highlight color="text-sand">a pulso</Highlight>
           </h2>
-          <p className="mt-4 leading-relaxed md:mt-6 text-pretty text-ink/80 lg:ml-auto lg:max-w-[46ch]">
-            LimÃ³n no naciÃ³ de un decreto: lo levantaron el cafÃ©, el tren y las manos de miles de
-            familias que cruzaron el Caribe. Esta es su historia, Ã©poca por Ã©poca.
+          <p className="mt-4 leading-relaxed text-pretty text-ink/80 md:mt-6 lg:ml-auto lg:max-w-[46ch]">
+            Limón no nació de un decreto: lo levantaron el café, el tren y las manos de miles de
+            familias que cruzaron el Caribe. Esta es su historia, época por época.
           </p>
           <Button href="#cronologia" variant="dark" className="mt-8">
-            Ver la cronologÃ­a
+            Ver la cronología
           </Button>
         </div>
       </div>
