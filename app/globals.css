@@ -1,0 +1,91 @@
+@import "tailwindcss";
+@source not "../.agents";
+
+/* Puerto LimÃ³n â€” design tokens */
+
+@theme {
+  --color-clay: #8f4f3a;
+  --color-ink: #1f1d1b;
+  --color-cream: #faf3d9;
+  --color-sky: #7b98d6;
+  --color-moss: #5e6122;
+  --color-ember: #dc5a32;
+  --color-sand: #b98a52;
+
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  body {
+    background: var(--color-clay);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+}
+
+@layer utilities {
+  /* Extra-condensed, heavy display cut (matches the reference poster type) */
+  .font-display {
+    font-stretch: 62%;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.96;
+    letter-spacing: -0.01em;
+  }
+
+  /* Permitir que las tildes en mayúsculas no se recorten en el rodillo de slot-text */
+  .char-slot {
+    line-height: 1.45 !important;
+  }
+
+  .animate-rise {
+    animation: rise 700ms var(--ease-out-strong) both;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  /* Scroll-driven reveal: progressive enhancement, no JS */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+}
+
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .reveal {
+    animation: none;
+  }
+}
+
+/* Permitir que slot-text haga wrap en párrafos largos multilinea */
+.slot-text-multiline .slot-text {
+  display: inline;
+  white-space: normal;
+}
+
+.slot-text-multiline .char-slot {
+  display: inline-block;
+  white-space: pre-wrap;
+}
