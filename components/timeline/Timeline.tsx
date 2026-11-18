@@ -6,27 +6,28 @@ import imgBahiaAerea from "@/public/Limón - images/patrimonio/bahia-costa-limon
 import imgPlano1905 from "@/public/Limón - images/patrimonio/plano-general-limon-1905-peyroutet.jpg";
 import imgPlano1929 from "@/public/Limón - images/patrimonio/plano-ciudad-limon-1929-ufc.jpg";
 import Chronology from "./Chronology";
+import StudyZone from "./StudyZone";
 
-const studyZones = [
+const historicalMilestones = [
   {
-    name: "Casco Histórico",
-    year: "1870 · Plano 1905",
+    name: "Decreto Portuario",
+    year: "1852 · 1865",
     detail:
-      "Trazado en cuadrícula por el Ing. Francisco Kurtze (1870) y Ángel Miguel Velásquez, desde los talleres del ferrocarril en la avenida 7 hasta el conjunto portuario y el tajamar.",
+      "Juan Rafael Mora Porras habilita Moín y Limón como puertos del Caribe (1852) y en 1865 se decreta Limón como puerto principal de la República.",
     dotClass: "bg-ember",
   },
   {
-    name: "Jamaica Town",
-    year: "Década de 1880",
+    name: "Trazado y Tajamar",
+    year: "1870 · 1905",
     detail:
-      "Primer ensanche surgido en tierras de la Quinta Keith-Wilson, habitado por familias jamaiquinas junto a los talleres ferroviarios entre el Parque Asis Esna y la avenida 7.",
+      "Salvador Lara, Francisco Kurtze y Ángel Miguel Velásquez diseñan la cuadrícula con calles de 20 m de ancho, tajamar y relleno sanitario sobre el arrecife.",
     dotClass: "bg-sky",
   },
   {
-    name: "Zona Americana",
-    year: "Plano UFC 1929",
+    name: "Ferrocarril y Enclave",
+    year: "1890 · 1929",
     detail:
-      "Sector norte (actual Hospital Tony Facio), entre la línea costera y la vía férrea de Moín, donde se levantó el barrio residencial para funcionarios de la United Fruit Company.",
+      "Con el ferrocarril al Atlántico (1890) y la United Fruit Company (1899), el puerto articula su centro comercial con Jamaica Town y la Zona Americana.",
     dotClass: "bg-sand",
   },
 ] as const;
@@ -84,15 +85,19 @@ function Intro() {
               primer ensanche afroantillano de Jamaica Town en 1880, Limón
               articuló tres tejidos históricos frente al mar Caribe.
             </p>
-            <Button href="#cronologia" variant="dark" className="mt-7">
-              Ver la cronología
-            </Button>
+            <div className="mt-7 flex flex-wrap gap-3 lg:justify-end">
+              <Button href="#zona-estudio" variant="dark">
+                Explorar Zona de Estudio
+              </Button>
+              <Button href="#cronologia" variant="light">
+                Ver la cronología
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Las 3 zonas históricas de estudio del TEC (Casco Histórico, Jamaica Town y Zona Americana) */}
         <div className="mt-12 grid gap-6 border-t border-ink/15 pt-8 md:mt-16 md:grid-cols-3 md:pt-10">
-          {studyZones.map((zone) => (
+          {historicalMilestones.map((zone) => (
             <article key={zone.name} className="relative isolate pl-3">
               <span
                 aria-hidden="true"
@@ -121,6 +126,7 @@ export default function Timeline() {
   return (
     <>
       <Intro />
+      <StudyZone />
       <Chronology />
     </>
   );

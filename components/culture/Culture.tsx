@@ -42,13 +42,6 @@ import imgFergusonPortrait from "@/public/Limón - images/a-Ferguson1.jpg";
 import imgEsculturaGemelo from "@/public/Limón - images/patrimonio/esculturas-reciclaje-gemelo-ballestero.jpg";
 import imgTurbantes from "@/public/Limón - images/patrimonio/artesania-turbantes-afrocaribenos.jpg";
 import imgCocoTortuga from "@/public/Limón - images/patrimonio/artesania-coco-tortuga-limon.jpg";
-import imgCacao from "@/public/Limón - images/patrimonio/gastronomia-cacao.jpg";
-import imgRiceAndBeans from "@/public/Limón - images/patrimonio/gastronomia-rice-and-beans.jpg";
-import imgBochinche from "@/public/Limón - images/patrimonio/gastronomia-bochinche.jpg";
-import imgPatiPlato from "@/public/Limón - images/patrimonio/gastronomia-pati.jpg";
-import imgQuiribri from "@/public/Limón - images/patrimonio/isla-quiribri-panoramica.jpg";
-import imgCruceroMuelle from "@/public/Limón - images/patrimonio/crucero-muelle-puerto-limon.jpg";
-import imgCacaoTour from "@/public/Limón - images/patrimonio/turismo-cacao-chocolate-company.jpg";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
@@ -287,60 +280,6 @@ const radioStations = [
       "La voz cotidiana de la comunidad, espacio de opinión y compañía indispensable.",
     streamUrl: "https://s44.myradiostream.com/8368/;",
     externalUrl: "https://onlineradiobox.com/cr/bahialimon/",
-  },
-] as const;
-
-const artPillars = [
-  {
-    label: "Pasaje Cristal · Pintura",
-    note: "Corredor de 1908 (César Rivaflecha, La Gaceta N° 16 de 1999) donde exhiben Edgar León, William Durán, Germán Mora, Honorio Cabraca y Virginia Araya.",
-  },
-  {
-    label: "Escultura reciclada · «Gemelo»",
-    note: "En el 2.º nivel del edificio sur de la UFC, el artista limonense Ballestero («Gemelo») crea esculturas con piezas de bicicletas y abanicos en desuso.",
-  },
-  {
-    label: "Artesanía en coco y turbantes",
-    note: "Obras en coco, bambú, tela y madera en los antiguos edificios de la UFC que rescatan oficios y símbolos afrocaribeños.",
-  },
-  {
-    label: "Literatura · Nation y Duncan",
-    note: "Desde los ensayos en inglés de Samuel Charles Nation (1912–1942) hasta Quince Duncan (El negro en Costa Rica, 1972), Joaquín Gutiérrez y Ana Cristina Rossi.",
-  },
-] as const;
-
-const gastronomyDishes = [
-  {
-    name: "Rice and Beans",
-    tag: "Leche de coco y chile panameño",
-    detail:
-      "Arroz y frijoles cocinados en leche de coco con ajo, tomillo y chile panameño, acompañados de pollo condimentado con especias, apio, chile dulce y cebolla.",
-    image: imgRiceAndBeans,
-    alt: "Plato tradicional de Rice and Beans limonense con pollo y ensalada",
-  },
-  {
-    name: "Patí",
-    tag: "Repostería inglesa y tradición africana",
-    detail:
-      "Pastel de harina, manteca y margarina relleno de carne de res molida, especias y pimiento picante, fusión de la repostería inglesa y la cocina afrodescendiente.",
-    image: imgPatiPlato,
-    alt: "Patí limonense recién horneado",
-  },
-  {
-    name: "Bochinche",
-    tag: "Variación territorial del casado",
-    detail:
-      "Plato característico limonense que combina espagueti, frijoles molidos, ensalada verde, patacones y una porción de carne de res, pescado o pollo.",
-    image: imgBochinche,
-    alt: "Plato de Bochinche limonense con patacones, frijoles molidos y espagueti",
-  },
-  {
-    name: "Cacao",
-    tag: "Herencia originaria Huetar Caribe",
-    detail:
-      "Cultivo heredado de los pueblos originarios de las regiones Huetar Caribe, Norte y Brunca, hoy vivo en experiencias como G&E Chocolate Adventure Company.",
-    image: imgCacao,
-    alt: "Mazorcas de cacao cultivadas en la provincia de Limón",
   },
 ] as const;
 
@@ -1411,14 +1350,14 @@ export default function Culture() {
                ================================================================= */}
             <div className="mt-12 grid gap-6 border-t border-cream/15 pt-12 md:grid-cols-3">
               {/* Tarjeta 1: Dominó */}
-              <article className="group relative overflow-hidden rounded-xl p-3.5 sm:p-4">
+              <article className="relative overflow-hidden rounded-xl p-3.5 sm:p-4">
                 <Image
                   src={imgDomino}
                   alt="Casa del Dominó en Puerto Limón"
                   fill
                   placeholder="blur"
                   sizes="(min-width: 768px) 360px, 92vw"
-                  className="pointer-events-none -z-10 object-cover brightness-75 transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                  className="pointer-events-none -z-10 object-cover brightness-75"
                 />
                 <div className="flex h-full flex-col justify-between rounded-lg bg-cream p-5 text-ink shadow-md">
                   <h4 className="font-display text-2xl text-ink sm:text-3xl">
@@ -1439,7 +1378,7 @@ export default function Culture() {
                       fill
                       placeholder="blur"
                       sizes="(min-width: 768px) 320px, 80vw"
-                      className="object-cover transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110"
+                      className="object-cover"
                     />
                   </div>
 
@@ -1458,14 +1397,14 @@ export default function Culture() {
               </article>
 
               {/* Tarjeta 2: Béisbol */}
-              <article className="group relative overflow-hidden rounded-xl p-3.5 sm:p-4">
+              <article className="relative overflow-hidden rounded-xl p-3.5 sm:p-4">
                 <Image
                   src={imgBigBoy}
                   alt="Estadio Big Boy de Puerto Limón"
                   fill
                   placeholder="blur"
                   sizes="(min-width: 768px) 360px, 92vw"
-                  className="pointer-events-none -z-10 object-cover brightness-75 transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                  className="pointer-events-none -z-10 object-cover brightness-75"
                 />
                 <div className="flex h-full flex-col justify-between rounded-lg bg-cream p-5 text-ink shadow-md">
                   <h4 className="font-display text-2xl text-ink sm:text-3xl">
@@ -1485,7 +1424,7 @@ export default function Culture() {
                       fill
                       placeholder="blur"
                       sizes="(min-width: 768px) 320px, 80vw"
-                      className="object-cover transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110"
+                      className="object-cover"
                     />
                   </div>
 
@@ -1503,14 +1442,14 @@ export default function Culture() {
               </article>
 
               {/* Tarjeta 3: Boxeo y fútbol barrial */}
-              <article className="group relative overflow-hidden rounded-xl p-3.5 sm:p-4">
+              <article className="relative overflow-hidden rounded-xl p-3.5 sm:p-4">
                 <Image
                   src={imgBoxeo}
                   alt="Boxeo y deporte barrial en Puerto Limón"
                   fill
                   placeholder="blur"
                   sizes="(min-width: 768px) 360px, 92vw"
-                  className="pointer-events-none -z-10 object-cover brightness-75 transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                  className="pointer-events-none -z-10 object-cover brightness-75"
                 />
                 <div className="flex h-full flex-col justify-between rounded-lg bg-cream p-5 text-ink shadow-md">
                   <h4 className="font-display text-2xl text-ink sm:text-3xl">
@@ -1530,7 +1469,7 @@ export default function Culture() {
                       fill
                       placeholder="blur"
                       sizes="(min-width: 768px) 320px, 80vw"
-                      className="object-cover transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110"
+                      className="object-cover"
                     />
                   </div>
 
