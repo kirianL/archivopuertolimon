@@ -59,7 +59,7 @@ const heroGallery: readonly HeroGalleryItem[] = [
 ];
 
 const navLinks = [
-  { href: "#inicio", label: "Inicio", note: "Puerto Limón · Archivo vivo" },
+  { href: "#inicio", label: "Inicio", note: "Puerto Limón, archivo vivo" },
   {
     href: "#historia",
     label: "Historia",
@@ -68,7 +68,7 @@ const navLinks = [
   {
     href: "#cronologia",
     label: "Cronología",
-    note: "1854 hasta hoy · 6 épocas",
+    note: "De 1854 hasta hoy en 6 épocas",
   },
   {
     href: "#arquitectura",
@@ -275,7 +275,7 @@ function SiteNav() {
             </nav>
 
             <div className="relative z-10 px-6 pb-8 text-xs font-medium tracking-wide text-cream/50 md:px-10">
-              Costa Caribeña · Costa Rica
+              Costa Caribeña, Costa Rica
             </div>
           </motion.div>
         )}

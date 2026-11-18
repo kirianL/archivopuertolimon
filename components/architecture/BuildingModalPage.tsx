@@ -41,8 +41,6 @@ const ACCENT_STYLES: Record<
   },
 };
 
-const HIGHLIGHT_DOT_COLORS = ["bg-moss", "bg-sky", "bg-ember"] as const;
-
 function splitTitle(title: string): { head: string; tail: string } {
   const words = title.trim().split(/\s+/);
   if (words.length <= 1) return { head: "", tail: title };
@@ -92,7 +90,7 @@ function BuildingNavPreview({
       <span className="mt-1.5 inline-flex items-center gap-1.5 text-[11px] font-bold tracking-wide text-moss uppercase sm:mt-2 sm:text-xs">
         {isNext ? (
           <>
-            <span>Siguiente · {item.year}</span>
+            <span>Siguiente ({item.year})</span>
             <EditorialArrow
               direction="right"
               className="h-3 w-4 transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-1"
@@ -104,7 +102,7 @@ function BuildingNavPreview({
               direction="left"
               className="h-3 w-4 transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:-translate-x-1"
             />
-            <span>Anterior · {item.year}</span>
+            <span>Anterior ({item.year})</span>
           </>
         )}
       </span>
@@ -352,19 +350,12 @@ export function BuildingModalPage({
                   </p>
 
                   <dl className="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-3 sm:gap-6">
-                    {building.highlights.map((item, idx) => (
-                      <div
-                        key={item.label}
-                        className="relative isolate min-w-0 pl-2"
-                      >
+                    {building.highlights.map((item) => (
+                      <div key={item.label} className="min-w-0">
                         <dt className="text-[11px] font-semibold tracking-wide text-cream/55 uppercase sm:text-xs">
                           {item.label}
                         </dt>
-                        <dd className="relative mt-1 text-sm leading-snug font-bold wrap-break-word text-cream sm:mt-1.5 sm:text-base">
-                          <span
-                            aria-hidden
-                            className={`pointer-events-none absolute -top-0.5 -left-2 -z-10 size-5 rounded-full sm:-top-1 sm:-left-2.5 sm:size-6 ${HIGHLIGHT_DOT_COLORS[idx % HIGHLIGHT_DOT_COLORS.length]}`}
-                          />
+                        <dd className="mt-1 text-sm leading-snug font-bold wrap-break-word text-cream sm:mt-1.5 sm:text-base">
                           {item.value}
                         </dd>
                       </div>
@@ -391,7 +382,7 @@ export function BuildingModalPage({
                       “
                     </span>
                     <p className="mt-1 text-base leading-snug font-bold text-ink text-pretty sm:mt-2 sm:text-lg">
-                      {building.style} · {building.year}
+                      {building.style} ({building.year})
                     </p>
                     <p className="mt-1 text-xs leading-relaxed text-ink/70 sm:mt-2 sm:text-sm">
                       {building.location}

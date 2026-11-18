@@ -8,9 +8,9 @@ import imgParque from "@/public/Limón - images/patrimonio/parque-vargas-quiosco
 import imgPortuaria from "@/public/Limón - images/AutoridadPortuaria.png";
 import imgDomino from "@/public/Limón - images/patrimonio/casa-del-domino-cole-scarlett.jpg";
 import imgEscuela from "@/public/Limón - images/EscuelaTomasGuardia.png";
-import imgPension from "@/public/Limón - images/patrimonio/arquitectura-caribena-madera-1.jpg";
-import imgBigBoy from "@/public/Limón - images/patrimonio/estadio-big-boy-fachada.jpg";
-import imgBautista from "@/public/Limón - images/patrimonio/arquitectura-caribena-madera-2.jpg";
+import imgPension from "@/public/Limón - images/PensionCostaRica.png";
+import imgBigBoy from "@/public/Limón - images/BigBoy.png";
+import imgBautista from "@/public/Limón - images/patrimonio/arquitectura-caribena-madera-1.jpg";
 import imgUfcEdificios from "@/public/Limón - images/patrimonio/ufc-exterior.jpg";
 import imgPasajeCristal from "@/public/Limón - images/patrimonio/pasaje-cristal-pintores-limon.jpg";
 
@@ -54,7 +54,7 @@ export const buildings: Building[] = [
     id: "parque-vargas",
     name: "Parque Balvanero Vargas Molina",
     year: "1895",
-    style: "Ecléctico · Art Nouveau y Neoclásico",
+    style: "Ecléctico, Art Nouveau y Neoclásico",
     summary:
       "Diseñado en 1895 por el francés Andrés Bonife en 16 800 m² donados por la United Fruit Company, con árboles traídos por capitanes desde Cuba y Jamaica y quiosco de César Rivaflecha.",
     history: [
@@ -62,7 +62,7 @@ export const buildings: Building[] = [
       "Su quiosco de estilo ecléctico con influencia art nouveau y neoclásica fue construido por el arquitecto César Rivaflecha, quien incorporó decoraciones vegetales y animales. Bautizado en 1905 en honor al gobernador Balvanero Vargas, recibió la declaratoria de interés histórico arquitectónico el 26 de junio de 1995 según La Gaceta N° 121 (MCJ, 1995).",
     ],
     highlights: [
-      { label: "Diseño", value: "1895 · Andrés Bonife" },
+      { label: "Diseño", value: "1895 (Andrés Bonife)" },
       { label: "Quiosco", value: "Arq. César Rivaflecha" },
       { label: "Declaratoria", value: "La Gaceta N° 121 (1995)" },
     ],
@@ -74,7 +74,7 @@ export const buildings: Building[] = [
     id: "edificios-ufc",
     name: "Antiguos Edificios de la UFC",
     year: "1903",
-    style: "Industrial portuario · Boston",
+    style: "Industrial portuario (Boston)",
     summary:
       "Construidos entre 1903 y 1904 al costado oeste del Parque Vargas con tipología elaborada en Boston: estructura metálica, ladrillo a tizón y soga, bahareque francés y monitor de ventilación.",
     history: [
@@ -83,7 +83,7 @@ export const buildings: Building[] = [
     ],
     highlights: [
       { label: "Construcción", value: "1903–1904" },
-      { label: "Tipología", value: "UFC Boston · Ladrillo y metal" },
+      { label: "Tipología", value: "UFC Boston, ladrillo y metal" },
       { label: "Declaratoria", value: "La Gaceta N° 34 (1999)" },
     ],
     location: "Costado oeste del Parque Balvanero Vargas",
@@ -282,7 +282,7 @@ export const buildings: Building[] = [
       "En la década de 1940 las instalaciones se remodelaron y cerraron perimetralmente, bautizándose como Estadio de Béisbol «Big Boy» en homenaje al destacado pelotero Bancroft Scott Watson, donde también brilló Donald «Danny» Hayling Shaw (MCJ, 2000). El 18 de julio de 2002 (La Gaceta N° 138) fue declarado patrimonio histórico arquitectónico.",
     ],
     highlights: [
-      { label: "Hitos", value: "1887 cancha · 1897 donación UFC" },
+      { label: "Hitos", value: "1887 cancha, 1897 donación UFC" },
       { label: "Homenaje", value: "Bancroft «Big Boy» Scott Watson" },
       { label: "Declaratoria", value: "La Gaceta N° 138 (2002)" },
     ],

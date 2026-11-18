@@ -31,10 +31,12 @@ import imgMaracas from "@/public/Limón - images/Parade/Musicos y cantantes/5400
 import imgComparsaFeather from "@/public/Limón - images/Parade/Trajes/540455199_759706376839441_6626957489670622357_n.jpg";
 import imgGalaCrown from "@/public/Limón - images/Parade/Trajes/540589295_759705376839541_8886161950268267501_n.jpg";
 import imgDomino from "@/public/Limón - images/patrimonio/partida-domino-manos-fichas.jpg";
-import imgBigBoy from "@/public/Limón - images/patrimonio/estadio-big-boy-diamante.jpg";
+import imgBigBoy from "@/public/Limón - images/BigBoy.png";
 import imgBoxeo from "@/public/Limón - images/Boxeo.jpg";
 import imgComunidad from "@/public/Limón - images/Comunidad-vidacotidiana.png";
-import imgArte from "@/public/Limón - images/patrimonio/pasaje-cristal-pintores-limon.jpg";
+import imgArteLimon from "@/public/Limón - images/arteLimon.png";
+import imgPasajeCristal from "@/public/Limón - images/patrimonio/pasaje-cristal-pintores-limon.jpg";
+import imgGaleriaPintura from "@/public/Limón - images/patrimonio/galeria-pintura-limon.jpg";
 import imgTeatro from "@/public/Limón - images/teatro.png";
 import imgDosAguas from "@/public/Limón - images/DosAguas.png";
 import imgCenizaNegra from "@/public/Limón - images/CenizaNegra.png";
@@ -53,7 +55,6 @@ type CarnivalPillar = {
   detail: string;
   caption: string;
   credit: string;
-  dotClass: string;
   accentBarClass: string;
   image: StaticImageData;
   secondaryImage: StaticImageData;
@@ -73,8 +74,7 @@ const carnivalPillars: readonly CarnivalPillar[] = [
       "Tambores, penachos y coreografías que toman las avenidas del puerto cada octubre.",
     caption:
       "Recorrido principal del Carnaval alrededor del Día de las Culturas.",
-    credit: "Foto: Xavier Sandí Castillo",
-    dotClass: "bg-moss",
+    credit: "Archivo cultural de Puerto Limón",
     accentBarClass: "bg-moss",
     image: imgCarnaval,
     secondaryImage: imgComparsaFeather,
@@ -93,8 +93,7 @@ const carnivalPillars: readonly CarnivalPillar[] = [
       "Tarimas abiertas y esquinas donde el bajo caribeño y las maracas marcan el paso.",
     caption:
       "Calipseros y percusión en vivo durante las jornadas culturales del puerto.",
-    credit: "Foto: Xavier Sandí Castillo",
-    dotClass: "bg-sky",
+    credit: "Escena musical de Limón",
     accentBarClass: "bg-sky",
     image: imgCalypsonian,
     secondaryImage: imgMaracas,
@@ -112,8 +111,7 @@ const carnivalPillars: readonly CarnivalPillar[] = [
       "Vestuarios de gala, turbantes y herencia afrocaribeña transmitida entre generaciones.",
     caption:
       "Indumentaria tradicional y coronas artesanales en las calles de Limón.",
-    credit: "Foto: Xavier Sandí Castillo",
-    dotClass: "bg-ember",
+    credit: "Tradición afrocaribeña limonense",
     accentBarClass: "bg-ember",
     image: imgGalaCrown,
     secondaryImage: imgCarnaval,
@@ -132,7 +130,6 @@ const carnivalPillars: readonly CarnivalPillar[] = [
     caption:
       "Sabores afrocaribeños que acompañan cada esquina de la fiesta limonense.",
     credit: "Archivo gastronómico de Limón",
-    dotClass: "bg-sand",
     accentBarClass: "bg-sand",
     image: imgPatty,
     secondaryImage: imgExpresion,
@@ -264,7 +261,7 @@ const radioStations = [
     freq: "98.3 FM",
     dialPercent: "28%",
     name: "Radio Casino",
-    tagline: "La Reina del Caribe · Fundada en 1948",
+    tagline: "La Reina del Caribe, fundada en 1948",
     description:
       "Emisora histórica fundada en 1948, pilar de la comunicación y difusión cultural en la provincia.",
     streamUrl: "https://host.rowrigo.com/listen/radiocasino/radiocasino",
@@ -321,7 +318,6 @@ export default function Culture() {
     "mekatelyu",
   );
   const [activeStampQuote, setActiveStampQuote] = useState<0 | 1>(0);
-  const [activeArtIndex, setActiveArtIndex] = useState(0);
   const [activeFilmIndex, setActiveFilmIndex] = useState(0);
   const [activeRadioIndex, setActiveRadioIndex] = useState(0);
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
@@ -481,7 +477,7 @@ export default function Culture() {
 
                 <figcaption className="mt-6 flex items-center justify-between gap-3 border-t border-cream/20 pt-2.5 text-xs text-cream/75">
                   <span>Calipso, reggae y expresión de calle</span>
-                  <span className="shrink-0">Foto: Xavier Sandí Castillo</span>
+                  <span className="shrink-0">Puerto Limón</span>
                 </figcaption>
               </figure>
 
@@ -567,11 +563,7 @@ export default function Culture() {
                   className="mt-6 border-t border-ink/15 pt-5 sm:mt-8 sm:pt-6"
                 >
                   <div className="flex items-start gap-3.5 sm:gap-4">
-                    <div className="relative isolate w-11 shrink-0 pl-1.5 sm:w-14 sm:pl-2">
-                      <span
-                        aria-hidden
-                        className={`pointer-events-none absolute top-0.5 left-0 -z-10 size-7 rounded-full transition-colors duration-200 sm:size-9 ${activePillar.dotClass}`}
-                      />
+                    <div className="w-11 shrink-0 sm:w-14">
                       <span className="font-display block text-3xl leading-none tabular-nums text-ink sm:text-5xl">
                         <SlotRollText
                           text={activePillar.number}
@@ -770,13 +762,7 @@ export default function Culture() {
                     />
 
                     <div className="flex items-start justify-between gap-2">
-                      <div className="relative isolate pl-1.5">
-                        <span
-                          aria-hidden
-                          className={`pointer-events-none absolute -top-0.5 left-0 -z-10 size-6 rounded-full transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] sm:size-8 ${
-                            pillar.dotClass
-                          } ${isSelected ? "scale-110" : "opacity-80"}`}
-                        />
+                      <div>
                         <span className="font-display text-2xl tracking-tight text-ink sm:text-3xl">
                           {pillar.number}
                         </span>
@@ -1136,8 +1122,8 @@ export default function Culture() {
                   <SlotRollText
                     text={
                       creoleMode === "mekatelyu"
-                        ? "Tree ting · Dis / Dat"
-                        : "Three things · This / That"
+                        ? "Tree ting / Dis / Dat"
+                        : "Three things / This / That"
                     }
                   />
                 </div>
@@ -1435,7 +1421,7 @@ export default function Culture() {
                       Shaw. Patrimonio desde 2002 (La Gaceta N° 138).
                     </p>
                     <span className="mt-3 block text-right text-xs font-bold tracking-wider text-moss underline underline-offset-4 uppercase">
-                      Estadio Big Boy · 1897
+                      Estadio Big Boy (1897)
                     </span>
                   </div>
                 </div>
@@ -1565,8 +1551,8 @@ export default function Culture() {
                   <SlotRollText
                     text={
                       activeStampQuote === 0
-                        ? "“Lo mejor de Limón es su gente” · Hospitalidad de porche"
-                        : "“Cho!” · Exclamación clásica de asombro y complicidad"
+                        ? "“Lo mejor de Limón es su gente” — Hospitalidad de porche"
+                        : "“Cho!” — Exclamación clásica de asombro y complicidad"
                     }
                   />
                 </div>
@@ -1584,247 +1570,248 @@ export default function Culture() {
                     : "Volver a: “Lo mejor de Limón es su gente”"}
                 </button>
               </div>
-
-              <p className="mt-3 text-right text-xs font-medium text-cream/80">
-                Foto: Xavier Sandí Castillo
-              </p>
             </div>
           </div>
         </section>
 
         {/* =====================================================================
-            BANDA 6A: ARTE, CREATIVIDAD Y TEATRO COMUNITARIO (REFERENCIA 2: OUR RECOMMENDATIONS)
+            BANDA 6A: ARTE, ESCENA Y MEMORIA (COMPOSICIÓN MUSEÍSTICA)
            ===================================================================== */}
         <section
           aria-labelledby="arte-teatro-title"
           className="overflow-hidden bg-cream py-16 text-ink md:py-28"
         >
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
-            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-ink/15 pb-6 sm:pb-8">
-              <h3
-                id="arte-teatro-title"
-                className="font-hero text-4xl leading-[1.08] font-normal text-ink sm:text-5xl md:text-6xl"
-              >
-                Arte, escena y <Highlight color="text-moss">memoria</Highlight>
-              </h3>
-              <span className="text-xs font-bold tracking-widest text-ink/60 uppercase">
-                Creación colectiva en Limón
-              </span>
-            </div>
+            {/* BLOQUE 1: Introducción editorial estilo catálogo de museo (2 láminas + declaración tipográfica) */}
+            <div className="grid items-start gap-8 lg:grid-cols-[9rem_1fr] lg:gap-12">
+              <p className="text-xs font-semibold tracking-wide text-ink/70">
+                Arte y creatividad
+              </p>
 
-            {/* Galería asimétrica de 2 piezas de distinta altura con etiquetas interactivas debajo */}
-            <div className="mt-10 grid items-start gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
-              {/* Columna 1: Arte y Creatividad */}
-              <article>
-                <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink/10">
-                  <Image
-                    src={imgArte}
-                    alt="Exposición de pintura y arte afrocaribeño en Limón"
-                    fill
-                    placeholder="blur"
-                    sizes="(min-width: 1024px) 460px, 92vw"
-                    className="object-cover transition-transform duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]"
-                  />
-                  <span className="absolute right-3 bottom-3 rounded-full bg-ink/75 px-3 py-1 text-[11px] font-medium text-cream backdrop-blur-xs">
-                    Foto: Xavier Sandí Castillo
-                  </span>
-                </div>
-
-                <h4 className="font-display mt-5 text-3xl text-ink sm:text-4xl">
-                  Arte y creatividad
-                </h4>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {artPillars.map((pillar, idx) => {
-                    const isSelected = idx === activeArtIndex;
-                    return (
-                      <button
-                        key={pillar.label}
-                        type="button"
-                        onClick={() => setActiveArtIndex(idx)}
-                        aria-pressed={isSelected}
-                        className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-150 sm:text-sm ${
-                          isSelected
-                            ? "bg-moss text-cream"
-                            : "border border-ink/20 bg-transparent text-ink/80 hover:border-ink/45"
-                        }`}
-                      >
-                        {pillar.label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <p className="mt-3 text-sm leading-relaxed text-ink/75 sm:text-base">
-                  <SlotRollText text={artPillars[activeArtIndex].note} />
-                </p>
-              </article>
-
-              {/* Columna 2 (formato más alto, como la pieza central de Our Recommendations en Referencia 2): Teatro y Escena Comunitaria */}
-              <article>
-                <div className="group relative aspect-[16/11] w-full overflow-hidden rounded-2xl bg-ink/10 sm:aspect-[16/10]">
-                  <Image
-                    src={imgTeatro}
-                    alt="Obra de teatro y escena comunitaria en Limón"
-                    fill
-                    placeholder="blur"
-                    sizes="(min-width: 1024px) 560px, 92vw"
-                    className="object-cover transition-transform duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]"
-                  />
-                  <span className="font-display absolute top-3 left-3 rounded-full bg-cream px-3 py-1 text-sm text-ink shadow-xs">
-                    Casa de la Cultura · Escena local
-                  </span>
-                </div>
-
-                <h4 className="font-display mt-5 text-3xl text-ink sm:text-4xl">
-                  Teatro y escena comunitaria
-                </h4>
-
-                <p className="mt-2.5 max-w-[54ch] text-sm leading-relaxed text-pretty text-ink/80 sm:text-base">
-                  El teatro y las artes escénicas en Limón son herramientas de
-                  reflexión social y cohesión. En espacios como la Casa de la
-                  Cultura, el teatro estudiantil y comunitario narra historias
-                  vinculadas a la identidad afrocaribeña y la memoria local.
-                </p>
-
-                {/* Mosaico de técnicas artísticas del estudio patrimonial del TEC (Edificio Sur UFC) */}
-                <div className="mt-6 grid grid-cols-3 gap-2.5 border-t border-ink/15 pt-5">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10">
+              <div className="grid items-end gap-6 md:grid-cols-[0.95fr_1.05fr] lg:gap-8">
+                <div className="grid grid-cols-2 gap-3">
+                  <figure className="relative aspect-[4/3] w-full overflow-hidden bg-ink">
                     <Image
-                      src={imgEsculturaGemelo}
-                      alt="Esculturas en metal reciclado del artista limonense Ballestero (Gemelo) en el edificio sur de la UFC"
+                      src={imgPasajeCristal}
+                      alt="Corredor del Pasaje Cristal con obras y retratos de pintores limonenses"
                       fill
                       placeholder="blur"
-                      sizes="180px"
+                      sizes="(min-width: 1024px) 220px, 45vw"
                       className="object-cover"
                     />
-                  </div>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10">
+                  </figure>
+                  <figure className="relative aspect-[4/3] w-full overflow-hidden bg-ink">
                     <Image
-                      src={imgTurbantes}
-                      alt="Artesanías y turbantes afrocaribeños en los antiguos edificios de la UFC"
+                      src={imgGaleriaPintura}
+                      alt="Sala de exposición de pintura afrocaribeña en los antiguos edificios de la UFC"
                       fill
                       placeholder="blur"
-                      sizes="180px"
+                      sizes="(min-width: 1024px) 220px, 45vw"
                       className="object-cover"
                     />
-                  </div>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10">
-                    <Image
-                      src={imgCocoTortuga}
-                      alt="Artesanía limonense tallada en cáscara de coco"
-                      fill
-                      placeholder="blur"
-                      sizes="180px"
-                      className="object-cover"
-                    />
-                  </div>
+                  </figure>
                 </div>
-              </article>
-            </div>
 
-            {/* =================================================================
-                GASTRONOMÍA PATRIMONIAL E ISLA QUIRIBRÍ (DEL ESTUDIO DEL TEC)
-               ================================================================= */}
-            <div className="mt-16 border-t border-ink/15 pt-14 sm:mt-24 sm:pt-16">
-              <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <span className="text-xs font-bold tracking-widest text-moss uppercase">
-                    Patrimonio gastronómico y natural
-                  </span>
-                  <h4 className="font-hero mt-2 text-3xl leading-[1.08] font-normal text-ink sm:text-5xl">
-                    Sabores de <Highlight color="text-ember">origen</Highlight> e Isla Quiribrí
-                  </h4>
-                </div>
-                <p className="max-w-[46ch] text-xs leading-relaxed text-ink/75 sm:text-sm">
-                  Fusión de tradiciones culinarias afrodescendientes, indígenas,
-                  europeas, hindúes y chinas adaptadas a los frutos del Caribe.
-                </p>
-              </div>
-
-              <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                {gastronomyDishes.map((dish) => (
-                  <article
-                    key={dish.name}
-                    className="group flex flex-col justify-between rounded-2xl border border-ink/12 bg-ink/[0.03] p-3.5 transition-colors duration-200 [@media(hover:hover)_and_(pointer:fine)]:hover:border-ink/30"
-                  >
-                    <div>
-                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-ink">
-                        <Image
-                          src={dish.image}
-                          alt={dish.alt}
-                          fill
-                          placeholder="blur"
-                          sizes="(min-width: 1024px) 250px, 45vw"
-                          className="object-cover transition-transform duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
-                        />
-                      </div>
-                      <h5 className="font-display mt-3.5 text-2xl text-ink">
-                        {dish.name}
-                      </h5>
-                      <p className="text-[11px] font-bold tracking-wider text-moss uppercase">
-                        {dish.tag}
-                      </p>
-                    </div>
-                    <p className="mt-2 text-xs leading-relaxed text-ink/75">
-                      {dish.detail}
-                    </p>
-                  </article>
-                ))}
-              </div>
-
-              {/* Isla Quiribrí (Uvita) + Turismo cultural y de cacao */}
-              <div className="mt-8 grid gap-6 rounded-2xl bg-ink p-6 text-cream sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-                <div>
-                  <span className="text-xs font-bold tracking-widest text-sand uppercase">
-                    Monumento Nacional · La Gaceta N° 183 (1985)
-                  </span>
-                  <h5 className="font-hero mt-2 text-2xl leading-[1.08] font-normal text-cream sm:text-4xl">
-                    Isla Quiribrí (Uvita) y ruta cultural
-                  </h5>
-                  <p className="mt-3 text-xs leading-relaxed text-pretty text-cream/85 sm:text-sm">
-                    Ubicada a menos de 2 km de Puerto Limón sobre un arrecife
-                    coralino fósil con 18 especies de corales, fue bautizada «La
-                    Huerta» por Cristóbal Colón en 1502 y en 1986 recuperó su
-                    topónimo indígena original: Quiribrí. Junto con la llegada
-                    de cruceros desde el siglo XIX y experiencias locales como
-                    G&amp;E Chocolate Adventure Company, articula el patrimonio
-                    natural y vivo del puerto.
+                  <p className="text-[0.72rem] leading-relaxed text-ink/65 sm:text-xs">
+                    Corredor de 1908 diseñado por César Rivaflecha (La Gaceta N°
+                    16 de 1999) donde exhiben Edgar León, William Durán, Germán
+                    Mora, Honorio Cabraca y Virginia Araya; junto al legado
+                    literario de Samuel Charles Nation (1912–1942) y Quince
+                    Duncan.
+                  </p>
+                  <p className="font-display mt-3 text-xl leading-[1.18] text-ink sm:text-2xl md:text-[1.7rem]">
+                    Con sus talleres abiertos en el Pasaje Cristal, el edificio
+                    sur de la antigua UFC y la Casa de la Cultura, Limón
+                    articula un circuito vivo que preserva y exhibe la creación
+                    plástica, artesanal y escénica del Caribe.
                   </p>
                 </div>
+              </div>
+            </div>
 
-                <div className="grid grid-cols-3 gap-2.5">
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-cream/10">
+            {/* BLOQUE 2: Pieza tipográfica central con miniaturas fotográficas intercaladas coherentes con cada término */}
+            <div className="mt-16 grid items-start gap-6 border-t border-ink/12 pt-14 sm:mt-24 sm:pt-18 lg:grid-cols-[9rem_1fr]">
+              <p className="text-xs font-semibold tracking-wide text-ink/70">
+                Creación colectiva
+              </p>
+
+              <div className="mx-auto max-w-3xl text-center">
+                <p className="text-2xl leading-[1.18] tracking-tight text-ink sm:text-4xl md:text-5xl">
+                  <span className="inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                    <span className="relative inline-block h-7 w-14 shrink-0 overflow-hidden bg-ink align-middle sm:h-9 sm:w-20">
+                      <Image
+                        src={imgArteLimon}
+                        alt="Galería de pintura en el Pasaje Cristal"
+                        fill
+                        placeholder="blur"
+                        sizes="90px"
+                        className="object-cover"
+                      />
+                    </span>
+                    <span className="font-light">Corredor del</span>
+                    <strong className="font-hero font-normal tracking-wide uppercase">
+                      Pasaje Cristal
+                    </strong>
+                  </span>
+                  <span className="mt-1 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                    <span className="font-light">escultura de</span>
+                    <span className="font-light text-ember">«Gemelo»</span>
+                    <span className="relative inline-block h-7 w-14 shrink-0 overflow-hidden bg-ink align-middle sm:h-9 sm:w-20">
+                      <Image
+                        src={imgEsculturaGemelo}
+                        alt="Escultura en metal reciclado de Gemelo"
+                        fill
+                        placeholder="blur"
+                        sizes="90px"
+                        className="object-cover"
+                      />
+                    </span>
+                  </span>
+                  <span className="mt-1 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                    <span className="font-light">talla en cáscara de coco</span>
+                    <span className="relative inline-block h-7 w-14 shrink-0 overflow-hidden bg-ink align-middle sm:h-9 sm:w-20">
+                      <Image
+                        src={imgCocoTortuga}
+                        alt="Artesanía limonense tallada en coco"
+                        fill
+                        placeholder="blur"
+                        sizes="90px"
+                        className="object-cover"
+                      />
+                    </span>
+                  </span>
+                  <span className="mt-1 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                    <strong className="font-hero font-normal tracking-wide text-ember uppercase">
+                      Teatro y Escena
+                    </strong>
+                  </span>
+                  <span className="mt-1 inline-flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
+                    <strong className="font-hero font-normal tracking-wide text-ember uppercase">
+                      Comunitaria
+                    </strong>
+                    <span className="relative inline-block h-7 w-14 shrink-0 overflow-hidden bg-ink align-middle sm:h-9 sm:w-20">
+                      <Image
+                        src={imgTeatro}
+                        alt="Obra de teatro y escena comunitaria en la Casa de la Cultura"
+                        fill
+                        placeholder="blur"
+                        sizes="90px"
+                        className="object-cover"
+                      />
+                    </span>
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            {/* BLOQUE 3: Galería editorial asimétrica de 3 columnas con pieza central extendida */}
+            <div className="mt-16 border-t border-ink/12 pt-12 sm:mt-24 sm:pt-14">
+              <h3
+                id="arte-teatro-title"
+                className="text-sm font-semibold tracking-wide text-ink"
+              >
+                Arte, escena y memoria
+              </h3>
+
+              <div className="mt-6 grid items-start gap-8 lg:grid-cols-[0.95fr_1.45fr_0.95fr] lg:gap-7">
+                {/* Columna 1: Pasaje Cristal y pintura */}
+                <article>
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink">
                     <Image
-                      src={imgQuiribri}
-                      alt="Vista panorámica de la Isla Quiribrí (Uvita) frente a Puerto Limón"
+                      src={imgArteLimon}
+                      alt="Exposición de pintura y arte afrocaribeño en Limón"
                       fill
                       placeholder="blur"
-                      sizes="180px"
+                      sizes="(min-width: 1024px) 320px, 92vw"
                       className="object-cover"
                     />
                   </div>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-cream/10">
+                  <h4 className="mt-3 text-xs font-bold tracking-wider text-ink uppercase sm:text-sm">
+                    Pasaje Cristal, pintura y narrativa visual
+                  </h4>
+                  <p className="mt-1.5 text-xs leading-relaxed text-ink/75">
+                    Corredor de 1908 (César Rivaflecha, La Gaceta N° 16 de 1999)
+                    donde exhiben Edgar León, William Durán, Germán Mora,
+                    Honorio Cabraca y Virginia Araya.
+                  </p>
+                  <p className="mt-2.5 border-t border-ink/12 pt-2 text-[0.68rem] text-ink/55">
+                    Murales con símbolos afrocaribeños y talleres abiertos
+                  </p>
+                </article>
+
+                {/* Columna 2 (pieza central de mayor formato): Teatro y escena comunitaria */}
+                <article>
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink">
                     <Image
-                      src={imgCruceroMuelle}
-                      alt="Llegada de crucero y recorrido urbano en el muelle de Puerto Limón"
+                      src={imgTeatro}
+                      alt="Obra de teatro y escena comunitaria en Limón"
                       fill
                       placeholder="blur"
-                      sizes="180px"
+                      sizes="(min-width: 1024px) 520px, 92vw"
                       className="object-cover"
                     />
                   </div>
-                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-cream/10">
-                    <Image
-                      src={imgCacaoTour}
-                      alt="Demostración cultural de cacao en G&E Chocolate Adventure Company"
-                      fill
-                      placeholder="blur"
-                      sizes="180px"
-                      className="object-cover"
-                    />
+                  <h4 className="mt-3 text-xs font-bold tracking-wider text-ink uppercase sm:text-sm">
+                    Teatro y escena comunitaria en la Casa de la Cultura
+                  </h4>
+                  <p className="mt-1.5 text-xs leading-relaxed text-ink/75 sm:text-sm">
+                    El teatro y las artes escénicas en Limón son herramientas de
+                    reflexión social y cohesión. En espacios como la Casa de la
+                    Cultura, el teatro estudiantil y comunitario narra historias
+                    vinculadas a la identidad afrocaribeña y la memoria local.
+                  </p>
+                  <p className="mt-2.5 border-t border-ink/12 pt-2 text-[0.68rem] text-ink/55">
+                    Casa de la Cultura, teatro estudiantil, poesía oral y danza
+                  </p>
+                </article>
+
+                {/* Columna 3: Escultura reciclada, turbantes y talla en coco */}
+                <article>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="relative aspect-[4/3] col-span-2 w-full overflow-hidden bg-ink">
+                      <Image
+                        src={imgEsculturaGemelo}
+                        alt="Esculturas en metal reciclado del artista limonense Ballestero (Gemelo) en el edificio sur de la UFC"
+                        fill
+                        placeholder="blur"
+                        sizes="(min-width: 1024px) 320px, 92vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink">
+                      <Image
+                        src={imgTurbantes}
+                        alt="Artesanías y turbantes afrocaribeños en los antiguos edificios de la UFC"
+                        fill
+                        placeholder="blur"
+                        sizes="160px"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-ink">
+                      <Image
+                        src={imgCocoTortuga}
+                        alt="Artesanía limonense tallada en cáscara de coco"
+                        fill
+                        placeholder="blur"
+                        sizes="160px"
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
+                  <h4 className="mt-3 text-xs font-bold tracking-wider text-ink uppercase sm:text-sm">
+                    Escultura «Gemelo», turbantes y talla en coco
+                  </h4>
+                  <p className="mt-1.5 text-xs leading-relaxed text-ink/75">
+                    En el segundo nivel del edificio sur de la UFC, Ballestero
+                    («Gemelo») forja esculturas en metal reciclado junto a
+                    artesanos de turbantes, bambú y cáscara de coco.
+                  </p>
+                  <p className="mt-2.5 border-t border-ink/12 pt-2 text-[0.68rem] text-ink/55">
+                    Edificio Sur de la UFC y letras de S. C. Nation y Quince Duncan
+                  </p>
+                </article>
               </div>
             </div>
           </div>
@@ -2042,7 +2029,7 @@ export default function Culture() {
                     {isRadioLoading
                       ? "Sintonizando..."
                       : isRadioPlaying
-                        ? "Al aire · En vivo"
+                        ? "Al aire en vivo"
                         : "Radio abierta"}
                   </span>
                 </div>
@@ -2071,7 +2058,7 @@ export default function Culture() {
                             : "border border-cream/25 text-cream/80 hover:border-cream/55 hover:text-cream"
                         }`}
                       >
-                        {station.name} · {station.freq}
+                        {station.name} ({station.freq})
                       </button>
                     );
                   })}

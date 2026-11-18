@@ -1,10 +1,10 @@
 import type { StaticImageData } from "next/image";
-import img1854 from "@/public/Limón - images/patrimonio/isla-quiribri-arrecife.jpg";
 import img1890 from "@/public/Limón - images/1890.png";
-import img1905Plano from "@/public/Limón - images/patrimonio/plano-general-limon-1905-peyroutet.jpg";
+import img1906 from "@/public/Limón - images/1906-limon.png";
 import imgBlackStar from "@/public/Limón - images/BlackStarLine.png";
-import imgMapa1967 from "@/public/Limón - images/patrimonio/mapa-pictorico-limon-1967.jpg";
-import imgParadeGala from "@/public/Limón - images/patrimonio/grand-parade-trajes-limon.jpg";
+import imgCarnaval from "@/public/Limón - images/Carnaval.png";
+import img1854 from "@/public/Limón - images/patrimonio/isla-quiribri-arrecife.jpg";
+import imgParque from "@/public/Limón - images/patrimonio/parque-vargas-quiosco.jpg";
 
 export type Era = {
   years: string;
@@ -40,8 +40,8 @@ export const eras: Era[] = [
     title: "Planos de 1905 y Zona Americana",
     summary:
       "El Plano General de 1905 del Ing. H. Peyroutet consolida el casco histórico junto al Parque Vargas (1895), mientras la United Fruit Company levanta sus edificios (1903) y la Zona Americana (1929).",
-    image: img1905Plano,
-    alt: "Plano General de la Ciudad de Limón de 1905 por el ingeniero H. Peyroutet",
+    image: img1906,
+    alt: "Edificio histórico de la United Fruit Company en Puerto Limón",
   },
   {
     years: "1912–1948",
@@ -58,8 +58,8 @@ export const eras: Era[] = [
     title: "Patrimonio y reconocimiento",
     summary:
       "Tras la ciudadanía plena de 1949, el Estado declara Monumento Nacional la Isla Quiribrí (1985) y protege como patrimonio histórico el Parque Vargas (1995), Pasaje Cristal y los edificios de la UFC (1999).",
-    image: imgMapa1967,
-    alt: "Mapa pictórico del centenario de la apertura de la bahía de Limón (1867–1967, IGN)",
+    image: imgParque,
+    alt: "Quiosco histórico del Parque Balvanero Vargas Molina en Puerto Limón",
   },
   {
     years: "2000–hoy",
@@ -67,7 +67,7 @@ export const eras: Era[] = [
     title: "Patrimonio cultural vivo",
     summary:
       "Con el Estadio Big Boy declarado patrimonio (2002) y el Calipso Limonense como Patrimonio Cultural Inmaterial (2012), Limón proyecta sus dominios culturales, su cine y su gastronomía al mundo.",
-    image: imgParadeGala,
-    alt: "Trajes tradicionales en el Grand Parade de Gala de Puerto Limón",
+    image: imgCarnaval,
+    alt: "Sonrisa y vestimenta tradicional afrocaribeña en Puerto Limón",
   },
 ];

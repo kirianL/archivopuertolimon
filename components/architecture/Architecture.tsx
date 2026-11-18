@@ -63,7 +63,7 @@ function BuildingCard({
           {item.summary}
         </p>
         <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold tracking-wide text-moss uppercase">
-          <span>{item.style} · Leer historia</span>
+          <span>{item.style} — Leer historia</span>
           <EditorialArrow
             direction="right"
             className="h-3 w-4 transition-transform duration-200 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-x-1"
@@ -338,16 +338,11 @@ export default function Architecture() {
                   que narran más de un siglo de historia.
                 </p>
 
-                {/* 2x2 Stats Grid with colored circles behind the numbers */}
                 <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-7 sm:mt-10 sm:gap-x-12 sm:gap-y-10">
                   {architectureStats.map((stat) => (
-                    <div key={stat.value} className="relative isolate pl-2">
+                    <div key={stat.value}>
                       <dt className="sr-only">{stat.description}</dt>
                       <dd className="flex items-baseline gap-1.5">
-                        <span
-                          aria-hidden
-                          className={`pointer-events-none absolute -top-1.5 left-0 -z-10 size-8 rounded-full md:-top-2 md:size-11 ${stat.dotClass}`}
-                        />
                         <span className="font-display text-4xl tracking-tight md:text-5xl">
                           {stat.value}
                         </span>
