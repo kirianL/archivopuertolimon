@@ -40,6 +40,11 @@ import imgGaleriaPintura from "@/public/Limón - images/patrimonio/galeria-pintu
 import imgTeatro from "@/public/Limón - images/teatro.png";
 import imgDosAguas from "@/public/Limón - images/DosAguas.png";
 import imgCenizaNegra from "@/public/Limón - images/CenizaNegra.png";
+import imgVhsCaribe from "@/public/Limón - images/catalogo/vhs-caribe-2004.jpg";
+import imgLibroPuertoLimon from "@/public/Limón - images/catalogo/libro-puerto-limon-1950.jpg";
+import imgLibroCocori from "@/public/Limón - images/catalogo/libro-cocori-joaquin-gutierrez.jpg";
+import imgLibroNegroCR from "@/public/Limón - images/catalogo/libro-el-negro-en-costa-rica.jpg";
+import imgLibroLimonBlues from "@/public/Limón - images/catalogo/libro-limon-blues-rossi.jpg";
 import imgFergusonPortrait from "@/public/Limón - images/a-Ferguson1.jpg";
 import imgEsculturaGemelo from "@/public/Limón - images/patrimonio/esculturas-reciclaje-gemelo-ballestero.jpg";
 import imgTurbantes from "@/public/Limón - images/patrimonio/artesania-turbantes-afrocaribenos.jpg";
@@ -223,12 +228,38 @@ const fergusonAlbums: readonly TapeAlbum[] = [
   },
 ] as const;
 
-const caribbeanFilms = [
+type MediaShelfItem = {
+  id: string;
+  kind: "vhs" | "book";
+  title: string;
+  spineTitle: string;
+  year: string;
+  creator: string;
+  roleLabel: string;
+  code: string;
+  synopsis: string;
+  awards: readonly string[];
+  image: StaticImageData;
+  alt: string;
+  spineBg: string;
+  spineText: string;
+  spineAccent: string;
+  desktopHeightClass: string;
+  desktopWidthClass: string;
+  mobileHeightClass: string;
+  mobileWidthClass: string;
+};
+
+const mediaShelfItems: readonly MediaShelfItem[] = [
   {
     id: "dos-aguas",
+    kind: "vhs",
     title: "Dos Aguas",
+    spineTitle: "DOS AGUAS",
     year: "2015",
-    director: "Patricia Velásquez",
+    creator: "Patricia Velásquez",
+    roleLabel: "Dirección",
+    code: "VHS HI-FI",
     synopsis:
       "Un retrato de la fraternidad y el entorno, donde Limón no es solo paisaje, sino protagonista.",
     awards: [
@@ -236,13 +267,24 @@ const caribbeanFilms = [
       "Selección Oficial IFF Panamá",
     ],
     image: imgDosAguas,
-    alt: "Fotograma y póster de la película Dos Aguas (2015) de Patricia Velásquez",
+    alt: "Portada de la película Dos Aguas (2015) de Patricia Velásquez",
+    spineBg: "#1c2833",
+    spineText: "#faf3d9",
+    spineAccent: "#7a9bd1",
+    desktopHeightClass: "h-72",
+    desktopWidthClass: "w-11",
+    mobileHeightClass: "h-36",
+    mobileWidthClass: "w-8",
   },
   {
     id: "ceniza-negra",
+    kind: "vhs",
     title: "Ceniza Negra",
+    spineTitle: "CENIZA NEGRA",
     year: "2019",
-    director: "Sofía Quirós Úbeda",
+    creator: "Sofía Quirós Úbeda",
+    roleLabel: "Dirección",
+    code: "CANNES VHS",
     synopsis:
       "Una mirada a la infancia y el duelo envuelta en la atmósfera sensorial del Caribe Sur.",
     awards: [
@@ -251,7 +293,164 @@ const caribbeanFilms = [
       "Representante Oscar 2021",
     ],
     image: imgCenizaNegra,
-    alt: "Fotograma y póster de la película Ceniza Negra (2019) de Sofía Quirós Úbeda",
+    alt: "Portada de la película Ceniza Negra (2019) de Sofía Quirós Úbeda",
+    spineBg: "#1e2f52",
+    spineText: "#faf3d9",
+    spineAccent: "#dc5a32",
+    desktopHeightClass: "h-72",
+    desktopWidthClass: "w-11",
+    mobileHeightClass: "h-36",
+    mobileWidthClass: "w-8",
+  },
+  {
+    id: "caribe-2004",
+    kind: "vhs",
+    title: "Caribe",
+    spineTitle: "CARIBE",
+    year: "2004",
+    creator: "Esteban Ramírez",
+    roleLabel: "Dirección",
+    code: "35MM VHS",
+    synopsis:
+      "Drama ambiental y humano filmado en el litoral atlántico sobre la defensa del territorio frente a la exploración petrolera.",
+    awards: [
+      "Mejor Director (Festival de Trieste)",
+      "Muestra Oficial Festival de Huelva",
+    ],
+    image: imgVhsCaribe,
+    alt: "Portada de la película Caribe (2004) dirigida por Esteban Ramírez",
+    spineBg: "#173026",
+    spineText: "#faf3d9",
+    spineAccent: "#d4ca6a",
+    desktopHeightClass: "h-72",
+    desktopWidthClass: "w-11",
+    mobileHeightClass: "h-36",
+    mobileWidthClass: "w-8",
+  },
+  {
+    id: "puerto-limon-1950",
+    kind: "book",
+    title: "Puerto Limón",
+    spineTitle: "PUERTO LIMÓN",
+    year: "1950",
+    creator: "Joaquín Gutiérrez Mangel",
+    roleLabel: "Autor limonense",
+    code: "NASCIMENTO",
+    synopsis:
+      "Novela fundacional del escritor nacido en Puerto Limón (1918) sobre la juventud de Silvano, el enclave bananero y la huelga de 1934.",
+    awards: [
+      "Edición original Nascimento (1950)",
+      "Premio Nacional de Cultura Magón",
+    ],
+    image: imgLibroPuertoLimon,
+    alt: "Portada de la edición original de Puerto Limón (1950) de Joaquín Gutiérrez",
+    spineBg: "#b5673b",
+    spineText: "#faf3d9",
+    spineAccent: "#d4ca6a",
+    desktopHeightClass: "h-68",
+    desktopWidthClass: "w-11",
+    mobileHeightClass: "h-34",
+    mobileWidthClass: "w-8",
+  },
+  {
+    id: "cocori-1947",
+    kind: "book",
+    title: "Cocorí",
+    spineTitle: "COCORÍ",
+    year: "1947",
+    creator: "Joaquín Gutiérrez Mangel",
+    roleLabel: "Autor limonense",
+    code: "NOVELA",
+    synopsis:
+      "Obra nacida de los recuerdos de infancia costera de su autor en Limón, traducida a más de diez idiomas durante el siglo XX.",
+    awards: [
+      "Premio Rapa Nui (1947)",
+      "Clásico de las letras limonenses",
+    ],
+    image: imgLibroCocori,
+    alt: "Portada ilustrada del libro Cocorí de Joaquín Gutiérrez",
+    spineBg: "#49692d",
+    spineText: "#faf3d9",
+    spineAccent: "#dc5a32",
+    desktopHeightClass: "h-60",
+    desktopWidthClass: "w-9",
+    mobileHeightClass: "h-30",
+    mobileWidthClass: "w-7",
+  },
+  {
+    id: "el-negro-en-costa-rica",
+    kind: "book",
+    title: "El negro en Costa Rica",
+    spineTitle: "EL NEGRO EN CR",
+    year: "1972",
+    creator: "Quince Duncan y Carlos Meléndez",
+    roleLabel: "Autoría limonense",
+    code: "ECR",
+    synopsis:
+      "Obra histórica y antológica indispensable para comprender las raíces antillanas, el ferrocarril, la prensa en inglés y la ciudadanía afrocostarricense.",
+    awards: [
+      "Editorial Costa Rica (1972)",
+      "Doctorado Honoris Causa (Quince Duncan)",
+    ],
+    image: imgLibroNegroCR,
+    alt: "Portada original de El negro en Costa Rica de Carlos Meléndez y Quince Duncan",
+    spineBg: "#8dc2b9",
+    spineText: "#191919",
+    spineAccent: "#191919",
+    desktopHeightClass: "h-64",
+    desktopWidthClass: "w-10",
+    mobileHeightClass: "h-32",
+    mobileWidthClass: "w-8",
+  },
+  {
+    id: "limon-blues",
+    kind: "book",
+    title: "Limón Blues",
+    spineTitle: "LIMÓN BLUES",
+    year: "2002",
+    creator: "Anacristina Rossi",
+    roleLabel: "Novela histórica",
+    code: "ALFAGUARA",
+    synopsis:
+      "Reconstruye la vida de Orlandus Robinson en Puerto Limón entre 1904 y 1927, el Liberty Hall y el movimiento de Marcus Garvey.",
+    awards: [
+      "Premio Nacional Aquileo J. Echeverría (2002)",
+      "Premio Latinoamericano José María Arguedas",
+    ],
+    image: imgLibroLimonBlues,
+    alt: "Portada de Limón Blues de Anacristina Rossi",
+    spineBg: "#2a7c62",
+    spineText: "#faf3d9",
+    spineAccent: "#d4ca6a",
+    desktopHeightClass: "h-70",
+    desktopWidthClass: "w-12",
+    mobileHeightClass: "h-35",
+    mobileWidthClass: "w-8",
+  },
+  {
+    id: "limon-kryol-alfabet",
+    kind: "book",
+    title: "Limon Kryol Alfabet",
+    spineTitle: "KRYOL ALFABET",
+    year: "2018",
+    creator: "Gloria Thompson D. y René Zúñiga A.",
+    roleLabel: "Edición limonense",
+    code: "EUNA",
+    synopsis:
+      "Alfabeto ilustrado del criollo limonense elaborado desde la comunidad para preservar la escritura, fonética y memoria oral del mekatelyu.",
+    awards: [
+      "Editorial Universidad Nacional (EUNA)",
+      "Patrimonio lingüístico del Caribe",
+    ],
+    image: imgKryolBook,
+    alt: "Portada de Mek Wi Rayt Wi Langwich: Limon Kryol Alfabet",
+    spineBg: "#c4302b",
+    spineText: "#faf3d9",
+    spineAccent: "#faf3d9",
+    desktopHeightClass: "h-64",
+    desktopWidthClass: "w-10",
+    mobileHeightClass: "h-32",
+    mobileWidthClass: "w-7",
   },
 ] as const;
 
@@ -318,7 +517,8 @@ export default function Culture() {
     "mekatelyu",
   );
   const [activeStampQuote, setActiveStampQuote] = useState<0 | 1>(0);
-  const [activeFilmIndex, setActiveFilmIndex] = useState(0);
+  const [shelfFilter, setShelfFilter] = useState<"all" | "vhs" | "book">("all");
+  const [activeShelfId, setActiveShelfId] = useState<string>("dos-aguas");
   const [activeRadioIndex, setActiveRadioIndex] = useState(0);
   const [isRadioPlaying, setIsRadioPlaying] = useState(false);
   const [isRadioLoading, setIsRadioLoading] = useState(false);
@@ -326,8 +526,34 @@ export default function Culture() {
 
   const activePillar = carnivalPillars[activePillarIndex];
   const activeAlbum = fergusonAlbums[activeAlbumIndex];
-  const activeFilm = caribbeanFilms[activeFilmIndex];
+  const visibleShelfItems =
+    shelfFilter === "all"
+      ? mediaShelfItems
+      : mediaShelfItems.filter((item) => item.kind === shelfFilter);
+  const activeShelfItem =
+    visibleShelfItems.find((item) => item.id === activeShelfId) ??
+    visibleShelfItems[0];
+  const activeShelfIndex = visibleShelfItems.findIndex(
+    (item) => item.id === activeShelfItem.id,
+  );
   const activeRadio = radioStations[activeRadioIndex];
+
+  function selectShelfFilter(nextFilter: "all" | "vhs" | "book") {
+    setShelfFilter(nextFilter);
+    const nextList =
+      nextFilter === "all"
+        ? mediaShelfItems
+        : mediaShelfItems.filter((item) => item.kind === nextFilter);
+    if (!nextList.some((item) => item.id === activeShelfId)) {
+      setActiveShelfId(nextList[0].id);
+    }
+  }
+
+  function stepShelfItem(delta: -1 | 1) {
+    const len = visibleShelfItems.length;
+    const nextIdx = (activeShelfIndex + delta + len) % len;
+    setActiveShelfId(visibleShelfItems[nextIdx].id);
+  }
 
   useEffect(() => {
     const audio = radioAudioRef.current;
@@ -1818,166 +2044,458 @@ export default function Culture() {
         </section>
 
         {/* =====================================================================
-            BANDA 6B: CINE Y NARRATIVA VISUAL (INSPIRADO EN "COLLECTIONS" DE REFERENCIA 2)
+            BANDA 6B: CINE Y NARRATIVA VISUAL + LETRAS LIMONENSES (ESTANTE DE LOMOS VHS Y LIBROS)
            ===================================================================== */}
         <section
           aria-labelledby="cine-caribe-title"
-          className="overflow-hidden bg-ember py-16 text-cream md:py-24"
+          className="overflow-hidden border-b border-cream/10 bg-[#121211] py-16 text-cream md:py-24"
         >
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
-            {/* Barra superior de 3 columnas como "Collections" en la Referencia 2 */}
-            <div className="grid items-start gap-4 border-b border-cream/20 pb-8 md:grid-cols-[1fr_1.2fr_1fr] md:items-center">
-              <h3
-                id="cine-caribe-title"
-                className="font-hero text-3xl leading-[1.08] font-normal text-cream sm:text-4xl md:text-5xl"
-              >
-                Cine y narrativa visual
-              </h3>
+            {/* Cabecera superior minimalista inspirada en el archivo Akira Kurosawa */}
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-cream/12 pb-6">
+              <span className="border border-cream/30 px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] text-cream/80 uppercase">
+                Archivo audiovisual y editorial
+              </span>
 
-              <p className="text-xs leading-relaxed text-pretty text-cream/90 sm:text-sm md:text-center">
-                El cine se ha convertido en una ventana para representar el
-                Caribe desde adentro.
-              </p>
-
-              <div className="flex md:justify-end">
-                <div
-                  role="group"
-                  aria-label="Seleccionar película"
-                  className="inline-flex rounded-full border border-cream/35 p-1 text-xs font-semibold"
+              <div className="text-center">
+                <h3
+                  id="cine-caribe-title"
+                  className="font-hero text-3xl leading-none font-normal tracking-wide text-cream sm:text-5xl"
                 >
-                  {caribbeanFilms.map((film, idx) => (
+                  Cine y narrativa <span className="text-ember">visual</span>
+                </h3>
+                <p className="mt-1.5 text-xs text-cream/65">
+                  Películas en VHS y libros fundamentales escritos desde Limón
+                </p>
+              </div>
+
+              <span className="text-[11px] font-medium tracking-[0.16em] text-cream/65 uppercase">
+                1947 — 2019
+              </span>
+            </div>
+
+            {/* Barra de filtro rectangular segmentada (idéntica a la barra ALL / 1940s..1990s de Kurosawa) */}
+            <div className="mt-7 flex justify-center">
+              <div
+                role="tablist"
+                aria-label="Filtrar por formato"
+                className="inline-flex border border-cream/35 bg-[#121211] text-[11px] font-semibold tracking-[0.14em] uppercase"
+              >
+                {(
+                  [
+                    { id: "all", label: "Todo / Archivo" },
+                    { id: "vhs", label: "Cine (VHS)" },
+                    { id: "book", label: "Libros (Limón)" },
+                  ] as const
+                ).map((tab) => {
+                  const isSelected = shelfFilter === tab.id;
+                  return (
                     <button
-                      key={film.id}
+                      key={tab.id}
                       type="button"
-                      onClick={() => setActiveFilmIndex(idx)}
-                      aria-pressed={activeFilmIndex === idx}
-                      className={`cursor-pointer rounded-full px-3.5 py-1 transition-colors duration-150 ${
-                        activeFilmIndex === idx
-                          ? "bg-cream text-ink"
-                          : "text-cream/85 hover:text-cream"
+                      role="tab"
+                      aria-selected={isSelected}
+                      onClick={() => selectShelfFilter(tab.id)}
+                      className={`cursor-pointer border-r border-cream/30 px-3.5 py-1.5 transition-colors duration-150 last:border-r-0 sm:px-5 ${
+                        isSelected
+                          ? "bg-cream text-[#121211]"
+                          : "text-cream/75 hover:bg-cream/10 hover:text-cream"
                       }`}
                     >
-                      {film.title} ({film.year})
+                      {tab.label}
                     </button>
-                  ))}
-                </div>
+                  );
+                })}
               </div>
             </div>
 
-            {/* Escenario de 3 columnas con gran medallón circular central negro (idéntico a "Collections" en Referencia 2) */}
-            <div className="mt-10 grid items-center gap-8 lg:grid-cols-[1fr_1.45fr_1fr] lg:gap-10">
-              {/* Película lateral izquierda: Dos Aguas (2015) */}
+            {/* =================================================================
+                ESTANTE INTERACTIVO EN ESCRITORIO (LOMOS VERTICALES + PIEZA ABIERTA EN EL CENTRO)
+               ================================================================= */}
+            <div className="mt-12 hidden min-h-[22.5rem] items-end justify-center gap-3.5 md:flex lg:gap-5">
+              {visibleShelfItems.map((item) => {
+                const isSelected = item.id === activeShelfItem.id;
+
+                if (isSelected) {
+                  return (
+                    <motion.div
+                      key={item.id}
+                      layout
+                      transition={{ duration: 0.32, ease: EASE_OUT }}
+                      className="relative mx-3 flex shrink-0 items-center justify-center py-2 lg:mx-6"
+                    >
+                      {item.kind === "vhs" ? (
+                        /* VHS abierto: funda inclinada + casete negro asomando a la derecha (fiel a Throne of Blood en referencia) */
+                        <div className="relative flex items-center pr-9">
+                          {/* Casete físico negro asomando por el costado derecho */}
+                          <div
+                            aria-hidden="true"
+                            className="absolute top-3 right-0 z-0 flex h-[17.5rem] w-[11rem] rotate-[3deg] flex-col justify-between rounded-xs border border-white/15 bg-[#191918] p-2.5 shadow-2xl"
+                          >
+                            <div className="h-5 w-full rounded-[2px] border border-white/10 bg-[#0d0d0c]" />
+                            {/* Ventana central y etiqueta blanca vertical del casete VHS */}
+                            <div className="my-auto flex h-36 w-full items-center justify-end gap-2 rounded-xs border border-white/10 bg-[#10100f] p-2">
+                              <div className="flex h-full w-5 flex-col items-center justify-between rounded-[1px] bg-cream py-2 text-[#121211]">
+                                <span className="text-[6px] font-black tracking-tighter uppercase">
+                                  VHS
+                                </span>
+                                <span
+                                  style={{ writingMode: "vertical-rl" }}
+                                  className="rotate-180 text-[7px] font-bold tracking-wider uppercase"
+                                >
+                                  {item.spineTitle}
+                                </span>
+                                <span className="text-[6px] font-bold">
+                                  {item.year}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex justify-between text-[7px] font-mono text-cream/35">
+                              <span>T-120</span>
+                              <span>HI-FI STEREO</span>
+                            </div>
+                          </div>
+
+                          {/* Funda de cartón VHS en alta definición ligeramente inclinada */}
+                          <div className="relative z-10 h-[18.75rem] w-[13.25rem] -rotate-[4deg] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-[0_24px_48px_rgba(0,0,0,0.75)] ring-1 ring-white/25">
+                            <Image
+                              src={item.image}
+                              alt={item.alt}
+                              fill
+                              placeholder="blur"
+                              sizes="240px"
+                              className="object-cover"
+                            />
+                            {/* Sutil pátina de borde de cartón de videocasete */}
+                            <div
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-0 ring-1 ring-white/20 ring-inset"
+                            />
+                            <div
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-white/20 via-black/20 to-transparent"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        /* Libro abierto en portada HD con pliegue de encuadernación y canto de hojas crema */
+                        <div className="relative flex items-center pr-3">
+                          {/* Canto de páginas en papel crema a la derecha */}
+                          <div
+                            aria-hidden="true"
+                            className="absolute inset-y-2 right-0 z-0 w-4 rounded-r-[2px] border-y border-r border-black/25 bg-[linear-gradient(to_right,#d8cfb8,#f5eedc_45%,#cfc5ad)] shadow-xl"
+                          />
+                          <div className="relative z-10 h-[18.5rem] w-[13rem] -rotate-[1.5deg] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-[0_24px_48px_rgba(0,0,0,0.75)] ring-1 ring-white/20">
+                            <Image
+                              src={item.image}
+                              alt={item.alt}
+                              fill
+                              placeholder="blur"
+                              sizes="240px"
+                              className="object-cover"
+                            />
+                            {/* Pliegue de lomo de libro a la izquierda */}
+                            <div
+                              aria-hidden="true"
+                              className="pointer-events-none absolute inset-y-0 left-0 w-3.5 bg-gradient-to-r from-black/45 via-white/20 to-transparent"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                }
+
+                return (
+                  <motion.button
+                    key={item.id}
+                    layout
+                    transition={{ duration: 0.28, ease: EASE_OUT }}
+                    type="button"
+                    onClick={() => setActiveShelfId(item.id)}
+                    aria-label={`Abrir ${item.title} (${item.year})`}
+                    style={{
+                      backgroundColor: item.spineBg,
+                      color: item.spineText,
+                    }}
+                    className={`group relative flex shrink-0 cursor-pointer flex-col items-center justify-between overflow-hidden rounded-[2px] border border-white/15 px-1.5 py-2.5 shadow-[0_14px_26px_rgba(0,0,0,0.55)] transition-transform duration-200 hover:-translate-y-2 ${item.desktopHeightClass} ${item.desktopWidthClass}`}
+                  >
+                    {/* Sello superior del lomo (VHS o Editorial) */}
+                    <span className="w-full border-b border-current/20 pb-1 text-center text-[7px] font-extrabold tracking-tighter uppercase opacity-80">
+                      {item.kind === "vhs" ? "VHS" : item.code.slice(0, 4)}
+                    </span>
+
+                    {/* Recorte miniatura en el lomo para cintas VHS (como los lomos Kurosawa) */}
+                    {item.kind === "vhs" && (
+                      <span className="relative my-1.5 block h-11 w-full shrink-0 overflow-hidden rounded-[1px] ring-1 ring-white/20">
+                        <Image
+                          src={item.image}
+                          alt=""
+                          fill
+                          sizes="48px"
+                          className="object-cover"
+                        />
+                      </span>
+                    )}
+
+                    {/* Título vertical en el lomo */}
+                    <span
+                      style={{ writingMode: "vertical-rl" }}
+                      className="my-auto rotate-180 font-display text-sm leading-none tracking-wider uppercase sm:text-base"
+                    >
+                      {item.spineTitle}
+                    </span>
+
+                    {/* Año en el pie del lomo */}
+                    <span
+                      style={{ color: item.spineAccent }}
+                      className="mt-1.5 border-t border-current/20 pt-1 text-[8px] font-bold tabular-nums"
+                    >
+                      {item.year}
+                    </span>
+
+                    {/* Sombra cilíndrica sutil de lomo */}
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/12 via-transparent to-black/30"
+                    />
+                  </motion.button>
+                );
+              })}
+            </div>
+
+            {/* =================================================================
+                ESTANTE ADAPTADO PARA MÓVIL (FILA DE LOMOS ESTILO [THE CORNER] + PORTADA HD ABIERTA)
+               ================================================================= */}
+            <div className="mt-8 md:hidden">
+              {/* Estante compacto de lomos verticales de distinta altura */}
+              <div
+                role="tablist"
+                aria-label="Estante de películas y libros"
+                className="flex items-end justify-center gap-1.5 px-1 pb-3"
+              >
+                {visibleShelfItems.map((item) => {
+                  const isSelected = item.id === activeShelfItem.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      onClick={() => setActiveShelfId(item.id)}
+                      style={{
+                        backgroundColor: item.spineBg,
+                        color: item.spineText,
+                      }}
+                      className={`relative flex shrink-0 cursor-pointer flex-col items-center justify-between overflow-hidden rounded-[2px] border px-1 py-1.5 shadow-md transition-all duration-200 ${
+                        item.mobileHeightClass
+                      } ${item.mobileWidthClass} ${
+                        isSelected
+                          ? "-translate-y-2.5 border-cream ring-1 ring-cream"
+                          : "border-white/15 opacity-75"
+                      }`}
+                    >
+                      <span className="text-[6px] font-bold uppercase opacity-75">
+                        {item.kind === "vhs" ? "VHS" : "LIB"}
+                      </span>
+                      <span
+                        style={{ writingMode: "vertical-rl" }}
+                        className="my-auto rotate-180 truncate font-display text-[11px] leading-none tracking-wide uppercase"
+                      >
+                        {item.spineTitle}
+                      </span>
+                      <span className="text-[6px] font-bold tabular-nums opacity-85">
+                        {item.year.slice(-2)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sombra de base del estante en móvil */}
+              <div
+                aria-hidden="true"
+                className="mx-auto h-3 w-4/5 rounded-full bg-black/60 blur-md"
+              />
+
+              {/* Pieza abierta en alta definición en móvil */}
+              <div className="mt-5 flex justify-center">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={activeShelfItem.id}
+                    initial={
+                      shouldReduceMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: 8, scale: 0.97 }
+                    }
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={
+                      shouldReduceMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: -6, scale: 0.97 }
+                    }
+                    transition={{ duration: 0.22, ease: EASE_OUT }}
+                  >
+                    {activeShelfItem.kind === "vhs" ? (
+                      <div className="relative flex items-center pr-7">
+                        <div
+                          aria-hidden="true"
+                          className="absolute top-2.5 right-0 z-0 flex h-[14.5rem] w-[9rem] rotate-[3deg] flex-col justify-between rounded-xs border border-white/15 bg-[#191918] p-2 shadow-xl"
+                        >
+                          <div className="h-4 w-full bg-[#0d0d0c]" />
+                          <div className="my-auto flex h-28 w-full items-center justify-end rounded-xs border border-white/10 bg-[#10100f] p-1.5">
+                            <div className="flex h-full w-4 flex-col items-center justify-between bg-cream py-1.5 text-[#121211]">
+                              <span className="text-[5px] font-black">VHS</span>
+                              <span
+                                style={{ writingMode: "vertical-rl" }}
+                                className="rotate-180 text-[6px] font-bold uppercase"
+                              >
+                                {activeShelfItem.spineTitle}
+                              </span>
+                            </div>
+                          </div>
+                          <span className="text-right text-[6px] font-mono text-cream/40">
+                            HI-FI
+                          </span>
+                        </div>
+                        <div className="relative z-10 h-[15.5rem] w-[11rem] -rotate-[3deg] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-2xl ring-1 ring-white/25">
+                          <Image
+                            src={activeShelfItem.image}
+                            alt={activeShelfItem.alt}
+                            fill
+                            placeholder="blur"
+                            sizes="200px"
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative flex items-center pr-2.5">
+                        <div
+                          aria-hidden="true"
+                          className="absolute inset-y-1.5 right-0 z-0 w-3 rounded-r-[2px] bg-[linear-gradient(to_right,#d8cfb8,#f5eedc_45%,#cfc5ad)] shadow-lg"
+                        />
+                        <div className="relative z-10 h-[15.5rem] w-[11rem] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-2xl ring-1 ring-white/20">
+                          <Image
+                            src={activeShelfItem.image}
+                            alt={activeShelfItem.alt}
+                            fill
+                            placeholder="blur"
+                            sizes="200px"
+                            className="object-cover"
+                          />
+                          <div
+                            aria-hidden="true"
+                            className="pointer-events-none absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/45 via-white/20 to-transparent"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* =================================================================
+                PIE EDITORIAL CON FLECHAS LATERALES Y REGLA GRADUADA (FUSIÓN DE AMBAS REFERENCIAS)
+               ================================================================= */}
+            <div className="mt-10 grid items-center gap-4 sm:mt-12 sm:grid-cols-[auto_1fr_auto]">
               <button
                 type="button"
-                onClick={() => setActiveFilmIndex(0)}
-                className={`group mx-auto flex max-w-[16rem] cursor-pointer flex-col items-center text-center transition-opacity duration-200 ${
-                  activeFilmIndex === 0
-                    ? "opacity-100"
-                    : "opacity-75 hover:opacity-100"
-                }`}
+                onClick={() => stepShelfItem(-1)}
+                aria-label="Obra anterior en el estante"
+                className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cream/20 text-cream/75 transition-colors hover:border-cream/60 hover:text-cream sm:inline-flex"
               >
-                <div className="relative h-44 w-32 overflow-hidden rounded-xl bg-ink shadow-lg ring-2 ring-cream/25 transition-transform duration-200 group-hover:-translate-y-1 sm:h-52 sm:w-36">
-                  <Image
-                    src={imgDosAguas}
-                    alt="Póster de Dos Aguas (2015)"
-                    fill
-                    placeholder="blur"
-                    sizes="160px"
-                    className="object-cover"
-                  />
-                </div>
-                <span className="font-display mt-3.5 block text-2xl text-cream">
-                  Dos Aguas (2015)
-                </span>
-                <span className="mt-0.5 text-xs font-semibold tracking-wider text-cream/80 uppercase">
-                  Patricia Velásquez
-                </span>
+                ←
               </button>
 
-              {/* Medallón circular central oscuro con la película activa */}
-              <div className="flex flex-col items-center text-center">
-                <div className="relative grid aspect-square w-[16.5rem] place-items-center overflow-hidden rounded-full bg-ink p-5 shadow-2xl ring-1 ring-cream/20 sm:w-[21rem] sm:p-7">
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={activeFilm.id}
-                      initial={
-                        shouldReduceMotion
-                          ? { opacity: 0 }
-                          : { opacity: 0, scale: 0.94 }
-                      }
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={
-                        shouldReduceMotion
-                          ? { opacity: 0 }
-                          : { opacity: 0, scale: 0.96 }
-                      }
-                      transition={{ duration: 0.26, ease: EASE_OUT }}
-                      className="relative h-full w-full overflow-hidden rounded-full"
-                    >
-                      <Image
-                        src={activeFilm.image}
-                        alt={activeFilm.alt}
-                        fill
-                        sizes="340px"
-                        className="object-cover"
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
+              <div className="mx-auto max-w-xl text-center">
+                <p className="font-display text-3xl leading-none text-cream sm:text-4xl">
+                  <SlotRollText text={activeShelfItem.title} />
+                </p>
+                <p className="mt-2 text-xs font-bold tracking-[0.18em] text-ember uppercase">
+                  <SlotRollText
+                    text={`${activeShelfItem.roleLabel}: ${activeShelfItem.creator}`}
+                  />
+                </p>
+                <p className="mt-1 text-xs font-semibold tracking-widest text-cream/60">
+                  <SlotRollText text={activeShelfItem.year} />
+                </p>
 
-                <div className="mt-6 max-w-md">
-                  <p className="font-display text-3xl text-cream sm:text-4xl">
-                    <SlotRollText
-                      text={`${activeFilm.title} (${activeFilm.year})`}
-                    />
-                  </p>
-                  <p className="mt-1 text-xs font-bold tracking-widest text-cream/80 uppercase">
-                    <SlotRollText text={`Dirección: ${activeFilm.director}`} />
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-pretty text-cream/95 sm:text-base">
-                    <SlotRollText text={activeFilm.synopsis} />
-                  </p>
+                <p className="mt-3 text-xs leading-relaxed text-pretty text-cream/85 sm:text-sm">
+                  <SlotRollText text={activeShelfItem.synopsis} />
+                </p>
 
-                  <ul className="mt-4 flex flex-wrap justify-center gap-2">
-                    {activeFilm.awards.map((award) => (
-                      <li
-                        key={award}
-                        className="rounded-full bg-ink/85 px-3.5 py-1 text-xs font-semibold text-sand"
-                      >
-                        {award}
-                      </li>
-                    ))}
-                  </ul>
+                <p className="mt-3 text-[11px] font-medium tracking-wide text-sand/90">
+                  <SlotRollText text={activeShelfItem.awards.join(" — ")} />
+                </p>
+
+                {/* Flechas compactas en móvil */}
+                <div className="mt-4 flex items-center justify-center gap-6 sm:hidden">
+                  <button
+                    type="button"
+                    onClick={() => stepShelfItem(-1)}
+                    aria-label="Obra anterior"
+                    className="cursor-pointer border border-cream/25 px-3.5 py-1 text-xs text-cream/80"
+                  >
+                    ← Anterior
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => stepShelfItem(1)}
+                    aria-label="Siguiente obra"
+                    className="cursor-pointer border border-cream/25 px-3.5 py-1 text-xs text-cream/80"
+                  >
+                    Siguiente →
+                  </button>
                 </div>
               </div>
 
-              {/* Película lateral derecha: Ceniza Negra (2019) */}
               <button
                 type="button"
-                onClick={() => setActiveFilmIndex(1)}
-                className={`group mx-auto flex max-w-[16rem] cursor-pointer flex-col items-center text-center transition-opacity duration-200 ${
-                  activeFilmIndex === 1
-                    ? "opacity-100"
-                    : "opacity-75 hover:opacity-100"
-                }`}
+                onClick={() => stepShelfItem(1)}
+                aria-label="Siguiente obra en el estante"
+                className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cream/20 text-cream/75 transition-colors hover:border-cream/60 hover:text-cream sm:inline-flex"
               >
-                <div className="relative h-44 w-32 overflow-hidden rounded-xl bg-ink shadow-lg ring-2 ring-cream/25 transition-transform duration-200 group-hover:-translate-y-1 sm:h-52 sm:w-36">
-                  <Image
-                    src={imgCenizaNegra}
-                    alt="Póster de Ceniza Negra (2019)"
-                    fill
-                    placeholder="blur"
-                    sizes="160px"
-                    className="object-cover"
-                  />
-                </div>
-                <span className="font-display mt-3.5 block text-2xl text-cream">
-                  Ceniza Negra (2019)
-                </span>
-                <span className="mt-0.5 text-xs font-semibold tracking-wider text-cream/80 uppercase">
-                  Sofía Quirós Úbeda
-                </span>
+                →
               </button>
+            </div>
+
+            {/* Regla minimalista inferior idéntica a la referencia [the corner] */}
+            <div className="mt-8 grid items-end gap-4 border-t border-cream/12 pt-4 text-[10px] font-medium tracking-[0.18em] text-cream/45 uppercase sm:grid-cols-3">
+              <div>
+                <span>
+                  {activeShelfItem.kind === "vhs"
+                    ? "Formato: Videocasete VHS"
+                    : "Formato: Edición impresa"}
+                </span>
+              </div>
+
+              <div className="flex flex-col items-center gap-1.5">
+                <div
+                  aria-hidden="true"
+                  className="flex items-center justify-center gap-2"
+                >
+                  {visibleShelfItems.map((item, idx) => (
+                    <span
+                      key={item.id}
+                      className={`w-px transition-all duration-200 ${
+                        idx === activeShelfIndex
+                          ? "h-3.5 bg-cream"
+                          : "h-1.5 bg-cream/30"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span>Toca un lomo para abrir</span>
+              </div>
+
+              <div className=" sm:text-right">
+                <span>
+                  {activeShelfIndex + 1} / {visibleShelfItems.length} —{" "}
+                  {activeShelfItem.code}
+                </span>
+              </div>
             </div>
           </div>
         </section>
