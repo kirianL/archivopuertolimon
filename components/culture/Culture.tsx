@@ -533,10 +533,17 @@ export default function Culture() {
   const activeShelfItem =
     visibleShelfItems.find((item) => item.id === activeShelfId) ??
     visibleShelfItems[0];
-  const activeShelfIndex = visibleShelfItems.findIndex(
-    (item) => item.id === activeShelfItem.id,
+  const activeShelfIndex = Math.max(
+    0,
+    visibleShelfItems.findIndex((item) => item.id === activeShelfItem.id),
   );
   const activeRadio = radioStations[activeRadioIndex];
+
+  function stepShelf(delta: -1 | 1) {
+    const len = visibleShelfItems.length;
+    const next = visibleShelfItems[(activeShelfIndex + delta + len) % len];
+    setActiveShelfId(next.id);
+  }
 
   function selectShelfFilter(nextFilter: "all" | "vhs" | "book") {
     setShelfFilter(nextFilter);
@@ -549,11 +556,6 @@ export default function Culture() {
     }
   }
 
-  function stepShelfItem(delta: -1 | 1) {
-    const len = visibleShelfItems.length;
-    const nextIdx = (activeShelfIndex + delta + len) % len;
-    setActiveShelfId(visibleShelfItems[nextIdx].id);
-  }
 
   useEffect(() => {
     const audio = radioAudioRef.current;
@@ -2044,48 +2046,37 @@ export default function Culture() {
         </section>
 
         {/* =====================================================================
-            BANDA 6B: CINE Y NARRATIVA VISUAL + LETRAS LIMONENSES (ESTANTE DE LOMOS VHS Y LIBROS)
+            BANDA 6B: CINE Y LETRAS LIMONENSES (ÍNDICE + DATOS AL CENTRO + PORTADA)
            ===================================================================== */}
         <section
           aria-labelledby="cine-caribe-title"
-          className="overflow-hidden border-b border-cream/10 bg-[#121211] py-16 text-cream md:py-24"
+          className="flex min-h-svh flex-col justify-center overflow-hidden bg-cream py-12 text-ink md:py-16"
         >
-          <div className="mx-auto max-w-6xl px-5 sm:px-6">
-            {/* Cabecera superior minimalista inspirada en el archivo Akira Kurosawa */}
-            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-cream/12 pb-6">
-              <span className="border border-cream/30 px-2.5 py-1 text-[10px] font-semibold tracking-[0.18em] text-cream/80 uppercase">
-                Archivo audiovisual y editorial
-              </span>
-
-              <div className="text-center">
+          <div className="mx-auto w-full max-w-6xl px-5 sm:px-6">
+            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-ink/15 pb-4 sm:pb-5">
+              <div>
                 <h3
                   id="cine-caribe-title"
-                  className="font-hero text-3xl leading-none font-normal tracking-wide text-cream sm:text-5xl"
+                  className="font-hero text-3xl leading-[1.05] font-normal text-ink sm:text-5xl"
                 >
-                  Cine y narrativa <span className="text-ember">visual</span>
+                  Cine y <Highlight color="text-sky">letras</Highlight>
                 </h3>
-                <p className="mt-1.5 text-xs text-cream/65">
-                  Películas en VHS y libros fundamentales escritos desde Limón
+                <p className="mt-2 max-w-[46ch] text-xs leading-relaxed text-pretty text-ink/70 sm:text-sm">
+                  Películas filmadas en el Caribe y libros que contaron Limón
+                  desde adentro.
                 </p>
               </div>
 
-              <span className="text-[11px] font-medium tracking-[0.16em] text-cream/65 uppercase">
-                1947 — 2019
-              </span>
-            </div>
-
-            {/* Barra de filtro rectangular segmentada (idéntica a la barra ALL / 1940s..1990s de Kurosawa) */}
-            <div className="mt-7 flex justify-center">
               <div
                 role="tablist"
-                aria-label="Filtrar por formato"
-                className="inline-flex border border-cream/35 bg-[#121211] text-[11px] font-semibold tracking-[0.14em] uppercase"
+                aria-label="Filtrar obras"
+                className="flex gap-5 text-xs font-medium tracking-wide sm:text-sm"
               >
                 {(
                   [
-                    { id: "all", label: "Todo / Archivo" },
-                    { id: "vhs", label: "Cine (VHS)" },
-                    { id: "book", label: "Libros (Limón)" },
+                    { id: "all", label: "Todo" },
+                    { id: "vhs", label: "Cine" },
+                    { id: "book", label: "Literatura" },
                   ] as const
                 ).map((tab) => {
                   const isSelected = shelfFilter === tab.id;
@@ -2096,10 +2087,10 @@ export default function Culture() {
                       role="tab"
                       aria-selected={isSelected}
                       onClick={() => selectShelfFilter(tab.id)}
-                      className={`cursor-pointer border-r border-cream/30 px-3.5 py-1.5 transition-colors duration-150 last:border-r-0 sm:px-5 ${
+                      className={`cursor-pointer border-b pb-1.5 transition-colors duration-150 ${
                         isSelected
-                          ? "bg-cream text-[#121211]"
-                          : "text-cream/75 hover:bg-cream/10 hover:text-cream"
+                          ? "border-ink text-ink"
+                          : "border-transparent text-ink/40 hover:text-ink/80"
                       }`}
                     >
                       {tab.label}
@@ -2109,392 +2100,190 @@ export default function Culture() {
               </div>
             </div>
 
-            {/* =================================================================
-                ESTANTE INTERACTIVO EN ESCRITORIO (LOMOS VERTICALES + PIEZA ABIERTA EN EL CENTRO)
-               ================================================================= */}
-            <div className="mt-12 hidden min-h-[22.5rem] items-end justify-center gap-3.5 md:flex lg:gap-5">
+            {/* Selector horizontal compacto solo en móvil (sin acordeón que brinque) */}
+            <div className="mt-5 flex gap-2 overflow-x-auto pb-2 md:hidden">
               {visibleShelfItems.map((item) => {
                 const isSelected = item.id === activeShelfItem.id;
-
-                if (isSelected) {
-                  return (
-                    <motion.div
-                      key={item.id}
-                      layout
-                      transition={{ duration: 0.32, ease: EASE_OUT }}
-                      className="relative mx-3 flex shrink-0 items-center justify-center py-2 lg:mx-6"
-                    >
-                      {item.kind === "vhs" ? (
-                        /* VHS abierto: funda inclinada + casete negro asomando a la derecha (fiel a Throne of Blood en referencia) */
-                        <div className="relative flex items-center pr-9">
-                          {/* Casete físico negro asomando por el costado derecho */}
-                          <div
-                            aria-hidden="true"
-                            className="absolute top-3 right-0 z-0 flex h-[17.5rem] w-[11rem] rotate-[3deg] flex-col justify-between rounded-xs border border-white/15 bg-[#191918] p-2.5 shadow-2xl"
-                          >
-                            <div className="h-5 w-full rounded-[2px] border border-white/10 bg-[#0d0d0c]" />
-                            {/* Ventana central y etiqueta blanca vertical del casete VHS */}
-                            <div className="my-auto flex h-36 w-full items-center justify-end gap-2 rounded-xs border border-white/10 bg-[#10100f] p-2">
-                              <div className="flex h-full w-5 flex-col items-center justify-between rounded-[1px] bg-cream py-2 text-[#121211]">
-                                <span className="text-[6px] font-black tracking-tighter uppercase">
-                                  VHS
-                                </span>
-                                <span
-                                  style={{ writingMode: "vertical-rl" }}
-                                  className="rotate-180 text-[7px] font-bold tracking-wider uppercase"
-                                >
-                                  {item.spineTitle}
-                                </span>
-                                <span className="text-[6px] font-bold">
-                                  {item.year}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="flex justify-between text-[7px] font-mono text-cream/35">
-                              <span>T-120</span>
-                              <span>HI-FI STEREO</span>
-                            </div>
-                          </div>
-
-                          {/* Funda de cartón VHS en alta definición ligeramente inclinada */}
-                          <div className="relative z-10 h-[18.75rem] w-[13.25rem] -rotate-[4deg] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-[0_24px_48px_rgba(0,0,0,0.75)] ring-1 ring-white/25">
-                            <Image
-                              src={item.image}
-                              alt={item.alt}
-                              fill
-                              placeholder="blur"
-                              sizes="240px"
-                              className="object-cover"
-                            />
-                            {/* Sutil pátina de borde de cartón de videocasete */}
-                            <div
-                              aria-hidden="true"
-                              className="pointer-events-none absolute inset-0 ring-1 ring-white/20 ring-inset"
-                            />
-                            <div
-                              aria-hidden="true"
-                              className="pointer-events-none absolute inset-y-0 left-0 w-2 bg-gradient-to-r from-white/20 via-black/20 to-transparent"
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        /* Libro abierto en portada HD con pliegue de encuadernación y canto de hojas crema */
-                        <div className="relative flex items-center pr-3">
-                          {/* Canto de páginas en papel crema a la derecha */}
-                          <div
-                            aria-hidden="true"
-                            className="absolute inset-y-2 right-0 z-0 w-4 rounded-r-[2px] border-y border-r border-black/25 bg-[linear-gradient(to_right,#d8cfb8,#f5eedc_45%,#cfc5ad)] shadow-xl"
-                          />
-                          <div className="relative z-10 h-[18.5rem] w-[13rem] -rotate-[1.5deg] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-[0_24px_48px_rgba(0,0,0,0.75)] ring-1 ring-white/20">
-                            <Image
-                              src={item.image}
-                              alt={item.alt}
-                              fill
-                              placeholder="blur"
-                              sizes="240px"
-                              className="object-cover"
-                            />
-                            {/* Pliegue de lomo de libro a la izquierda */}
-                            <div
-                              aria-hidden="true"
-                              className="pointer-events-none absolute inset-y-0 left-0 w-3.5 bg-gradient-to-r from-black/45 via-white/20 to-transparent"
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                }
-
                 return (
-                  <motion.button
+                  <button
                     key={item.id}
-                    layout
-                    transition={{ duration: 0.28, ease: EASE_OUT }}
                     type="button"
                     onClick={() => setActiveShelfId(item.id)}
-                    aria-label={`Abrir ${item.title} (${item.year})`}
-                    style={{
-                      backgroundColor: item.spineBg,
-                      color: item.spineText,
-                    }}
-                    className={`group relative flex shrink-0 cursor-pointer flex-col items-center justify-between overflow-hidden rounded-[2px] border border-white/15 px-1.5 py-2.5 shadow-[0_14px_26px_rgba(0,0,0,0.55)] transition-transform duration-200 hover:-translate-y-2 ${item.desktopHeightClass} ${item.desktopWidthClass}`}
+                    className={`shrink-0 cursor-pointer border px-3 py-1.5 text-xs transition-colors duration-150 ${
+                      isSelected
+                        ? "border-ink bg-ink text-cream"
+                        : "border-ink/15 bg-transparent text-ink/65"
+                    }`}
                   >
-                    {/* Sello superior del lomo (VHS o Editorial) */}
-                    <span className="w-full border-b border-current/20 pb-1 text-center text-[7px] font-extrabold tracking-tighter uppercase opacity-80">
-                      {item.kind === "vhs" ? "VHS" : item.code.slice(0, 4)}
-                    </span>
-
-                    {/* Recorte miniatura en el lomo para cintas VHS (como los lomos Kurosawa) */}
-                    {item.kind === "vhs" && (
-                      <span className="relative my-1.5 block h-11 w-full shrink-0 overflow-hidden rounded-[1px] ring-1 ring-white/20">
-                        <Image
-                          src={item.image}
-                          alt=""
-                          fill
-                          sizes="48px"
-                          className="object-cover"
-                        />
-                      </span>
-                    )}
-
-                    {/* Título vertical en el lomo */}
-                    <span
-                      style={{ writingMode: "vertical-rl" }}
-                      className="my-auto rotate-180 font-display text-sm leading-none tracking-wider uppercase sm:text-base"
-                    >
-                      {item.spineTitle}
-                    </span>
-
-                    {/* Año en el pie del lomo */}
-                    <span
-                      style={{ color: item.spineAccent }}
-                      className="mt-1.5 border-t border-current/20 pt-1 text-[8px] font-bold tabular-nums"
-                    >
-                      {item.year}
-                    </span>
-
-                    {/* Sombra cilíndrica sutil de lomo */}
-                    <span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 bg-gradient-to-r from-white/12 via-transparent to-black/30"
-                    />
-                  </motion.button>
+                    {item.title}
+                  </button>
                 );
               })}
             </div>
 
-            {/* =================================================================
-                ESTANTE ADAPTADO PARA MÓVIL (FILA DE LOMOS ESTILO [THE CORNER] + PORTADA HD ABIERTA)
-               ================================================================= */}
-            <div className="mt-8 md:hidden">
-              {/* Estante compacto de lomos verticales de distinta altura */}
-              <div
-                role="tablist"
-                aria-label="Estante de películas y libros"
-                className="flex items-end justify-center gap-1.5 px-1 pb-3"
-              >
+            {/* Estructura estable de 3 columnas: Lista | Datos al centro | Portada */}
+            <div className="mt-6 grid items-start gap-8 md:mt-10 md:grid-cols-[15.5rem_1fr_12.5rem] md:gap-10 lg:grid-cols-[17.5rem_1fr_14rem] lg:gap-12">
+              {/* Columna izquierda (escritorio): Lista limpia con indicador cromático fijo */}
+              <ul className="hidden border-t border-ink/10 md:block">
                 {visibleShelfItems.map((item) => {
                   const isSelected = item.id === activeShelfItem.id;
                   return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={isSelected}
-                      onClick={() => setActiveShelfId(item.id)}
-                      style={{
-                        backgroundColor: item.spineBg,
-                        color: item.spineText,
-                      }}
-                      className={`relative flex shrink-0 cursor-pointer flex-col items-center justify-between overflow-hidden rounded-[2px] border px-1 py-1.5 shadow-md transition-all duration-200 ${
-                        item.mobileHeightClass
-                      } ${item.mobileWidthClass} ${
-                        isSelected
-                          ? "-translate-y-2.5 border-cream ring-1 ring-cream"
-                          : "border-white/15 opacity-75"
-                      }`}
-                    >
-                      <span className="text-[6px] font-bold uppercase opacity-75">
-                        {item.kind === "vhs" ? "VHS" : "LIB"}
-                      </span>
-                      <span
-                        style={{ writingMode: "vertical-rl" }}
-                        className="my-auto rotate-180 truncate font-display text-[11px] leading-none tracking-wide uppercase"
+                    <li key={item.id} className="border-b border-ink/10">
+                      <button
+                        type="button"
+                        onMouseEnter={() => setActiveShelfId(item.id)}
+                        onFocus={() => setActiveShelfId(item.id)}
+                        onClick={() => setActiveShelfId(item.id)}
+                        className="flex w-full cursor-pointer items-center justify-between gap-3 py-2.5 text-left"
                       >
-                        {item.spineTitle}
-                      </span>
-                      <span className="text-[6px] font-bold tabular-nums opacity-85">
-                        {item.year.slice(-2)}
-                      </span>
-                    </button>
+                        <span className="flex min-w-0 items-center gap-2.5">
+                          <span
+                            aria-hidden="true"
+                            style={{ backgroundColor: item.spineBg }}
+                            className={`h-3.5 w-1 shrink-0 transition-opacity duration-150 ${
+                              isSelected ? "opacity-100" : "opacity-0"
+                            }`}
+                          />
+                          <span
+                            className={`truncate text-sm font-medium transition-colors duration-150 ${
+                              isSelected
+                                ? "text-ink"
+                                : "text-ink/45 hover:text-ink/80"
+                            }`}
+                          >
+                            {item.title}
+                          </span>
+                        </span>
+                        <span className="shrink-0 text-xs text-ink/40 tabular-nums">
+                          {item.year}
+                        </span>
+                      </button>
+                    </li>
                   );
                 })}
-              </div>
+              </ul>
 
-              {/* Sombra de base del estante en móvil */}
-              <div
-                aria-hidden="true"
-                className="mx-auto h-3 w-4/5 rounded-full bg-black/60 blur-md"
-              />
-
-              {/* Pieza abierta en alta definición en móvil */}
-              <div className="mt-5 flex justify-center">
-                <AnimatePresence mode="wait" initial={false}>
-                  <motion.div
-                    key={activeShelfItem.id}
-                    initial={
-                      shouldReduceMotion
-                        ? { opacity: 0 }
-                        : { opacity: 0, y: 8, scale: 0.97 }
-                    }
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={
-                      shouldReduceMotion
-                        ? { opacity: 0 }
-                        : { opacity: 0, y: -6, scale: 0.97 }
-                    }
-                    transition={{ duration: 0.22, ease: EASE_OUT }}
-                  >
-                    {activeShelfItem.kind === "vhs" ? (
-                      <div className="relative flex items-center pr-7">
-                        <div
-                          aria-hidden="true"
-                          className="absolute top-2.5 right-0 z-0 flex h-[14.5rem] w-[9rem] rotate-[3deg] flex-col justify-between rounded-xs border border-white/15 bg-[#191918] p-2 shadow-xl"
-                        >
-                          <div className="h-4 w-full bg-[#0d0d0c]" />
-                          <div className="my-auto flex h-28 w-full items-center justify-end rounded-xs border border-white/10 bg-[#10100f] p-1.5">
-                            <div className="flex h-full w-4 flex-col items-center justify-between bg-cream py-1.5 text-[#121211]">
-                              <span className="text-[5px] font-black">VHS</span>
-                              <span
-                                style={{ writingMode: "vertical-rl" }}
-                                className="rotate-180 text-[6px] font-bold uppercase"
-                              >
-                                {activeShelfItem.spineTitle}
-                              </span>
-                            </div>
-                          </div>
-                          <span className="text-right text-[6px] font-mono text-cream/40">
-                            HI-FI
-                          </span>
-                        </div>
-                        <div className="relative z-10 h-[15.5rem] w-[11rem] -rotate-[3deg] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-2xl ring-1 ring-white/25">
-                          <Image
-                            src={activeShelfItem.image}
-                            alt={activeShelfItem.alt}
-                            fill
-                            placeholder="blur"
-                            sizes="200px"
-                            className="object-cover"
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="relative flex items-center pr-2.5">
-                        <div
-                          aria-hidden="true"
-                          className="absolute inset-y-1.5 right-0 z-0 w-3 rounded-r-[2px] bg-[linear-gradient(to_right,#d8cfb8,#f5eedc_45%,#cfc5ad)] shadow-lg"
-                        />
-                        <div className="relative z-10 h-[15.5rem] w-[11rem] overflow-hidden rounded-[2px] bg-[#1a1a18] shadow-2xl ring-1 ring-white/20">
-                          <Image
-                            src={activeShelfItem.image}
-                            alt={activeShelfItem.alt}
-                            fill
-                            placeholder="blur"
-                            sizes="200px"
-                            className="object-cover"
-                          />
-                          <div
-                            aria-hidden="true"
-                            className="pointer-events-none absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/45 via-white/20 to-transparent"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* =================================================================
-                PIE EDITORIAL CON FLECHAS LATERALES Y REGLA GRADUADA (FUSIÓN DE AMBAS REFERENCIAS)
-               ================================================================= */}
-            <div className="mt-10 grid items-center gap-4 sm:mt-12 sm:grid-cols-[auto_1fr_auto]">
-              <button
-                type="button"
-                onClick={() => stepShelfItem(-1)}
-                aria-label="Obra anterior en el estante"
-                className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cream/20 text-cream/75 transition-colors hover:border-cream/60 hover:text-cream sm:inline-flex"
-              >
-                ←
-              </button>
-
-              <div className="mx-auto max-w-xl text-center">
-                <p className="font-display text-3xl leading-none text-cream sm:text-4xl">
-                  <SlotRollText text={activeShelfItem.title} />
-                </p>
-                <p className="mt-2 text-xs font-bold tracking-[0.18em] text-ember uppercase">
-                  <SlotRollText
-                    text={`${activeShelfItem.roleLabel}: ${activeShelfItem.creator}`}
-                  />
-                </p>
-                <p className="mt-1 text-xs font-semibold tracking-widest text-cream/60">
-                  <SlotRollText text={activeShelfItem.year} />
-                </p>
-
-                <p className="mt-3 text-xs leading-relaxed text-pretty text-cream/85 sm:text-sm">
-                  <SlotRollText text={activeShelfItem.synopsis} />
-                </p>
-
-                <p className="mt-3 text-[11px] font-medium tracking-wide text-sand/90">
-                  <SlotRollText text={activeShelfItem.awards.join(" — ")} />
-                </p>
-
-                {/* Flechas compactas en móvil */}
-                <div className="mt-4 flex items-center justify-center gap-6 sm:hidden">
-                  <button
-                    type="button"
-                    onClick={() => stepShelfItem(-1)}
-                    aria-label="Obra anterior"
-                    className="cursor-pointer border border-cream/25 px-3.5 py-1 text-xs text-cream/80"
-                  >
-                    ← Anterior
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => stepShelfItem(1)}
-                    aria-label="Siguiente obra"
-                    className="cursor-pointer border border-cream/25 px-3.5 py-1 text-xs text-cream/80"
-                  >
-                    Siguiente →
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => stepShelfItem(1)}
-                aria-label="Siguiente obra en el estante"
-                className="hidden h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-cream/20 text-cream/75 transition-colors hover:border-cream/60 hover:text-cream sm:inline-flex"
-              >
-                →
-              </button>
-            </div>
-
-            {/* Regla minimalista inferior idéntica a la referencia [the corner] */}
-            <div className="mt-8 grid items-end gap-4 border-t border-cream/12 pt-4 text-[10px] font-medium tracking-[0.18em] text-cream/45 uppercase sm:grid-cols-3">
-              <div>
-                <span>
-                  {activeShelfItem.kind === "vhs"
-                    ? "Formato: Videocasete VHS"
-                    : "Formato: Edición impresa"}
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center gap-1.5">
+              {/* Columna central: Datos editoriales de la obra activa */}
+              <div className="relative min-w-0 border-t border-ink/15 pt-5 md:border-t-0 md:border-x md:border-ink/10 md:px-8 md:pt-0 lg:px-10">
+                {/* Barra de progreso cromática fija en la parte superior */}
                 <div
                   aria-hidden="true"
-                  className="flex items-center justify-center gap-2"
+                  className="mb-4 h-0.5 w-full overflow-hidden bg-ink/10"
                 >
-                  {visibleShelfItems.map((item, idx) => (
-                    <span
-                      key={item.id}
-                      className={`w-px transition-all duration-200 ${
-                        idx === activeShelfIndex
-                          ? "h-3.5 bg-cream"
-                          : "h-1.5 bg-cream/30"
-                      }`}
-                    />
-                  ))}
+                  <div
+                    className="h-full transition-all duration-200 ease-out"
+                    style={{
+                      width: `${((activeShelfIndex + 1) / visibleShelfItems.length) * 100}%`,
+                      backgroundColor: activeShelfItem.spineBg,
+                    }}
+                  />
                 </div>
-                <span>Toca un lomo para abrir</span>
+
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <span className="text-[11px] font-medium tracking-widest text-ink/50 uppercase">
+                      {activeShelfItem.kind === "vhs"
+                        ? "Cine del Caribe"
+                        : "Literatura limonense"}
+                    </span>
+                    <h4 className="font-display mt-1.5 text-3xl leading-[1.02] text-ink sm:text-4xl">
+                      {activeShelfItem.title}
+                    </h4>
+                  </div>
+                  <span
+                    aria-hidden="true"
+                    className="font-display shrink-0 text-3xl leading-none text-ink/15 tabular-nums sm:text-4xl"
+                  >
+                    {activeShelfItem.year}
+                  </span>
+                </div>
+
+                <dl className="mt-5 grid grid-cols-2 gap-4 border-y border-ink/10 py-3.5 text-xs">
+                  <div>
+                    <dt className="text-[10px] tracking-widest text-ink/45 uppercase">
+                      {activeShelfItem.roleLabel}
+                    </dt>
+                    <dd className="mt-1 font-medium text-ink">
+                      {activeShelfItem.creator}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-[10px] tracking-widest text-ink/45 uppercase">
+                      Referencia
+                    </dt>
+                    <dd className="mt-1 font-medium text-ink">
+                      {activeShelfItem.code}
+                    </dd>
+                  </div>
+                </dl>
+
+                <p className="mt-4 min-h-[4.25rem] text-sm leading-relaxed text-pretty text-ink/80">
+                  {activeShelfItem.synopsis}
+                </p>
+
+                <div className="mt-4 border-t border-ink/10 pt-3">
+                  <span className="block text-[10px] tracking-widest text-ink/45 uppercase">
+                    Reconocimientos
+                  </span>
+                  <p className="mt-1 min-h-[2.25rem] text-xs leading-relaxed text-ink/70">
+                    {activeShelfItem.awards.join(" / ")}
+                  </p>
+                </div>
+
+                {/* Pie con contador y navegación por flechas */}
+                <div className="mt-4 flex items-center justify-between border-t border-ink/10 pt-3 text-xs text-ink/55">
+                  <span className="tabular-nums">
+                    {String(activeShelfIndex + 1).padStart(2, "0")} /{" "}
+                    {String(visibleShelfItems.length).padStart(2, "0")}
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => stepShelf(-1)}
+                      aria-label="Obra anterior"
+                      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center border border-ink/20 text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                    >
+                      ←
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => stepShelf(1)}
+                      aria-label="Siguiente obra"
+                      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center border border-ink/20 text-ink/70 transition-colors hover:border-ink hover:text-ink"
+                    >
+                      →
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className=" sm:text-right">
-                <span>
-                  {activeShelfIndex + 1} / {visibleShelfItems.length} —{" "}
-                  {activeShelfItem.code}
-                </span>
+              {/* Columna derecha: Portada compacta con marco editorial */}
+              <div className="mx-auto w-full max-w-[11rem] md:max-w-none">
+                <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xs bg-ink/10 shadow-[6px_6px_0_0_rgba(25,25,25,0.1)] ring-1 ring-ink/15">
+                  <Image
+                    key={activeShelfItem.id}
+                    src={activeShelfItem.image}
+                    alt={activeShelfItem.alt}
+                    fill
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 224px, 180px"
+                    className="object-cover"
+                  />
+                  {activeShelfItem.kind === "book" && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-y-0 left-0 w-2.5 bg-gradient-to-r from-black/30 via-white/15 to-transparent"
+                    />
+                  )}
+                </div>
+                <div className="mt-3 flex items-center justify-between text-[10px] tracking-widest text-ink/45 uppercase">
+                  <span>
+                    {activeShelfItem.kind === "vhs"
+                      ? "Edición fílmica"
+                      : "Edición impresa"}
+                  </span>
+                  <span className="tabular-nums">{activeShelfItem.year}</span>
+                </div>
               </div>
             </div>
           </div>
