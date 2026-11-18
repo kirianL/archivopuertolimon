@@ -13,6 +13,7 @@ const archivo = Archivo({
 
 export const viewport: Viewport = {
   themeColor: "#5e6122",
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {

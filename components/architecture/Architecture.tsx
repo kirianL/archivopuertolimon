@@ -140,12 +140,12 @@ function ScrollDrivenBuildings({
   return (
     <div
       ref={scrollTrackRef}
-      className="relative w-full"
+      className="relative hidden w-full md:block"
       style={{
         height:
           maxScroll > 0
             ? `calc(560px + ${Math.round(maxScroll * 0.85)}px)`
-            : "240lvh",
+            : "240svh",
       }}
     >
       <div className="sticky top-10 w-full overflow-hidden md:top-16">
@@ -178,6 +178,51 @@ function ScrollDrivenBuildings({
               />
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type NativeHorizontalBuildingsProps = {
+  activeBuildingId: string | null;
+  onOpen: (building: Building) => void;
+  className?: string;
+};
+
+function NativeHorizontalBuildings({
+  activeBuildingId,
+  onOpen,
+  className = "",
+}: NativeHorizontalBuildingsProps) {
+  const scrollerRef = useRef<HTMLOListElement>(null);
+  const { scrollXProgress } = useScroll({ container: scrollerRef });
+
+  return (
+    <div className={`pt-3 pb-14 md:pb-24 ${className}`}>
+      <ol
+        ref={scrollerRef}
+        className="flex snap-x snap-mandatory scroll-px-4 gap-5 overflow-x-auto px-4 pt-3 pb-4 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] sm:scroll-px-6 sm:gap-8 sm:px-6 md:scroll-px-[calc((100vw-72rem)/2+1.5rem)] md:px-[calc((100vw-72rem)/2+1.5rem)]"
+      >
+        {buildings.map((item, index) => (
+          <BuildingCard
+            key={item.id}
+            item={item}
+            index={index}
+            isActive={activeBuildingId === null}
+            onOpen={onOpen}
+            snap
+          />
+        ))}
+      </ol>
+
+      <div className="mx-auto mt-4 w-full max-w-6xl px-4 sm:px-6">
+        <div className="h-1 w-36 overflow-hidden rounded-full bg-ink/10 sm:w-48">
+          <motion.div
+            aria-hidden
+            className="h-full w-full origin-left bg-moss"
+            style={{ scaleX: scrollXProgress }}
+          />
         </div>
       </div>
     </div>
@@ -306,28 +351,27 @@ export default function Architecture() {
           </div>
         </div>
 
-        {/* Scroll-driven horizontal gallery (or accessible horizontal scroll when reduced motion is enabled) */}
+        {/* Mobile: native horizontal swipeable carousel (no vertical scroll-jacking or empty space). Desktop: scroll-driven horizontal gallery (or native horizontal scroll when reduced motion is enabled). */}
         {reduceMotion ? (
-          <ol className="flex snap-x snap-mandatory gap-5 overflow-x-auto px-4 pt-3 pb-14 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] sm:gap-8 sm:px-6 md:px-[calc((100vw-72rem)/2+1.5rem)] md:pb-24">
-            {buildings.map((item, index) => (
-              <BuildingCard
-                key={item.id}
-                item={item}
-                index={index}
-                isActive={activeBuilding === null}
-                onOpen={openBuilding}
-                snap
-              />
-            ))}
-          </ol>
-        ) : (
-          <ScrollDrivenBuildings
+          <NativeHorizontalBuildings
             activeBuildingId={activeBuilding?.id ?? null}
-            scrollTrackRef={scrollTrackRef}
-            maxScroll={maxScroll}
-            onMaxScrollChange={setMaxScroll}
             onOpen={openBuilding}
           />
+        ) : (
+          <>
+            <NativeHorizontalBuildings
+              activeBuildingId={activeBuilding?.id ?? null}
+              onOpen={openBuilding}
+              className="md:hidden"
+            />
+            <ScrollDrivenBuildings
+              activeBuildingId={activeBuilding?.id ?? null}
+              scrollTrackRef={scrollTrackRef}
+              maxScroll={maxScroll}
+              onMaxScrollChange={setMaxScroll}
+              onOpen={openBuilding}
+            />
+          </>
         )}
       </section>
 

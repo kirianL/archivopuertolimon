@@ -79,7 +79,7 @@ function SiteNav() {
 
   return (
     <>
-      <header className="relative z-30 flex items-start justify-between px-6 py-6 md:px-10">
+      <header className="relative z-30 flex items-start justify-between px-6 pt-[max(1.25rem,env(safe-area-inset-top))] pb-4 md:px-10 md:py-6">
         <Link href="#inicio" className="font-display text-2xl">
           Puerto
           <br />
@@ -246,20 +246,20 @@ export default function Hero() {
       <section
         id="inicio"
         aria-labelledby="hero-title"
-        className="relative flex min-h-screen min-h-lvh flex-col justify-between overflow-hidden bg-moss text-ink"
+        className="relative flex min-h-svh flex-col justify-between overflow-hidden bg-moss text-ink"
       >
         <SiteNav />
 
-        <div className="animate-rise relative flex flex-1 flex-col items-center justify-center px-6 pb-20 text-center sm:pb-14">
+        <div className="animate-rise relative flex flex-1 flex-col items-center justify-center px-6 pt-2 pb-[max(4.5rem,calc(env(safe-area-inset-bottom)+2.5rem))] text-center sm:pb-12">
           {/* Half-rings hug viewport edges on mobile so the title stays 3 lines, and flank inline on sm+ */}
           <div className="relative flex w-full items-center justify-center sm:gap-[clamp(1rem,4vw,4rem)]">
             <HalfRing
               side="right"
-              className="pointer-events-none absolute top-1/2 left-0 h-40 -translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(11rem,38lvh,26rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
+              className="pointer-events-none absolute top-1/2 left-0 h-40 -translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(10rem,34svh,24rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
             />
             <h1
               id="hero-title"
-              className="font-display relative z-10 text-[clamp(3.2rem,13.5vw,8.5rem)] leading-[0.94] text-cream"
+              className="font-display relative z-10 text-[clamp(3rem,min(13.5vw,12.5svh),8.5rem)] leading-[0.94] text-cream"
             >
               <span className="block whitespace-nowrap">El Caribe</span>
               <span className="block whitespace-nowrap">que hizo a</span>
@@ -267,17 +267,17 @@ export default function Hero() {
             </h1>
             <HalfRing
               side="left"
-              className="pointer-events-none absolute top-1/2 right-0 h-40 translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(11rem,38lvh,26rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
+              className="pointer-events-none absolute top-1/2 right-0 h-40 translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(10rem,34svh,24rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
             />
           </div>
 
-          <p className="mt-7 max-w-[38ch] text-base leading-snug font-medium text-pretty sm:mt-10 sm:max-w-[40ch] md:text-lg">
+          <p className="mt-6 max-w-[38ch] text-base leading-snug font-medium text-pretty sm:mt-8 sm:max-w-[40ch] md:text-lg">
             Un archivo vivo de Puerto Limón: su gente afrocaribeña, el tren, el
             puerto, la cocina y el criollo limonense que todavía se habla en sus
             calles.
           </p>
 
-          <Button href="#historia" className="mt-6">
+          <Button href="#historia" className="mt-5 sm:mt-6">
             Explorar la historia
           </Button>
         </div>
