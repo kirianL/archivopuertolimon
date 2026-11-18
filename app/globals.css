@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 @source not "../.agents";
 
 /* Puerto Limón — design tokens */
