@@ -30,7 +30,7 @@ function Intro() {
         </div>
 
         <div className="lg:text-right">
-          <h2 id="intro-title" className="font-display isolate text-5xl text-balance md:text-7xl">
+          <h2 id="intro-title" className="font-hero isolate text-4xl leading-[1.08] font-normal text-balance sm:text-5xl md:text-6xl">
             Un puerto que se hizo <Highlight color="text-sand">a pulso</Highlight>
           </h2>
           <p className="mt-4 leading-relaxed text-pretty text-ink/80 md:mt-6 lg:ml-auto lg:max-w-[46ch]">

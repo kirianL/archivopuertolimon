@@ -1,5 +1,6 @@
 "use client";
 
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "framer-motion";
@@ -10,9 +11,52 @@ import {
   HalfRing,
   PlusIcon,
 } from "@/components/ui/Shapes";
+import img1890 from "@/public/Limón - images/1890.png";
+import imgBlackStar from "@/public/Limón - images/BlackStarLine.png";
+import imgFerguson from "@/public/Limón - images/walter-ferguson.jpg";
+import imgCommunity from "@/public/Limón - images/Comunidad-vidacotidiana.png";
+import imgCarnival from "@/public/Limón - images/Carnaval.png";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 const EASE_DRAWER = [0.32, 0.72, 0, 1] as const;
+
+type HeroGalleryItem = {
+  src: StaticImageData;
+  alt: string;
+  clipPath: string;
+  edgeRadiusClass?: string;
+};
+
+const heroGallery: readonly HeroGalleryItem[] = [
+  {
+    src: img1890,
+    alt: "Construcción del ferrocarril al Atlántico y trabajadores caribeños",
+    clipPath: "polygon(0% 0%, 100% 5.5%, 100% 94.5%, 0% 100%)",
+    edgeRadiusClass: "rounded-l-2xl",
+  },
+  {
+    src: imgBlackStar,
+    alt: "Edificio histórico del Black Star Line en Puerto Limón",
+    clipPath: "polygon(0% 5.5%, 100% 11.8%, 100% 88.2%, 0% 94.5%)",
+  },
+  {
+    src: imgFerguson,
+    alt: "Walter Ferguson, maestro del calipso limonense",
+    clipPath:
+      "polygon(0% 12.7%, 50% 15.4%, 100% 12.7%, 100% 87.3%, 50% 84.6%, 0% 87.3%)",
+  },
+  {
+    src: imgCommunity,
+    alt: "Vida cotidiana y comunidad afrocaribeña en las calles de Limón",
+    clipPath: "polygon(0% 11.8%, 100% 5.5%, 100% 94.5%, 0% 88.2%)",
+  },
+  {
+    src: imgCarnival,
+    alt: "Comparsas y música en el Carnaval de Puerto Limón",
+    clipPath: "polygon(0% 5.5%, 100% 0%, 100% 100%, 0% 94.5%)",
+    edgeRadiusClass: "rounded-r-2xl",
+  },
+];
 
 const navLinks = [
   { href: "#inicio", label: "Inicio", note: "Puerto Limón · Archivo vivo" },
@@ -240,46 +284,85 @@ function SiteNav() {
   );
 }
 
+/**
+ * Mural SVG orgánico que cubre el escenario inferior del Hero
+ * y conecta al ras con el borde inferior (y=235 -> bottom-0).
+ * En móvil se ensancha (w-[156%]) para mantener la proporción circular de las flores sin aplastarlas.
+ */
+function HeroGalleryBackdrop() {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/images/hero-backdrop.svg?v=3"
+      alt=""
+      aria-hidden="true"
+      className="pointer-events-none absolute top-0 bottom-0 left-1/2 -z-10 h-full w-[156%] max-w-none -translate-x-1/2 opacity-[0.13] [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_100%)] select-none sm:w-[118%] lg:w-full"
+    />
+  );
+}
+
 export default function Hero() {
   return (
     <MotionConfig reducedMotion="user">
       <section
         id="inicio"
         aria-labelledby="hero-title"
-        className="relative flex min-h-svh flex-col justify-between overflow-hidden bg-moss text-ink"
+        className="relative flex min-h-lvh flex-col justify-between overflow-hidden bg-moss text-ink"
       >
         <SiteNav />
 
-        <div className="animate-rise relative flex flex-1 flex-col items-center justify-center px-6 pt-2 pb-[max(4.5rem,calc(env(safe-area-inset-bottom)+2.5rem))] text-center sm:pb-12">
-          {/* Half-rings hug viewport edges on mobile so the title stays 3 lines, and flank inline on sm+ */}
-          <div className="relative flex w-full items-center justify-center sm:gap-[clamp(1rem,4vw,4rem)]">
-            <HalfRing
-              side="right"
-              className="pointer-events-none absolute top-1/2 left-0 h-40 -translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(10rem,34svh,24rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
-            />
-            <h1
-              id="hero-title"
-              className="font-display relative z-10 text-[clamp(3rem,min(13.5vw,12.5svh),8.5rem)] leading-[0.94] text-cream"
-            >
-              <span className="block whitespace-nowrap">El Caribe</span>
-              <span className="block whitespace-nowrap">que hizo a</span>
-              <span className="block whitespace-nowrap">Costa Rica</span>
-            </h1>
-            <HalfRing
-              side="left"
-              className="pointer-events-none absolute top-1/2 right-0 h-40 translate-x-1/2 -translate-y-1/2 sm:static sm:h-[clamp(10rem,34svh,24rem)] sm:shrink-0 sm:translate-x-0 sm:translate-y-0"
-            />
-          </div>
+        {/* Bloque central de texto y botones con tamaños amplios en móvil y escritorio */}
+        <div className="animate-rise relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pt-1 pb-2 text-center sm:px-8">
+          <h1
+            id="hero-title"
+            className="font-hero max-w-[16ch] text-[clamp(2.35rem,9.2vw,3.35rem)] leading-[1.06] font-normal text-balance text-cream sm:max-w-[18ch] sm:text-[clamp(3rem,min(5.8vw,7.4svh),5.1rem)]"
+          >
+            El Caribe que hizo a
+            <br />
+            Costa Rica
+          </h1>
 
-          <p className="mt-6 max-w-[38ch] text-base leading-snug font-medium text-pretty sm:mt-8 sm:max-w-[40ch] md:text-lg">
+          <p className="mt-3.5 max-w-[38ch] text-sm leading-relaxed font-medium text-pretty text-cream/90 sm:mt-4 sm:max-w-[54ch] sm:text-base md:text-lg">
             Un archivo vivo de Puerto Limón: su gente afrocaribeña, el tren, el
             puerto, la cocina y el criollo limonense que todavía se habla en sus
             calles.
           </p>
 
-          <Button href="#historia" className="mt-5 sm:mt-6">
-            Explorar la historia
-          </Button>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:mt-7 sm:gap-4">
+            <Button href="#historia" variant="dark" className="h-11 px-5 text-base sm:h-11 sm:px-6 sm:text-lg">
+              Explorar la historia
+            </Button>
+            <Button href="#cultura" variant="light" className="h-11 px-5 text-base sm:h-11 sm:px-6 sm:text-lg">
+              Recorrer cultura
+            </Button>
+          </div>
+        </div>
+
+        {/* Escenario inferior más grande y conectado al ras con el borde inferior del Hero */}
+        <div className="animate-rise relative isolate mx-auto w-full max-w-[96rem] pt-[clamp(2.25rem,7svh,5.25rem)] pb-[clamp(2.5rem,7.5svh,5rem)]">
+          <HeroGalleryBackdrop />
+
+          <div className="mx-auto grid h-[clamp(9.25rem,23svh,12.5rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11rem,26svh,18rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
+            {heroGallery.map((item, idx) => (
+              <div
+                key={item.alt}
+                style={{ clipPath: item.clipPath }}
+                className={`relative h-full w-full overflow-hidden bg-ink/30 ${
+                  item.edgeRadiusClass ?? ""
+                }`}
+              >
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  priority={idx < 3}
+                  placeholder="blur"
+                  sizes="(max-width: 640px) 22vw, 260px"
+                  className="object-cover grayscale contrast-115"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </MotionConfig>

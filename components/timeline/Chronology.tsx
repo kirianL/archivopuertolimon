@@ -152,7 +152,7 @@ export default function Chronology() {
       >
         <h2
           id="chronology-title"
-          className="font-display px-6 text-center text-5xl md:text-8xl"
+          className="font-hero px-6 text-center text-4xl leading-[1.08] font-normal sm:text-5xl md:text-7xl"
         >
           Cronología viva
         </h2>

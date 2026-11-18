@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 // Archivo variable: width axis gives us the extra-condensed display cut
@@ -8,6 +9,12 @@ const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin", "latin-ext"],
   axes: ["wdth"],
+  display: "swap",
+});
+
+const insomnyacs = localFont({
+  src: "../public/fonts/Insomnyacs.otf",
+  variable: "--font-insomnyacs",
   display: "swap",
 });
 
@@ -30,7 +37,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={archivo.variable}>
+    <html lang="es" className={`${archivo.variable} ${insomnyacs.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -308,7 +308,7 @@ export default function Architecture() {
               <div>
                 <h2
                   id="architecture-title"
-                  className="font-display isolate text-5xl text-balance md:text-7xl"
+                  className="font-hero isolate text-4xl leading-[1.08] font-normal text-balance sm:text-5xl md:text-6xl"
                 >
                   Arquitectura{" "}
                   <Highlight color="text-sand">emblemática</Highlight>

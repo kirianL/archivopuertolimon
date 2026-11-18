@@ -157,51 +157,6 @@ function SpotifyIcon({ className }: { className?: string }) {
 }
 
 /**
- * Patrón geométrico caribeño con simetría matemática (inspirado directamente en el tejido
- * de rombos y espigas concéntricas de las portadas de Walter Ferguson y los calados limonenses).
- */
-function CaribbeanWeavePattern() {
-  const quadrantLines = (
-    <g
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="butt"
-      fill="none"
-    >
-      <path d="M2.5 5.5 L5.5 2.5" />
-      <path d="M2.5 11.5 L11.5 2.5" />
-      <path d="M2.5 17.5 L17.5 2.5" />
-      <path d="M2.5 23.5 L23.5 2.5" />
-      <path d="M6.5 25.5 L25.5 6.5" />
-      <path d="M12.5 25.5 L25.5 12.5" />
-      <path d="M18.5 25.5 L25.5 18.5" />
-    </g>
-  );
-
-  return (
-    <svg
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 -z-20 size-full text-sand/[0.18]"
-    >
-      <defs>
-        <pattern
-          id="limon-caribbean-weave"
-          width="56"
-          height="56"
-          patternUnits="userSpaceOnUse"
-        >
-          {quadrantLines}
-          <g transform="translate(56, 0) scale(-1, 1)">{quadrantLines}</g>
-          <g transform="translate(0, 56) scale(1, -1)">{quadrantLines}</g>
-          <g transform="translate(56, 56) scale(-1, -1)">{quadrantLines}</g>
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill="url(#limon-caribbean-weave)" />
-    </svg>
-  );
-}
-
-/**
  * Transición nativa y serena de bloque completo (sin dividir por palabra ni usar rebotes elásticos):
  * desliza suavemente 5px en vertical con opacidad dentro de su celda CSS Grid estática.
  */
@@ -259,119 +214,16 @@ const fergusonAlbums: readonly TapeAlbum[] = [
   },
 ] as const;
 
-type MekatelyuPhrase = {
-  id: string;
-  number: string;
-  phrase: string;
-  translation: string;
-  context: string;
-  dotClass: string;
-  barClass: string;
-};
-
-const mekatelyuPhrases: readonly MekatelyuPhrase[] = [
-  {
-    id: "yah-man",
-    number: "01",
-    phrase: "Yah man",
-    translation: "Sí / Claro / De acuerdo",
-    context: "Expresa afirmación con actitud positiva",
-    dotClass: "bg-moss",
-    barClass: "bg-moss",
-  },
-  {
-    id: "what-a-gwaan",
-    number: "02",
-    phrase: "What a gwaan?",
-    translation: "¿Qué tal? / ¿Qué pasa?",
-    context: "Saludo casual",
-    dotClass: "bg-sky",
-    barClass: "bg-sky",
-  },
-  {
-    id: "everything-irie",
-    number: "03",
-    phrase: "Everything irie",
-    translation: "Todo está bien / Todo en orden",
-    context: "Estado de ánimo positivo",
-    dotClass: "bg-ember",
-    barClass: "bg-ember",
-  },
-  {
-    id: "we-deh-yah",
-    number: "04",
-    phrase: "We deh yah",
-    translation: "Aquí estamos / Todo bien",
-    context: "Resiliencia y presencia",
-    dotClass: "bg-sand",
-    barClass: "bg-sand",
-  },
-  {
-    id: "likkle-more",
-    number: "05",
-    phrase: "Likkle more",
-    translation: "Nos vemos luego",
-    context: "Despedida",
-    dotClass: "bg-moss",
-    barClass: "bg-moss",
-  },
-  {
-    id: "big-up",
-    number: "06",
-    phrase: "Big up",
-    translation: "Respeto / Reconocimiento",
-    context: "Mostrar aprecio",
-    dotClass: "bg-sky",
-    barClass: "bg-sky",
-  },
-  {
-    id: "respect",
-    number: "07",
-    phrase: "Respect",
-    translation: "Gracias / Aprecio",
-    context: "Valor esencial en la comunidad",
-    dotClass: "bg-ember",
-    barClass: "bg-ember",
-  },
-  {
-    id: "tek-it-easy",
-    number: "08",
-    phrase: "Tek it easy",
-    translation: "Tómelo con calma",
-    context: "Filosofía de vida",
-    dotClass: "bg-sand",
-    barClass: "bg-sand",
-  },
-  {
-    id: "mek-wi-go",
-    number: "09",
-    phrase: "Mek wi go",
-    translation: "Vámonos",
-    context: "Acción conjunta",
-    dotClass: "bg-moss",
-    barClass: "bg-moss",
-  },
-] as const;
-
 export default function Culture() {
   const shouldReduceMotion = useReducedMotion();
   const [activePillarIndex, setActivePillarIndex] = useState(0);
   const [activeAlbumIndex, setActiveAlbumIndex] = useState(0);
-  const [activePhraseIndex, setActivePhraseIndex] = useState(0);
+  const [creoleMode, setCreoleMode] = useState<"mekatelyu" | "english">(
+    "mekatelyu",
+  );
 
   const activePillar = carnivalPillars[activePillarIndex];
   const activeAlbum = fergusonAlbums[activeAlbumIndex];
-  const activePhrase = mekatelyuPhrases[activePhraseIndex];
-
-  const selectPrevPhrase = () => {
-    setActivePhraseIndex(
-      (prev) => (prev - 1 + mekatelyuPhrases.length) % mekatelyuPhrases.length,
-    );
-  };
-
-  const selectNextPhrase = () => {
-    setActivePhraseIndex((prev) => (prev + 1) % mekatelyuPhrases.length);
-  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -390,7 +242,7 @@ export default function Culture() {
               <div>
                 <h2
                   id="culture-title"
-                  className="font-display isolate text-5xl text-balance sm:text-6xl md:text-8xl"
+                  className="font-hero isolate text-4xl leading-[1.08] font-normal text-balance sm:text-5xl md:text-7xl"
                 >
                   Cultura y <Highlight color="text-sand">vida local</Highlight>
                 </h2>
@@ -480,7 +332,7 @@ export default function Culture() {
               {/* Columna editorial + Tarjeta póster (sin subtítulo encima de la frase) */}
               <div className="flex flex-col justify-between gap-6">
                 <div>
-                  <h3 className="font-display isolate text-4xl text-balance sm:text-5xl md:text-6xl">
+                  <h3 className="font-hero isolate text-3xl leading-[1.08] font-normal text-balance sm:text-4xl md:text-5xl">
                     Ritmo, música y{" "}
                     <Highlight color="text-moss">expresión cultural</Highlight>
                   </h3>
@@ -543,7 +395,7 @@ export default function Culture() {
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
             <div className="grid items-start gap-8 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
               <div>
-                <h3 className="font-display isolate text-4xl text-balance sm:text-6xl md:text-7xl">
+                <h3 className="font-hero isolate text-3xl leading-[1.08] font-normal text-balance sm:text-5xl md:text-6xl">
                   Carnaval de Limón:{" "}
                   <Highlight color="text-ember">orgullo que se baila</Highlight>
                 </h3>
@@ -870,7 +722,7 @@ export default function Culture() {
               <div>
                 <h3
                   id="ferguson-title"
-                  className="font-display isolate text-4xl text-balance sm:text-6xl md:text-7xl"
+                  className="font-hero isolate text-3xl leading-[1.08] font-normal text-balance sm:text-5xl md:text-6xl"
                 >
                   El Rey del Calipso:{" "}
                   <Highlight color="text-ember">Walter Ferguson</Highlight>
@@ -1051,207 +903,100 @@ export default function Culture() {
           className="overflow-hidden bg-cream py-14 text-ink md:py-28"
         >
           <div className="mx-auto max-w-6xl px-5 sm:px-6">
-            {/* Encabezado: Título primero y contexto debajo */}
-            <div className="grid gap-6 border-b border-ink/15 pb-8 sm:pb-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end lg:gap-14">
-              <div>
-                <h3
-                  id="mekatelyu-title"
-                  className="font-display isolate text-5xl text-balance sm:text-6xl md:text-8xl"
-                >
-                  Speak like a{" "}
-                  <Highlight color="text-moss">Limonense</Highlight>
-                </h3>
-              </div>
-
-              <p className="max-w-[50ch] text-sm leading-relaxed text-pretty text-ink/80 sm:text-base">
-                En Limón conviven el español y el inglés criollo limonense
-                (mekatelyu). Este idioma sigue vivo en conversaciones
-                cotidianas, reflejando cercanía y respeto.
-              </p>
+            {/* Encabezado limpio */}
+            <div className="border-b border-ink/15 pb-6 sm:pb-10">
+              <h3
+                id="mekatelyu-title"
+                className="font-hero isolate text-4xl leading-[1.08] font-normal text-balance sm:text-5xl md:text-7xl"
+              >
+                Speak like a{" "}
+                <Highlight color="text-moss">Limonense</Highlight>
+              </h3>
             </div>
 
-            {/* Explorador de las 9 expresiones: Póster sonoro interactivo + Matriz arquitectónica 3x3 */}
-            <div className="mt-8 grid items-start gap-8 sm:mt-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
-              {/* Póster interactivo con patrón geométrico caribeño ordenado (inspirado en las portadas de Walter Ferguson) y rieles fijos */}
+            {/* Dato curioso compacto */}
+            <div className="mt-8 grid items-center gap-8 sm:mt-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+              {/* Espécimen fonético interactivo */}
               <div
                 aria-live="polite"
-                className="relative isolate overflow-hidden rounded-2xl bg-moss p-6 text-cream ring-1 ring-black/15 ring-inset sm:p-9"
+                className="rounded-2xl bg-ink p-6 text-cream sm:p-9"
               >
-                {/* Patrón geométrico caribeño con simetría matemática (rombos y espigas concéntricas) */}
-                <CaribbeanWeavePattern />
-                {/* Velo suave para preservar contraste en el centro y dejar respirar el patrón en los bordes */}
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_35%_48%,rgba(91,97,40,0.82)_0%,rgba(91,97,40,0.45)_65%,rgba(29,29,27,0.35)_100%)]"
-                />
+                <div className="flex items-center justify-end">
+                  <div
+                    role="group"
+                    aria-label="Comparar pronunciación"
+                    className="inline-flex rounded-full bg-cream/10 p-1 text-xs font-semibold"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setCreoleMode("mekatelyu")}
+                      aria-pressed={creoleMode === "mekatelyu"}
+                      className={`cursor-pointer rounded-full px-3 py-1 transition-colors duration-150 ${
+                        creoleMode === "mekatelyu"
+                          ? "bg-cream text-ink"
+                          : "text-cream/70 hover:text-cream"
+                      }`}
+                    >
+                      Mekatelyu
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCreoleMode("english")}
+                      aria-pressed={creoleMode === "english"}
+                      className={`cursor-pointer rounded-full px-3 py-1 transition-colors duration-150 ${
+                        creoleMode === "english"
+                          ? "bg-cream text-ink"
+                          : "text-cream/70 hover:text-cream"
+                      }`}
+                    >
+                      Inglés
+                    </button>
+                  </div>
+                </div>
 
-                {/* Controles superiores minimalistas: Número activo + Navegación anterior/siguiente */}
-                <div className="flex items-center justify-between">
-                  <span className="font-display inline-flex items-baseline gap-1.5 text-2xl text-sand tabular-nums sm:text-3xl">
+                <div className="mt-5 grid items-center">
+                  <p
+                    aria-hidden
+                    className="font-display pointer-events-none invisible col-start-1 row-start-1 text-4xl leading-[0.98] select-none sm:text-6xl"
+                  >
+                    “Make I tell you”
+                  </p>
+                  <p className="font-display col-start-1 row-start-1 text-4xl leading-[0.98] text-cream sm:text-6xl">
                     <SlotRollText
-                      text={activePhrase.number}
-                      durationSec={0.18}
+                      text={
+                        creoleMode === "mekatelyu"
+                          ? "“Mek a tel yu”"
+                          : "“Make I tell you”"
+                      }
                     />
-                    <span className="text-cream/55">/ 09</span>
-                  </span>
-
-                  <div className="flex items-center gap-2.5">
-                    <button
-                      type="button"
-                      onClick={selectPrevPhrase}
-                      aria-label="Frase anterior en mekatelyu"
-                      className="group/nav inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-ink/35 text-cream ring-1 ring-cream/20 transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.95] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/55"
-                    >
-                      <EditorialArrow
-                        direction="left"
-                        className="h-3 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover/nav:-translate-x-0.5"
-                      />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={selectNextPhrase}
-                      aria-label="Siguiente frase en mekatelyu"
-                      className="group/nav inline-flex size-8 cursor-pointer items-center justify-center rounded-full bg-ink/35 text-cream ring-1 ring-cream/20 transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.95] [@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/55"
-                    >
-                      <EditorialArrow
-                        direction="right"
-                        className="h-3 w-3.5 transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] [@media(hover:hover)_and_(pointer:fine)]:group-hover/nav:translate-x-0.5"
-                      />
-                    </button>
-                  </div>
+                  </p>
                 </div>
 
-                {/* Escenario tipográfico con 3 rieles CSS Grid independientes y SlotRollText sin reflujo horizontal */}
-                <div className="mt-6 sm:mt-8">
-                  {/* Riel 1: Expresión en Mekatelyu */}
-                  <div className="grid items-center">
-                    {mekatelyuPhrases.map((item) => (
-                      <p
-                        key={item.id}
-                        aria-hidden
-                        className="font-display pointer-events-none invisible col-start-1 row-start-1 text-4xl leading-[1.06] select-none sm:text-5xl md:text-6xl"
-                      >
-                        {`“${item.phrase}”`}
-                      </p>
-                    ))}
-                    <p className="font-display col-start-1 row-start-1 text-4xl leading-[1.06] text-cream sm:text-5xl md:text-6xl">
-                      <SlotRollText text={`“${activePhrase.phrase}”`} />
-                    </p>
-                  </div>
+                <p className="mt-2 text-sm font-medium text-sand sm:text-base">
+                  Déjame decirte.
+                </p>
 
-                  {/* Riel 2: Traducción al español */}
-                  <div className="mt-4 grid items-start border-t border-cream/15 pt-3.5 sm:mt-5 sm:pt-4">
-                    {mekatelyuPhrases.map((item) => (
-                      <p
-                        key={item.id}
-                        aria-hidden
-                        className="font-display pointer-events-none invisible col-start-1 row-start-1 text-2xl leading-[1.06] select-none sm:text-3xl"
-                      >
-                        {item.translation}
-                      </p>
-                    ))}
-                    <p className="font-display col-start-1 row-start-1 text-2xl leading-[1.06] text-sand sm:text-3xl">
-                      <SlotRollText text={activePhrase.translation} />
-                    </p>
-                  </div>
-
-                  {/* Riel 3: Uso / Contexto */}
-                  <div className="mt-1.5 grid items-start">
-                    {mekatelyuPhrases.map((item) => (
-                      <p
-                        key={item.id}
-                        aria-hidden
-                        className="pointer-events-none invisible col-start-1 row-start-1 text-sm leading-[1.4] select-none sm:text-base"
-                      >
-                        {item.context}
-                      </p>
-                    ))}
-                    <p className="col-start-1 row-start-1 text-sm leading-[1.4] text-cream/85 sm:text-base">
-                      <SlotRollText text={activePhrase.context} />
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex items-center justify-between border-t border-cream/20 pt-4 sm:mt-8">
-                  <Bay className="h-5 w-12 text-sand/70 sm:h-6 sm:w-14" />
-                  <span className="text-xs font-semibold tracking-wider text-cream/85 uppercase">
-                    Inglés criollo limonense
-                  </span>
+                <div className="mt-5 border-t border-cream/15 pt-4 font-display text-lg text-cream/85 sm:text-xl">
+                  <SlotRollText
+                    text={
+                      creoleMode === "mekatelyu"
+                        ? "Tree ting · Dis / Dat"
+                        : "Three things · This / That"
+                    }
+                  />
                 </div>
               </div>
 
-              {/* Matriz arquitectónica (2 columnas en móvil para evitar textos apretados y 3x3 desde sm) */}
-              <div
-                role="tablist"
-                aria-label="Expresiones en inglés criollo limonense"
-                className="grid grid-cols-2 border-t border-l border-ink/15 sm:grid-cols-3"
-              >
-                {mekatelyuPhrases.map((item, index) => {
-                  const isSelected = index === activePhraseIndex;
-                  const isLastItem = index === mekatelyuPhrases.length - 1;
-                  return (
-                    <button
-                      key={item.id}
-                      type="button"
-                      role="tab"
-                      aria-selected={isSelected}
-                      onClick={() => setActivePhraseIndex(index)}
-                      className={`group relative isolate flex min-h-[100px] cursor-pointer flex-col justify-between border-r border-b border-ink/15 p-3.5 text-left transition-[transform,background-color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] select-none active:scale-[0.98] focus:outline-none focus-visible:bg-ink/[0.06] sm:min-h-[112px] sm:p-4 ${
-                        isLastItem ? "col-span-2 sm:col-span-1" : ""
-                      } ${
-                        isSelected
-                          ? "bg-ink/[0.05]"
-                          : "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-ink/[0.025]"
-                      }`}
-                    >
-                      <span
-                        aria-hidden
-                        className={`pointer-events-none absolute inset-x-0 top-0 h-[3px] origin-left transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                          item.barClass
-                        } ${
-                          isSelected
-                            ? "scale-x-100"
-                            : "scale-x-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-x-45"
-                        }`}
-                      />
-
-                      <div className="flex items-start justify-between gap-1">
-                        <div className="relative isolate pl-1">
-                          <span
-                            aria-hidden
-                            className={`pointer-events-none absolute -top-0.5 left-0 -z-10 size-5 rounded-full transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] sm:size-6 ${
-                              item.dotClass
-                            } ${isSelected ? "scale-110" : "opacity-75"}`}
-                          />
-                          <span className="font-display text-lg tracking-tight text-ink sm:text-2xl">
-                            {item.number}
-                          </span>
-                        </div>
-
-                        <PlusIcon
-                          className={`size-3 text-ink/45 transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-                            isSelected ? "rotate-45 text-ink" : ""
-                          }`}
-                        />
-                      </div>
-
-                      <div className="mt-2.5 sm:mt-3">
-                        <p
-                          className={`font-display text-base leading-[0.98] transition-colors duration-150 sm:text-xl ${
-                            isSelected
-                              ? "text-ink"
-                              : "text-ink/80 [@media(hover:hover)_and_(pointer:fine)]:group-hover:text-ink"
-                          }`}
-                        >
-                          “{item.phrase}”
-                        </p>
-                        <p className="mt-1 line-clamp-1 text-[11px] leading-snug text-ink/60 sm:text-xs">
-                          {item.translation}
-                        </p>
-                      </div>
-                    </button>
-                  );
-                })}
+              {/* Dato directo sin relleno */}
+              <div>
+                <p className="font-display text-2xl leading-[1.05] text-ink sm:text-4xl">
+                  De «Make I tell you» nació la palabra mekatelyu.
+                </p>
+                <p className="mt-3 max-w-[44ch] text-sm leading-relaxed text-pretty text-ink/75 sm:text-base">
+                  Llegó con trabajadores jamaicanos del ferrocarril en el siglo
+                  XIX y mezcla vocabulario inglés con gramática de África
+                  occidental.
+                </p>
               </div>
             </div>
 
@@ -1307,7 +1052,7 @@ export default function Culture() {
 
                 {/* Reseña editorial del libro (Título primero, subtítulo y detalles debajo) */}
                 <div>
-                  <h4 className="font-display isolate text-4xl text-balance text-ink sm:text-5xl md:text-6xl">
+                  <h4 className="font-hero isolate text-3xl leading-[1.08] font-normal text-balance text-ink sm:text-4xl md:text-5xl">
                     Mek Wi Rayt Wi Langwich:{" "}
                     <Highlight color="text-ember">
                       Limon Kryol Alfabet
