@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   MotionConfig,
@@ -30,6 +30,15 @@ import imgCalypsonian from "@/public/Limón - images/Parade/Musicos y cantantes/
 import imgMaracas from "@/public/Limón - images/Parade/Musicos y cantantes/540004486_754962117313867_1346397361303001633_n.jpg";
 import imgComparsaFeather from "@/public/Limón - images/Parade/Trajes/540455199_759706376839441_6626957489670622357_n.jpg";
 import imgGalaCrown from "@/public/Limón - images/Parade/Trajes/540589295_759705376839541_8886161950268267501_n.jpg";
+import imgDomino from "@/public/Limón - images/CasaDomino.png";
+import imgBigBoy from "@/public/Limón - images/BigBoy.png";
+import imgBoxeo from "@/public/Limón - images/Boxeo.jpg";
+import imgComunidad from "@/public/Limón - images/Comunidad-vidacotidiana.png";
+import imgArte from "@/public/Limón - images/arteLimon.png";
+import imgTeatro from "@/public/Limón - images/teatro.png";
+import imgDosAguas from "@/public/Limón - images/DosAguas.png";
+import imgCenizaNegra from "@/public/Limón - images/CenizaNegra.png";
+import imgFergusonPortrait from "@/public/Limón - images/a-Ferguson1.jpg";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
@@ -214,6 +223,112 @@ const fergusonAlbums: readonly TapeAlbum[] = [
   },
 ] as const;
 
+const caribbeanFilms = [
+  {
+    id: "dos-aguas",
+    title: "Dos Aguas",
+    year: "2015",
+    director: "Patricia Velásquez",
+    synopsis:
+      "Un retrato de la fraternidad y el entorno, donde Limón no es solo paisaje, sino protagonista.",
+    awards: [
+      "Premio Centroamérica Concluye (Ícaro)",
+      "Selección Oficial IFF Panamá",
+    ],
+    image: imgDosAguas,
+    alt: "Fotograma y póster de la película Dos Aguas (2015) de Patricia Velásquez",
+  },
+  {
+    id: "ceniza-negra",
+    title: "Ceniza Negra",
+    year: "2019",
+    director: "Sofía Quirós Úbeda",
+    synopsis:
+      "Una mirada a la infancia y el duelo envuelta en la atmósfera sensorial del Caribe Sur.",
+    awards: [
+      "Nominada Cámara de Oro (Cannes)",
+      "Mejor Película (Semana Crítica El Cairo)",
+      "Representante Oscar 2021",
+    ],
+    image: imgCenizaNegra,
+    alt: "Fotograma y póster de la película Ceniza Negra (2019) de Sofía Quirós Úbeda",
+  },
+] as const;
+
+const radioStations = [
+  {
+    id: "radio-casino",
+    freq: "98.3 FM",
+    dialPercent: "28%",
+    name: "Radio Casino",
+    tagline: "La Reina del Caribe · Fundada en 1948",
+    description:
+      "Emisora histórica fundada en 1948, pilar de la comunicación y difusión cultural en la provincia.",
+    streamUrl: "https://host.rowrigo.com/listen/radiocasino/radiocasino",
+    externalUrl: "https://radiocasino.net/",
+  },
+  {
+    id: "radio-bahia",
+    freq: "107.9 FM",
+    dialPercent: "76%",
+    name: "Radio Bahía Limón",
+    tagline: "Voz cotidiana de la comunidad",
+    description:
+      "La voz cotidiana de la comunidad, espacio de opinión y compañía indispensable.",
+    streamUrl: "https://s44.myradiostream.com/8368/;",
+    externalUrl: "https://onlineradiobox.com/cr/bahialimon/",
+  },
+] as const;
+
+const artPillars = [
+  {
+    label: "Murales con símbolos afrocaribeños",
+    note: "Color y memoria en fachadas y espacios barriales.",
+  },
+  {
+    label: "Poesía y narrativa oral",
+    note: "Relatos transmitidos de generación en generación.",
+  },
+  {
+    label: "Danza y música comunitaria",
+    note: "Cuerpo, tambor y comparsa como lenguaje colectivo.",
+  },
+  {
+    label: "Talleres culturales abiertos",
+    note: "Formación artística abierta para niñas, niños y jóvenes.",
+  },
+] as const;
+
+const keyDates = [
+  {
+    date: "7 de mayo",
+    title: "Día Nacional del Calipso Limonense",
+    note: "Homenaje al legado de Walter Ferguson y los calipseros del Caribe.",
+    image: imgFergusonPortrait,
+    alt: "Walter Ferguson interpretando calipso limonense",
+    tiltClass: "-rotate-3",
+    accentClass: "bg-sand text-ink",
+  },
+  {
+    date: "31 de agosto",
+    title: "Día de la Persona Negra y la Cultura Afrocostarricense",
+    note: "Celebración nacional de la herencia, historia y aportes afrocaribeños.",
+    image: imgGalaCrown,
+    alt: "Gala y trajes tradicionales afrocostarricenses en Limón",
+    tiltClass: "rotate-2",
+    accentClass: "bg-ember text-cream",
+  },
+  {
+    date: "Octubre",
+    title: "Carnaval de Limón",
+    note: "Comparsas, tambores y alegría toman las calles frente al mar.",
+    image: imgCarnaval,
+    alt: "Comparsas en el Carnaval de Puerto Limón",
+    tiltClass: "-rotate-2",
+    accentClass: "bg-moss text-cream",
+  },
+] as const;
+
 export default function Culture() {
   const shouldReduceMotion = useReducedMotion();
   const [activePillarIndex, setActivePillarIndex] = useState(0);
@@ -221,9 +336,66 @@ export default function Culture() {
   const [creoleMode, setCreoleMode] = useState<"mekatelyu" | "english">(
     "mekatelyu",
   );
+  const [activeStampQuote, setActiveStampQuote] = useState<0 | 1>(0);
+  const [activeArtIndex, setActiveArtIndex] = useState(0);
+  const [activeFilmIndex, setActiveFilmIndex] = useState(0);
+  const [activeRadioIndex, setActiveRadioIndex] = useState(0);
+  const [isRadioPlaying, setIsRadioPlaying] = useState(false);
+  const [isRadioLoading, setIsRadioLoading] = useState(false);
+  const radioAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const activePillar = carnivalPillars[activePillarIndex];
   const activeAlbum = fergusonAlbums[activeAlbumIndex];
+  const activeFilm = caribbeanFilms[activeFilmIndex];
+  const activeRadio = radioStations[activeRadioIndex];
+
+  useEffect(() => {
+    const audio = radioAudioRef.current;
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.removeAttribute("src");
+      }
+    };
+  }, []);
+
+  const playStation = async (index: number) => {
+    const station = radioStations[index];
+    const audio = radioAudioRef.current;
+    if (!audio) return;
+
+    setIsRadioLoading(true);
+    try {
+      audio.src = station.streamUrl;
+      audio.load();
+      await audio.play();
+      setIsRadioPlaying(true);
+    } catch {
+      setIsRadioPlaying(false);
+    } finally {
+      setIsRadioLoading(false);
+    }
+  };
+
+  const toggleRadioPlayback = () => {
+    const audio = radioAudioRef.current;
+    if (!audio) return;
+
+    if (isRadioPlaying) {
+      audio.pause();
+      setIsRadioPlaying(false);
+      setIsRadioLoading(false);
+    } else {
+      void playStation(activeRadioIndex);
+    }
+  };
+
+  const selectRadioStation = (index: number) => {
+    setActiveRadioIndex(index);
+    if (isRadioPlaying || isRadioLoading) {
+      void playStation(index);
+    }
+  };
 
   return (
     <MotionConfig reducedMotion="user">
@@ -1131,6 +1303,802 @@ export default function Culture() {
                     </a>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            BANDA 5: DOMINÓ, BÉISBOL Y COMUNIDAD (INSPIRADO EN REFERENCIAS 2 Y 3)
+           ===================================================================== */}
+        <section
+          aria-labelledby="comunidad-deporte-title"
+          className="overflow-hidden bg-moss py-16 text-cream md:py-28"
+        >
+          <div className="mx-auto max-w-6xl px-5 sm:px-6">
+            {/* Tipografía monumental con fotografías incrustadas en línea (Referencia 2: Research) */}
+            <div className="mx-auto max-w-4xl text-center">
+              <p className="text-xs font-bold tracking-widest text-sand uppercase">
+                Tradición de esquina y barrio
+              </p>
+
+              <h3
+                id="comunidad-deporte-title"
+                className="font-hero mt-4 text-3xl leading-[1.18] font-normal text-cream sm:text-5xl md:text-6xl"
+              >
+                <span>El dominó </span>
+                <span className="group relative mx-1 inline-block h-[2.2rem] w-[3.8rem] translate-y-1.5 overflow-hidden rounded-lg bg-ink ring-1 ring-cream/25 transition-transform duration-200 ease-out sm:h-[3.1rem] sm:w-[5.4rem] sm:translate-y-2 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-110">
+                  <Image
+                    src={imgDomino}
+                    alt="Partida de dominó en Puerto Limón"
+                    fill
+                    sizes="100px"
+                    className="object-cover"
+                  />
+                </span>
+                <span> en la esquina, el </span>
+                <span className="text-sand">béisbol </span>
+                <span className="group relative mx-1 inline-block h-[2.2rem] w-[3.8rem] translate-y-1.5 overflow-hidden rounded-lg bg-ink ring-1 ring-cream/25 transition-transform duration-200 ease-out sm:h-[3.1rem] sm:w-[5.4rem] sm:translate-y-2 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-110">
+                  <Image
+                    src={imgBigBoy}
+                    alt="Estadio Big Boy de Puerto Limón"
+                    fill
+                    sizes="100px"
+                    className="object-cover"
+                  />
+                </span>
+                <span> en el Big Boy y el </span>
+                <span className="group relative mx-1 inline-block h-[2.2rem] w-[3.8rem] translate-y-1.5 overflow-hidden rounded-lg bg-ink ring-1 ring-cream/25 transition-transform duration-200 ease-out sm:h-[3.1rem] sm:w-[5.4rem] sm:translate-y-2 [@media(hover:hover)_and_(pointer:fine)]:hover:scale-110">
+                  <Image
+                    src={imgBoxeo}
+                    alt="Boxeo y deporte barrial en Limón"
+                    fill
+                    sizes="100px"
+                    className="object-cover"
+                  />
+                </span>
+                <span> pulso del barrio</span>
+              </h3>
+            </div>
+
+            {/* =================================================================
+                3 TARJETAS CON MARCO FOTOGRÁFICO Y VENTANA RECORTADA (FIEL A REFERENCIA 3)
+               ================================================================= */}
+            <div className="mt-12 grid gap-6 border-t border-cream/15 pt-12 md:grid-cols-3">
+              {/* Tarjeta 1: Dominó */}
+              <article className="group relative overflow-hidden rounded-xl p-3.5 sm:p-4">
+                <Image
+                  src={imgDomino}
+                  alt="Casa del Dominó en Puerto Limón"
+                  fill
+                  placeholder="blur"
+                  sizes="(min-width: 768px) 360px, 92vw"
+                  className="pointer-events-none -z-10 object-cover brightness-75 transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                />
+                <div className="flex h-full flex-col justify-between rounded-lg bg-cream p-5 text-ink shadow-md">
+                  <h4 className="font-display text-2xl text-ink sm:text-3xl">
+                    Dominó: más que un juego
+                  </h4>
+
+                  {/* Ventana recortada en silueta orgánica que deja ver la fotografía */}
+                  <div
+                    style={{
+                      clipPath:
+                        "polygon(12% 8%, 48% 0%, 88% 10%, 100% 48%, 86% 92%, 52% 100%, 14% 88%, 0% 46%)",
+                    }}
+                    className="relative my-5 aspect-[4/3] w-full overflow-hidden bg-ink"
+                  >
+                    <Image
+                      src={imgDomino}
+                      alt="Partida de dominó en esquina limonense"
+                      fill
+                      placeholder="blur"
+                      sizes="(min-width: 768px) 320px, 80vw"
+                      className="object-cover transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
+                      Se juega en casas, bares y esquinas. Las partidas mezclan
+                      golpes de fichas, bromas e historias. En Limón, el dominó
+                      une.
+                    </p>
+                    <span className="mt-3 block text-right text-xs font-bold tracking-wider text-moss underline underline-offset-4 uppercase">
+                      Esquina y mesa
+                    </span>
+                  </div>
+                </div>
+              </article>
+
+              {/* Tarjeta 2: Béisbol */}
+              <article className="group relative overflow-hidden rounded-xl p-3.5 sm:p-4">
+                <Image
+                  src={imgBigBoy}
+                  alt="Estadio Big Boy de Puerto Limón"
+                  fill
+                  placeholder="blur"
+                  sizes="(min-width: 768px) 360px, 92vw"
+                  className="pointer-events-none -z-10 object-cover brightness-75 transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                />
+                <div className="flex h-full flex-col justify-between rounded-lg bg-cream p-5 text-ink shadow-md">
+                  <h4 className="font-display text-2xl text-ink sm:text-3xl">
+                    Béisbol: orgullo histórico
+                  </h4>
+
+                  <div
+                    style={{
+                      clipPath:
+                        "polygon(50% 0%, 92% 14%, 100% 54%, 82% 94%, 50% 100%, 18% 94%, 0% 54%, 8% 14%)",
+                    }}
+                    className="relative my-5 aspect-[4/3] w-full overflow-hidden bg-ink"
+                  >
+                    <Image
+                      src={imgBigBoy}
+                      alt="Diamante del Estadio Big Boy en Limón"
+                      fill
+                      placeholder="blur"
+                      sizes="(min-width: 768px) 320px, 80vw"
+                      className="object-cover transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
+                      Limón es la cuna del béisbol en Costa Rica. El Estadio Big
+                      Boy simboliza tradición y comunidad barrial.
+                    </p>
+                    <span className="mt-3 block text-right text-xs font-bold tracking-wider text-moss underline underline-offset-4 uppercase">
+                      Estadio Big Boy
+                    </span>
+                  </div>
+                </div>
+              </article>
+
+              {/* Tarjeta 3: Boxeo y fútbol barrial */}
+              <article className="group relative overflow-hidden rounded-xl p-3.5 sm:p-4">
+                <Image
+                  src={imgBoxeo}
+                  alt="Boxeo y deporte barrial en Puerto Limón"
+                  fill
+                  placeholder="blur"
+                  sizes="(min-width: 768px) 360px, 92vw"
+                  className="pointer-events-none -z-10 object-cover brightness-75 transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                />
+                <div className="flex h-full flex-col justify-between rounded-lg bg-cream p-5 text-ink shadow-md">
+                  <h4 className="font-display text-2xl text-ink sm:text-3xl">
+                    Deporte y vida barrial
+                  </h4>
+
+                  <div
+                    style={{
+                      clipPath:
+                        "polygon(16% 4%, 84% 4%, 100% 42%, 88% 96%, 12% 96%, 0% 42%)",
+                    }}
+                    className="relative my-5 aspect-[4/3] w-full overflow-hidden bg-ink"
+                  >
+                    <Image
+                      src={imgBoxeo}
+                      alt="Entrenamiento de boxeo en gimnasio limonense"
+                      fill
+                      placeholder="blur"
+                      sizes="(min-width: 768px) 320px, 80vw"
+                      className="object-cover transition-transform duration-500 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-110"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
+                      Junto al diamante, el boxeo y el fútbol forman escuelas de
+                      disciplina, encuentro y orgullo en cada barrio.
+                    </p>
+                    <span className="mt-3 block text-right text-xs font-bold tracking-wider text-moss underline underline-offset-4 uppercase">
+                      Cancha y gimnasio
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          {/* =================================================================
+              ESCENARIO FOTOGRÁFICO CON SELLO POSTAL ONDULADO IDÉNTICO A REFERENCIA 3
+             ================================================================= */}
+          <div className="relative isolate mt-14 flex min-h-[34rem] w-full items-center justify-center overflow-hidden py-14 sm:mt-20 sm:py-20">
+            <Image
+              src={imgComunidad}
+              alt="Comunidad y vida cotidiana en las calles de Limón"
+              fill
+              placeholder="blur"
+              sizes="100vw"
+              className="pointer-events-none -z-20 object-cover brightness-[0.65] contrast-105"
+            />
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10 bg-ink/30"
+            />
+
+            <div className="mx-auto w-full max-w-[29rem] px-4 sm:px-6">
+              {/* Sello postal cuadrado con borde ondulado crema real en SVG y centro naranja (Referencia 3) */}
+              <div className="relative isolate px-7 py-9 text-center text-cream sm:px-11 sm:py-11">
+                <svg
+                  viewBox="0 0 480 450"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 -z-10 h-full w-full drop-shadow-[0_20px_38px_rgba(0,0,0,0.45)]"
+                >
+                  <path
+                    fill="#faf3d9"
+                    d="M 14.0 14.0 Q 21.5 8.5 29.1 14.0 Q 36.6 16.5 44.1 14.0 Q 51.7 8.5 59.2 14.0 Q 66.7 16.5 74.3 14.0 Q 81.8 8.5 89.3 14.0 Q 96.9 16.5 104.4 14.0 Q 111.9 8.5 119.5 14.0 Q 127.0 16.5 134.5 14.0 Q 142.1 8.5 149.6 14.0 Q 157.1 16.5 164.7 14.0 Q 172.2 8.5 179.7 14.0 Q 187.3 16.5 194.8 14.0 Q 202.3 8.5 209.9 14.0 Q 217.4 16.5 224.9 14.0 Q 232.5 8.5 240.0 14.0 Q 247.5 16.5 255.1 14.0 Q 262.6 8.5 270.1 14.0 Q 277.7 16.5 285.2 14.0 Q 292.7 8.5 300.3 14.0 Q 307.8 16.5 315.3 14.0 Q 322.9 8.5 330.4 14.0 Q 337.9 16.5 345.5 14.0 Q 353.0 8.5 360.5 14.0 Q 368.1 16.5 375.6 14.0 Q 383.1 8.5 390.7 14.0 Q 398.2 16.5 405.7 14.0 Q 413.3 8.5 420.8 14.0 Q 428.3 16.5 435.9 14.0 Q 443.4 8.5 450.9 14.0 Q 458.5 16.5 466.0 14.0 Q 471.5 21.5 466.0 29.1 Q 463.5 36.6 466.0 44.1 Q 471.5 51.7 466.0 59.2 Q 463.5 66.8 466.0 74.3 Q 471.5 81.8 466.0 89.4 Q 463.5 96.9 466.0 104.4 Q 471.5 112.0 466.0 119.5 Q 463.5 127.0 466.0 134.6 Q 471.5 142.1 466.0 149.6 Q 463.5 157.2 466.0 164.7 Q 471.5 172.3 466.0 179.8 Q 463.5 187.3 466.0 194.9 Q 471.5 202.4 466.0 209.9 Q 463.5 217.5 466.0 225.0 Q 471.5 232.5 466.0 240.1 Q 463.5 247.6 466.0 255.1 Q 471.5 262.7 466.0 270.2 Q 463.5 277.8 466.0 285.3 Q 471.5 292.8 466.0 300.4 Q 463.5 307.9 466.0 315.4 Q 471.5 323.0 466.0 330.5 Q 463.5 338.0 466.0 345.6 Q 471.5 353.1 466.0 360.6 Q 463.5 368.2 466.0 375.7 Q 471.5 383.3 466.0 390.8 Q 463.5 398.3 466.0 405.9 Q 471.5 413.4 466.0 420.9 Q 463.5 428.5 466.0 436.0 Q 458.5 441.5 450.9 436.0 Q 443.4 433.5 435.9 436.0 Q 428.3 441.5 420.8 436.0 Q 413.3 433.5 405.7 436.0 Q 398.2 441.5 390.7 436.0 Q 383.1 433.5 375.6 436.0 Q 368.1 441.5 360.5 436.0 Q 353.0 433.5 345.5 436.0 Q 337.9 441.5 330.4 436.0 Q 322.9 433.5 315.3 436.0 Q 307.8 441.5 300.3 436.0 Q 292.7 433.5 285.2 436.0 Q 277.7 441.5 270.1 436.0 Q 262.6 433.5 255.1 436.0 Q 247.5 441.5 240.0 436.0 Q 232.5 433.5 224.9 436.0 Q 217.4 441.5 209.9 436.0 Q 202.3 433.5 194.8 436.0 Q 187.3 441.5 179.7 436.0 Q 172.2 433.5 164.7 436.0 Q 157.1 441.5 149.6 436.0 Q 142.1 433.5 134.5 436.0 Q 127.0 441.5 119.5 436.0 Q 111.9 433.5 104.4 436.0 Q 96.9 441.5 89.3 436.0 Q 81.8 433.5 74.3 436.0 Q 66.7 441.5 59.2 436.0 Q 51.7 433.5 44.1 436.0 Q 36.6 441.5 29.1 436.0 Q 21.5 433.5 14.0 436.0 Q 8.5 428.5 14.0 420.9 Q 16.5 413.4 14.0 405.9 Q 8.5 398.3 14.0 390.8 Q 16.5 383.3 14.0 375.7 Q 8.5 368.2 14.0 360.6 Q 16.5 353.1 14.0 345.6 Q 8.5 338.0 14.0 330.5 Q 16.5 323.0 14.0 315.4 Q 8.5 307.9 14.0 300.4 Q 16.5 292.8 14.0 285.3 Q 8.5 277.8 14.0 270.2 Q 16.5 262.7 14.0 255.1 Q 8.5 247.6 14.0 240.1 Q 16.5 232.5 14.0 225.0 Q 8.5 217.5 14.0 209.9 Q 16.5 202.4 14.0 194.9 Q 8.5 187.3 14.0 179.8 Q 16.5 172.3 14.0 164.7 Q 8.5 157.2 14.0 149.6 Q 16.5 142.1 14.0 134.6 Q 8.5 127.0 14.0 119.5 Q 16.5 112.0 14.0 104.4 Q 8.5 96.9 14.0 89.4 Q 16.5 81.8 14.0 74.3 Q 8.5 66.7 14.0 59.2 Q 16.5 51.7 14.0 44.1 Q 8.5 36.6 14.0 29.1 Q 16.5 21.5 14.0 14.0 Z"
+                  />
+                  <rect
+                    x="18"
+                    y="18"
+                    width="444"
+                    height="414"
+                    rx="14"
+                    fill="#dc5a32"
+                  />
+                </svg>
+
+                {/* Emblema superior en crema (idéntico al icono superior del sello en Referencia 3) */}
+                <svg
+                  viewBox="0 0 64 28"
+                  fill="none"
+                  aria-hidden="true"
+                  className="mx-auto h-6 w-14 text-cream"
+                >
+                  <path
+                    d="M6 20 C14 6, 50 6, 58 20 C46 25, 18 25, 6 20 Z"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M18 12 L24 21 M31 10 L36 21 M44 12 L47 20"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+
+                <h4 className="font-hero mt-3 text-3xl leading-[1.06] font-normal text-cream sm:text-4xl">
+                  <span className="block">Comunidad</span>
+                  <span className="block">y vida</span>
+                  <span className="block">cotidiana</span>
+                </h4>
+
+                <p className="mx-auto mt-3 max-w-[38ch] text-xs leading-relaxed text-pretty text-cream/95 sm:text-sm">
+                  La cultura limonense se construye desde la convivencia barrial
+                  y el respeto en las aceras, los porches y los espacios
+                  compartidos.
+                </p>
+
+                {/* Barra delineada redondeada igual a la referencia */}
+                <div className="mt-5 rounded-full border border-cream/65 px-5 py-2.5 text-center text-xs font-medium text-cream/95 sm:text-sm">
+                  <SlotRollText
+                    text={
+                      activeStampQuote === 0
+                        ? "“Lo mejor de Limón es su gente” · Hospitalidad de porche"
+                        : "“Cho!” · Exclamación clásica de asombro y complicidad"
+                    }
+                  />
+                </div>
+
+                {/* Botón píldora crema de ancho completo igual al pie del sello en Referencia 3 */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setActiveStampQuote((prev) => (prev === 0 ? 1 : 0))
+                  }
+                  className="font-display mt-3.5 w-full cursor-pointer rounded-full bg-cream py-3 text-center text-base tracking-wide text-ember shadow-sm transition-transform duration-150 active:scale-[0.98] sm:text-lg"
+                >
+                  {activeStampQuote === 0
+                    ? "Escuchar otra expresión: “Cho!”"
+                    : "Volver a: “Lo mejor de Limón es su gente”"}
+                </button>
+              </div>
+
+              <p className="mt-3 text-right text-xs font-medium text-cream/80">
+                Foto: Xavier Sandí Castillo
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            BANDA 6A: ARTE, CREATIVIDAD Y TEATRO COMUNITARIO (REFERENCIA 2: OUR RECOMMENDATIONS)
+           ===================================================================== */}
+        <section
+          aria-labelledby="arte-teatro-title"
+          className="overflow-hidden bg-cream py-16 text-ink md:py-28"
+        >
+          <div className="mx-auto max-w-6xl px-5 sm:px-6">
+            <div className="flex flex-wrap items-end justify-between gap-4 border-b border-ink/15 pb-6 sm:pb-8">
+              <h3
+                id="arte-teatro-title"
+                className="font-hero text-4xl leading-[1.08] font-normal text-ink sm:text-5xl md:text-6xl"
+              >
+                Arte, escena y <Highlight color="text-moss">memoria</Highlight>
+              </h3>
+              <span className="text-xs font-bold tracking-widest text-ink/60 uppercase">
+                Creación colectiva en Limón
+              </span>
+            </div>
+
+            {/* Galería asimétrica de 2 piezas de distinta altura con etiquetas interactivas debajo */}
+            <div className="mt-10 grid items-start gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12">
+              {/* Columna 1: Arte y Creatividad */}
+              <article>
+                <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink/10">
+                  <Image
+                    src={imgArte}
+                    alt="Exposición de pintura y arte afrocaribeño en Limón"
+                    fill
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 460px, 92vw"
+                    className="object-cover transition-transform duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]"
+                  />
+                  <span className="absolute right-3 bottom-3 rounded-full bg-ink/75 px-3 py-1 text-[11px] font-medium text-cream backdrop-blur-xs">
+                    Foto: Xavier Sandí Castillo
+                  </span>
+                </div>
+
+                <h4 className="font-display mt-5 text-3xl text-ink sm:text-4xl">
+                  Arte y creatividad
+                </h4>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {artPillars.map((pillar, idx) => {
+                    const isSelected = idx === activeArtIndex;
+                    return (
+                      <button
+                        key={pillar.label}
+                        type="button"
+                        onClick={() => setActiveArtIndex(idx)}
+                        aria-pressed={isSelected}
+                        className={`cursor-pointer rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors duration-150 sm:text-sm ${
+                          isSelected
+                            ? "bg-moss text-cream"
+                            : "border border-ink/20 bg-transparent text-ink/80 hover:border-ink/45"
+                        }`}
+                      >
+                        {pillar.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <p className="mt-3 text-sm leading-relaxed text-ink/75 sm:text-base">
+                  <SlotRollText text={artPillars[activeArtIndex].note} />
+                </p>
+              </article>
+
+              {/* Columna 2 (formato más alto, como la pieza central de Our Recommendations en Referencia 2): Teatro y Escena Comunitaria */}
+              <article>
+                <div className="group relative aspect-[16/11] w-full overflow-hidden rounded-2xl bg-ink/10 sm:aspect-[16/10]">
+                  <Image
+                    src={imgTeatro}
+                    alt="Obra de teatro y escena comunitaria en Limón"
+                    fill
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 560px, 92vw"
+                    className="object-cover transition-transform duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-[1.03]"
+                  />
+                  <span className="font-display absolute top-3 left-3 rounded-full bg-cream px-3 py-1 text-sm text-ink shadow-xs">
+                    Casa de la Cultura · Escena local
+                  </span>
+                </div>
+
+                <h4 className="font-display mt-5 text-3xl text-ink sm:text-4xl">
+                  Teatro y escena comunitaria
+                </h4>
+
+                <p className="mt-2.5 max-w-[54ch] text-sm leading-relaxed text-pretty text-ink/80 sm:text-base">
+                  El teatro y las artes escénicas en Limón son herramientas de
+                  reflexión social y cohesión. En espacios como la Casa de la
+                  Cultura, el teatro estudiantil y comunitario narra historias
+                  vinculadas a la identidad afrocaribeña y la memoria local.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            BANDA 6B: CINE Y NARRATIVA VISUAL (INSPIRADO EN "COLLECTIONS" DE REFERENCIA 2)
+           ===================================================================== */}
+        <section
+          aria-labelledby="cine-caribe-title"
+          className="overflow-hidden bg-ember py-16 text-cream md:py-24"
+        >
+          <div className="mx-auto max-w-6xl px-5 sm:px-6">
+            {/* Barra superior de 3 columnas como "Collections" en la Referencia 2 */}
+            <div className="grid items-start gap-4 border-b border-cream/20 pb-8 md:grid-cols-[1fr_1.2fr_1fr] md:items-center">
+              <h3
+                id="cine-caribe-title"
+                className="font-hero text-3xl leading-[1.08] font-normal text-cream sm:text-4xl md:text-5xl"
+              >
+                Cine y narrativa visual
+              </h3>
+
+              <p className="text-xs leading-relaxed text-pretty text-cream/90 sm:text-sm md:text-center">
+                El cine se ha convertido en una ventana para representar el
+                Caribe desde adentro.
+              </p>
+
+              <div className="flex md:justify-end">
+                <div
+                  role="group"
+                  aria-label="Seleccionar película"
+                  className="inline-flex rounded-full border border-cream/35 p-1 text-xs font-semibold"
+                >
+                  {caribbeanFilms.map((film, idx) => (
+                    <button
+                      key={film.id}
+                      type="button"
+                      onClick={() => setActiveFilmIndex(idx)}
+                      aria-pressed={activeFilmIndex === idx}
+                      className={`cursor-pointer rounded-full px-3.5 py-1 transition-colors duration-150 ${
+                        activeFilmIndex === idx
+                          ? "bg-cream text-ink"
+                          : "text-cream/85 hover:text-cream"
+                      }`}
+                    >
+                      {film.title} ({film.year})
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Escenario de 3 columnas con gran medallón circular central negro (idéntico a "Collections" en Referencia 2) */}
+            <div className="mt-10 grid items-center gap-8 lg:grid-cols-[1fr_1.45fr_1fr] lg:gap-10">
+              {/* Película lateral izquierda: Dos Aguas (2015) */}
+              <button
+                type="button"
+                onClick={() => setActiveFilmIndex(0)}
+                className={`group mx-auto flex max-w-[16rem] cursor-pointer flex-col items-center text-center transition-opacity duration-200 ${
+                  activeFilmIndex === 0
+                    ? "opacity-100"
+                    : "opacity-75 hover:opacity-100"
+                }`}
+              >
+                <div className="relative h-44 w-32 overflow-hidden rounded-xl bg-ink shadow-lg ring-2 ring-cream/25 transition-transform duration-200 group-hover:-translate-y-1 sm:h-52 sm:w-36">
+                  <Image
+                    src={imgDosAguas}
+                    alt="Póster de Dos Aguas (2015)"
+                    fill
+                    placeholder="blur"
+                    sizes="160px"
+                    className="object-cover"
+                  />
+                </div>
+                <span className="font-display mt-3.5 block text-2xl text-cream">
+                  Dos Aguas (2015)
+                </span>
+                <span className="mt-0.5 text-xs font-semibold tracking-wider text-cream/80 uppercase">
+                  Patricia Velásquez
+                </span>
+              </button>
+
+              {/* Medallón circular central oscuro con la película activa */}
+              <div className="flex flex-col items-center text-center">
+                <div className="relative grid aspect-square w-[16.5rem] place-items-center overflow-hidden rounded-full bg-ink p-5 shadow-2xl ring-1 ring-cream/20 sm:w-[21rem] sm:p-7">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={activeFilm.id}
+                      initial={
+                        shouldReduceMotion
+                          ? { opacity: 0 }
+                          : { opacity: 0, scale: 0.94 }
+                      }
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={
+                        shouldReduceMotion
+                          ? { opacity: 0 }
+                          : { opacity: 0, scale: 0.96 }
+                      }
+                      transition={{ duration: 0.26, ease: EASE_OUT }}
+                      className="relative h-full w-full overflow-hidden rounded-full"
+                    >
+                      <Image
+                        src={activeFilm.image}
+                        alt={activeFilm.alt}
+                        fill
+                        sizes="340px"
+                        className="object-cover"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                <div className="mt-6 max-w-md">
+                  <p className="font-display text-3xl text-cream sm:text-4xl">
+                    <SlotRollText
+                      text={`${activeFilm.title} (${activeFilm.year})`}
+                    />
+                  </p>
+                  <p className="mt-1 text-xs font-bold tracking-widest text-cream/80 uppercase">
+                    <SlotRollText text={`Dirección: ${activeFilm.director}`} />
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-pretty text-cream/95 sm:text-base">
+                    <SlotRollText text={activeFilm.synopsis} />
+                  </p>
+
+                  <ul className="mt-4 flex flex-wrap justify-center gap-2">
+                    {activeFilm.awards.map((award) => (
+                      <li
+                        key={award}
+                        className="rounded-full bg-ink/85 px-3.5 py-1 text-xs font-semibold text-sand"
+                      >
+                        {award}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Película lateral derecha: Ceniza Negra (2019) */}
+              <button
+                type="button"
+                onClick={() => setActiveFilmIndex(1)}
+                className={`group mx-auto flex max-w-[16rem] cursor-pointer flex-col items-center text-center transition-opacity duration-200 ${
+                  activeFilmIndex === 1
+                    ? "opacity-100"
+                    : "opacity-75 hover:opacity-100"
+                }`}
+              >
+                <div className="relative h-44 w-32 overflow-hidden rounded-xl bg-ink shadow-lg ring-2 ring-cream/25 transition-transform duration-200 group-hover:-translate-y-1 sm:h-52 sm:w-36">
+                  <Image
+                    src={imgCenizaNegra}
+                    alt="Póster de Ceniza Negra (2019)"
+                    fill
+                    placeholder="blur"
+                    sizes="160px"
+                    className="object-cover"
+                  />
+                </div>
+                <span className="font-display mt-3.5 block text-2xl text-cream">
+                  Ceniza Negra (2019)
+                </span>
+                <span className="mt-0.5 text-xs font-semibold tracking-wider text-cream/80 uppercase">
+                  Sofía Quirós Úbeda
+                </span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* =====================================================================
+            BANDA 7: MEDIOS / RADIO FM + FECHAS PARA NO OLVIDAR CON COLLAGE INCLINADO (REFERENCIA 3)
+           ===================================================================== */}
+        <section
+          aria-labelledby="medios-fechas-title"
+          className="overflow-hidden bg-ink py-16 text-cream md:py-28"
+        >
+          <div className="mx-auto max-w-6xl px-5 sm:px-6">
+            {/* Bloque superior: Sintonizador FM en vivo para Radio Casino y Radio Bahía */}
+            <div className="grid items-center gap-8 rounded-2xl bg-cream/[0.05] p-6 ring-1 ring-cream/12 sm:p-9 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
+              <audio
+                ref={radioAudioRef}
+                preload="none"
+                onPlaying={() => {
+                  setIsRadioPlaying(true);
+                  setIsRadioLoading(false);
+                }}
+                onPause={() => setIsRadioPlaying(false)}
+                onWaiting={() => setIsRadioLoading(true)}
+                onError={() => {
+                  setIsRadioPlaying(false);
+                  setIsRadioLoading(false);
+                }}
+              />
+
+              <div>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-xs font-bold tracking-widest text-sand uppercase">
+                    Medios y nuevas narrativas
+                  </span>
+                  <span
+                    className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[11px] font-bold tracking-wider uppercase ${
+                      isRadioPlaying
+                        ? "bg-ember/20 text-ember ring-1 ring-ember/40"
+                        : "bg-cream/10 text-cream/70"
+                    }`}
+                  >
+                    <span
+                      className={`size-2 rounded-full ${
+                        isRadioPlaying
+                          ? "animate-pulse bg-ember"
+                          : "bg-cream/45"
+                      }`}
+                    />
+                    {isRadioLoading
+                      ? "Sintonizando..."
+                      : isRadioPlaying
+                        ? "Al aire · En vivo"
+                        : "Radio abierta"}
+                  </span>
+                </div>
+
+                <h3
+                  id="medios-fechas-title"
+                  className="font-hero mt-2.5 text-3xl leading-[1.08] font-normal text-cream sm:text-5xl"
+                >
+                  La radio que acompaña al{" "}
+                  <Highlight color="text-moss">Caribe</Highlight>
+                </h3>
+
+                {/* Botones de emisoras */}
+                <div className="mt-5 flex flex-wrap gap-2.5">
+                  {radioStations.map((station, idx) => {
+                    const isSelected = idx === activeRadioIndex;
+                    return (
+                      <button
+                        key={station.id}
+                        type="button"
+                        onClick={() => selectRadioStation(idx)}
+                        aria-pressed={isSelected}
+                        className={`font-display cursor-pointer rounded-full px-4 py-2 text-lg transition-colors duration-150 sm:text-xl ${
+                          isSelected
+                            ? "bg-sand text-ink"
+                            : "border border-cream/25 text-cream/80 hover:border-cream/55 hover:text-cream"
+                        }`}
+                      >
+                        {station.name} · {station.freq}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Escala analógica de dial FM con reproductor en vivo */}
+              <div className="rounded-xl bg-ink p-5 ring-1 ring-cream/15 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <span className="font-display block text-3xl text-sand sm:text-4xl">
+                      <SlotRollText text={activeRadio.freq} />
+                    </span>
+                    <span className="mt-0.5 block text-xs font-semibold tracking-wider text-cream/65 uppercase">
+                      <SlotRollText text={activeRadio.tagline} />
+                    </span>
+                  </div>
+
+                  {/* Botón principal de reproducir / pausar transmisión en vivo */}
+                  <button
+                    type="button"
+                    onClick={toggleRadioPlayback}
+                    className={`font-display inline-flex h-11 cursor-pointer items-center gap-2.5 rounded-full px-5 text-base transition-transform duration-150 active:scale-95 sm:text-lg ${
+                      isRadioPlaying
+                        ? "bg-ember text-cream shadow-lg"
+                        : "bg-cream text-ink hover:bg-sand"
+                    }`}
+                  >
+                    {isRadioPlaying ? (
+                      <>
+                        <svg
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          className="size-4 shrink-0"
+                        >
+                          <rect x="4.5" y="4" width="3.8" height="12" rx="1" />
+                          <rect x="11.7" y="4" width="3.8" height="12" rx="1" />
+                        </svg>
+                        <span>Pausar en vivo</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          className="size-4 shrink-0"
+                        >
+                          <polygon points="5,3.5 16.5,10 5,16.5" />
+                        </svg>
+                        <span>
+                          {isRadioLoading
+                            ? "Conectando..."
+                            : "Escuchar en vivo"}
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Regla graduada del dial FM */}
+                <div className="relative mt-4 h-8 w-full overflow-hidden rounded-lg bg-cream/[0.06] px-4">
+                  <div className="flex h-full items-center justify-between opacity-35">
+                    {Array.from({ length: 29 }).map((_, idx) => (
+                      <span
+                        key={idx}
+                        className={`w-px bg-cream ${
+                          idx % 4 === 0 ? "h-4" : "h-2"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <motion.span
+                    aria-hidden="true"
+                    animate={{ left: activeRadio.dialPercent }}
+                    transition={{ duration: 0.35, ease: EASE_OUT }}
+                    className={`pointer-events-none absolute inset-y-1 w-0.5 ${
+                      isRadioPlaying
+                        ? "bg-ember shadow-[0_0_10px_#dc5a32]"
+                        : "bg-sand"
+                    }`}
+                  />
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-end justify-between gap-3">
+                  <p className="max-w-[44ch] text-sm leading-relaxed text-cream/85 sm:text-base">
+                    <SlotRollText text={activeRadio.description} />
+                  </p>
+
+                  <a
+                    href={activeRadio.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 text-xs font-semibold tracking-wider text-sand/85 uppercase underline-offset-4 hover:text-cream hover:underline"
+                  >
+                    Señal externa ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Bloque inferior: Fechas para no olvidar con tarjetas fotográficas inclinadas (Referencia 3) */}
+            <div className="mt-16 sm:mt-24">
+              <div className="flex flex-wrap items-end justify-between gap-4 border-b border-cream/15 pb-6">
+                <h3 className="font-hero text-3xl leading-[1.08] font-normal text-cream sm:text-5xl">
+                  Fechas para no <Highlight color="text-ember">olvidar</Highlight>
+                </h3>
+                <span className="text-xs font-bold tracking-widest text-sand uppercase">
+                  Calendario vivo de la provincia
+                </span>
+              </div>
+
+              <div className="mt-10 grid gap-8 md:grid-cols-3">
+                {keyDates.map((item) => (
+                  <article
+                    key={item.date}
+                    className="group relative flex flex-col justify-between rounded-2xl border border-cream/15 bg-cream/[0.04] p-6 transition-colors duration-200 [@media(hover:hover)_and_(pointer:fine)]:hover:border-cream/35 [@media(hover:hover)_and_(pointer:fine)]:hover:bg-cream/[0.07]"
+                  >
+                    <div>
+                      <div className="flex items-start justify-between gap-4">
+                        <span
+                          className={`font-display inline-block rounded-full px-3.5 py-1 text-xl sm:text-2xl ${item.accentClass}`}
+                        >
+                          {item.date}
+                        </span>
+
+                        {/* Fotografía tipo polaroid inclinada que se endereza al pasar el cursor (Referencia 3) */}
+                        <div
+                          className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-ink shadow-lg ring-2 ring-cream/20 transition-transform duration-300 ease-out sm:h-24 sm:w-24 ${item.tiltClass} [@media(hover:hover)_and_(pointer:fine)]:group-hover:rotate-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105`}
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.alt}
+                            fill
+                            placeholder="blur"
+                            sizes="110px"
+                            className="object-cover"
+                          />
+                        </div>
+                      </div>
+
+                      <h4 className="font-display mt-5 text-2xl leading-[1.02] text-cream sm:text-3xl">
+                        {item.title}
+                      </h4>
+                    </div>
+
+                    <p className="mt-3 text-sm leading-relaxed text-cream/75">
+                      {item.note}
+                    </p>
+                  </article>
+                ))}
               </div>
             </div>
           </div>
