@@ -64,7 +64,7 @@ function AsteriskIcon({ className }: { className?: string }) {
 function Ribbon() {
   const id = useId();
   const phrase = Array.from(
-    { length: 6 },
+    { length: 8 },
     () => "Lo mejor de Limón es su gente.",
   ).join("  ");
 
@@ -72,31 +72,24 @@ function Ribbon() {
     <svg
       viewBox="0 0 1200 400"
       aria-hidden
-      className="pointer-events-none absolute top-1/2 left-1/2 w-[190%] -translate-x-1/2 -translate-y-[45%] text-sky sm:w-[150%] md:w-[105%]"
+      className="pointer-events-none absolute top-1/2 left-1/2 w-[190vw] max-w-none -translate-x-1/2 -translate-y-[45%] text-sky sm:w-[145vw] md:w-[106vw]"
     >
-      <defs>
-        <clipPath id={`${id}-clip`}>
-          <path d="M 40 400 L 10 200 L 1180 0 L 1160 220 Z" />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${id}-clip)`}>
-        <path
-          id={id}
-          d="M 20 290 C 180 290, 360 275, 520 220 C 660 170, 780 95, 940 70 C 1040 55, 1120 68, 1180 95"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="56"
-          strokeLinecap="butt"
-        />
-        <text
-          className="fill-ink font-sans text-[24px] font-bold tracking-tight"
-          dy="8"
-        >
-          <textPath href={`#${id}`} startOffset="1%">
-            {phrase}
-          </textPath>
-        </text>
-      </g>
+      <path
+        id={id}
+        d="M -40 292 C 180 290, 360 275, 520 220 C 660 170, 780 95, 940 70 C 1060 52, 1150 68, 1240 102"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="56"
+        strokeLinecap="butt"
+      />
+      <text
+        className="fill-ink font-sans text-[24px] font-bold tracking-tight"
+        dy="8"
+      >
+        <textPath href={`#${id}`} startOffset="0%">
+          {phrase}
+        </textPath>
+      </text>
     </svg>
   );
 }
@@ -148,11 +141,11 @@ export default function Chronology() {
         ref={sectionRef}
         id="cronologia"
         aria-labelledby="chronology-title"
-        className="overflow-hidden bg-ink py-14 text-cream md:py-28"
+        className="flex min-h-svh flex-col justify-center overflow-hidden bg-ink py-8 text-cream md:py-10"
       >
         <h2
           id="chronology-title"
-          className="font-hero px-6 text-center text-4xl leading-[1.08] font-normal sm:text-5xl md:text-7xl"
+          className="font-hero px-6 text-center text-4xl leading-[1.08] font-normal sm:text-5xl md:text-[clamp(2.75rem,5.6svh,4.4rem)]"
         >
           Cronología viva
         </h2>
@@ -163,13 +156,13 @@ export default function Chronology() {
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.15}
           onDragEnd={onSwipe}
-          className="relative mx-auto mt-4 grid h-[16.25rem] max-w-6xl touch-pan-y place-items-center md:mt-8 md:h-[28.75rem]"
+          className="relative mx-auto mt-3 grid h-[15rem] w-full max-w-6xl touch-pan-y place-items-center md:mt-[clamp(0.75rem,2svh,1.75rem)] md:h-[clamp(17.5rem,42svh,24.5rem)]"
         >
           <Ribbon />
           <AsteriskMask id={maskId} />
 
           <div
-            className="relative aspect-square w-[11.875rem] md:w-[18.75rem]"
+            className="relative aspect-square w-[11.25rem] md:w-[clamp(13.5rem,28svh,17.5rem)]"
             style={{ clipPath: `url(#${maskId})` }}
           >
             <AnimatePresence initial={false}>
@@ -280,7 +273,7 @@ export default function Chronology() {
         {/* Timeline rail */}
         <div
           ref={railRef}
-          className="mt-6 overflow-x-auto [scrollbar-width:none] md:mt-14"
+          className="mt-5 overflow-x-auto [scrollbar-width:none] md:mt-[clamp(1.25rem,3.5svh,2.75rem)]"
         >
           <ol className="relative mx-auto grid w-[45rem] grid-cols-6 px-6 md:w-auto md:max-w-6xl">
             <span
@@ -339,7 +332,7 @@ export default function Chronology() {
           </ol>
         </div>
 
-        <div className="mt-8 flex justify-center px-6 md:mt-14">
+        <div className="mt-6 flex justify-center px-6 md:mt-[clamp(1.25rem,3.5svh,2.75rem)]">
           <Link
             href="/historia"
             className="inline-flex items-center gap-3 rounded-full bg-cream py-2 pr-2 pl-5 text-sm font-semibold text-ink transition-transform duration-150 ease-out active:scale-[0.97]"
