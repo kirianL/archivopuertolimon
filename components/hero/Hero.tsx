@@ -307,42 +307,49 @@ export default function Hero() {
       <section
         id="inicio"
         aria-labelledby="hero-title"
-        className="relative flex min-h-lvh flex-col justify-between overflow-hidden bg-moss text-ink"
+        className="relative flex min-h-[calc(100lvh+3.5rem)] flex-col justify-between overflow-hidden bg-moss text-ink sm:min-h-lvh"
       >
         <SiteNav />
 
-        {/* Bloque central de texto y botones con tamaños amplios en móvil y escritorio */}
-        <div className="animate-rise relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pt-1 pb-2 text-center sm:px-8">
+        {/* Bloque central: título ancho a 2 líneas como la referencia y botones en una sola fila */}
+        <div className="animate-rise relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 pt-1 pb-2 text-center sm:px-8">
           <h1
             id="hero-title"
-            className="font-hero max-w-[16ch] text-[clamp(2.35rem,9.2vw,3.35rem)] leading-[1.06] font-normal text-balance text-cream sm:max-w-[18ch] sm:text-[clamp(3rem,min(5.8vw,7.4svh),5.1rem)]"
+            className="font-hero w-full text-[clamp(1.7rem,7.2vw,4.8rem)] leading-[1.08] font-normal text-cream"
           >
-            El Caribe que hizo a
-            <br />
-            Costa Rica
+            <span className="block whitespace-nowrap">El Caribe que hizo a</span>
+            <span className="block whitespace-nowrap">Costa Rica</span>
           </h1>
 
-          <p className="mt-3.5 max-w-[38ch] text-sm leading-relaxed font-medium text-pretty text-cream/90 sm:mt-4 sm:max-w-[54ch] sm:text-base md:text-lg">
+          <p className="mt-3 max-w-[42ch] text-xs leading-relaxed font-medium text-pretty text-cream/90 sm:mt-4 sm:max-w-[56ch] sm:text-base md:text-lg">
             Un archivo vivo de Puerto Limón: su gente afrocaribeña, el tren, el
             puerto, la cocina y el criollo limonense que todavía se habla en sus
             calles.
           </p>
 
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-3 sm:mt-7 sm:gap-4">
-            <Button href="#historia" variant="dark" className="h-11 px-5 text-base sm:h-11 sm:px-6 sm:text-lg">
+          <div className="mt-4 flex flex-nowrap items-center justify-center gap-2.5 sm:mt-6 sm:gap-4">
+            <Button
+              href="#historia"
+              variant="dark"
+              className="h-10 px-4 text-sm whitespace-nowrap sm:h-11 sm:px-6 sm:text-lg"
+            >
               Explorar la historia
             </Button>
-            <Button href="#cultura" variant="light" className="h-11 px-5 text-base sm:h-11 sm:px-6 sm:text-lg">
+            <Button
+              href="#cultura"
+              variant="light"
+              className="h-10 px-4 text-sm whitespace-nowrap sm:h-11 sm:px-6 sm:text-lg"
+            >
               Recorrer cultura
             </Button>
           </div>
         </div>
 
-        {/* Escenario inferior más grande y conectado al ras con el borde inferior del Hero */}
-        <div className="animate-rise relative isolate mx-auto w-full max-w-[96rem] pt-[clamp(2.25rem,7svh,5.25rem)] pb-[clamp(2.5rem,7.5svh,5rem)]">
+        {/* Escenario inferior conectado hasta el borde inferior (cubre detrás de la barra flotante de iOS) */}
+        <div className="animate-rise relative isolate mx-auto w-full max-w-[96rem] pt-[clamp(2rem,6svh,5rem)] pb-[clamp(4.5rem,11svh,5.25rem)] sm:pb-[clamp(2.5rem,7.5svh,5rem)]">
           <HeroGalleryBackdrop />
 
-          <div className="mx-auto grid h-[clamp(9.25rem,23svh,12.5rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11rem,26svh,18rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
+          <div className="mx-auto grid h-[clamp(8.25rem,21svh,12rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11rem,26svh,18rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
             {heroGallery.map((item, idx) => (
               <div
                 key={item.alt}
