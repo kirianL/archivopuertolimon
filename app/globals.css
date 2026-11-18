@@ -23,6 +23,22 @@
   html {
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  /* Escala fluida automática en monitores grandes / 2K / 4K para verse al 125% en toda la página sin zoom manual */
+  @media (min-width: 1536px) {
+    html {
+      font-size: clamp(20px, 0.98vw, 24px);
+    }
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   button,

@@ -274,7 +274,7 @@ export default function Culture() {
                   <BrushStroke className="pointer-events-none absolute top-[32%] -right-4 -z-10 hidden h-12 w-[34%] rotate-[6deg] text-sky/80 sm:block" />
 
                   {/* Foto 1: Protagonista */}
-                  <div className="relative col-span-2 h-[220px] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:col-span-1 sm:mt-6 sm:h-[340px]">
+                  <div className="relative col-span-2 h-[13.75rem] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:col-span-1 sm:mt-6 sm:h-[21.25rem]">
                     <Image
                       src={imgExpresion}
                       alt="Joven música con platillos en las calles de Puerto Limón"
@@ -291,7 +291,7 @@ export default function Culture() {
 
                   {/* Fotos 2 y 3 */}
                   <div className="col-span-2 grid grid-cols-2 gap-2.5 sm:col-span-1 sm:grid-cols-1 sm:gap-3.5">
-                    <div className="relative h-[130px] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:h-[163px]">
+                    <div className="relative h-[8.125rem] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:h-[10.1875rem]">
                       <Image
                         src={imgCalypsonian}
                         alt="Calipsero limonense interpretando con su guitarra"
@@ -306,7 +306,7 @@ export default function Culture() {
                       />
                     </div>
 
-                    <div className="relative h-[130px] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:h-[163px] sm:w-[88%]">
+                    <div className="relative h-[8.125rem] w-full overflow-hidden rounded-xl bg-ink/30 ring-1 ring-white/15 ring-inset sm:h-[10.1875rem] sm:w-[88%]">
                       <Image
                         src={imgMaracas}
                         alt="Percusionista con maracas en celebración comunitaria"
@@ -468,7 +468,7 @@ export default function Culture() {
                   <BrushStroke className="pointer-events-none absolute -bottom-3.5 left-[4%] -z-10 h-11 w-[36%] rotate-[-4deg] text-ember/75 sm:-bottom-5 sm:h-14" />
 
                   <div className="grid grid-cols-[1.45fr_0.55fr] gap-2 sm:gap-3.5">
-                    <div className="relative h-[220px] w-full overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset sm:h-[290px] md:h-[330px]">
+                    <div className="relative h-[13.75rem] w-full overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset sm:h-[18.125rem] md:h-[20.625rem]">
                       <AnimatePresence initial={false}>
                         <motion.div
                           key={activePillar.id}
@@ -528,7 +528,7 @@ export default function Culture() {
                       </div>
                     </div>
 
-                    <div className="relative h-[220px] w-full overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset sm:h-[290px] md:h-[330px]">
+                    <div className="relative h-[13.75rem] w-full overflow-hidden rounded-xl bg-ink/10 ring-1 ring-black/10 ring-inset sm:h-[18.125rem] md:h-[20.625rem]">
                       <AnimatePresence initial={false}>
                         <motion.div
                           key={`${activePillar.id}-secondary`}
@@ -670,7 +670,7 @@ export default function Culture() {
                   <BrushStroke className="pointer-events-none absolute -top-3.5 -left-3 -z-10 h-11 w-32 rotate-[-6deg] text-sand/80 sm:-top-5 sm:-left-5 sm:h-14 sm:w-44" />
                   <BrushStroke className="pointer-events-none absolute -right-2.5 -bottom-3.5 -z-10 h-11 w-32 rotate-[4deg] text-ember/80 sm:-right-4 sm:-bottom-5 sm:h-14 sm:w-44" />
 
-                  <div className="relative h-[360px] w-full overflow-hidden rounded-2xl bg-black ring-1 ring-white/15 ring-inset sm:h-[430px]">
+                  <div className="relative h-[22.5rem] w-full overflow-hidden rounded-2xl bg-black ring-1 ring-white/15 ring-inset sm:h-[26.875rem]">
                     <Image
                       src={imgFerguson}
                       alt="Walter Ferguson con sombrero cantando frente a un micrófono de estudio"
@@ -1006,14 +1006,14 @@ export default function Culture() {
             <div className="mt-14 border-t border-ink/15 pt-12 sm:mt-20 sm:pt-16">
               <div className="grid items-center gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:gap-14">
                 {/* Collage editorial: Portada del libro + recorte en B/N granulado de su coeditora Gloria Thompson D. emergiendo de la línea base */}
-                <figure className="mx-auto w-full max-w-[360px] sm:max-w-[440px]">
+                <figure className="mx-auto w-full max-w-[22.5rem] sm:max-w-[27.5rem]">
                   <div className="relative isolate pt-2">
                     <BrushStroke className="pointer-events-none absolute top-0 left-0 -z-10 h-12 w-36 rotate-[-6deg] text-moss/85 sm:h-14 sm:w-44" />
                     <BrushStroke className="pointer-events-none absolute top-[28%] right-2 -z-10 h-14 w-44 rotate-[6deg] text-sand/90 sm:h-16 sm:w-56" />
                     <ChalkStrokes className="pointer-events-none absolute right-0 bottom-8 -z-10 h-20 w-48 text-ink/15 sm:h-24 sm:w-60" />
 
                     {/* Portada física del libro anclada arriba a la izquierda */}
-                    <div className="relative z-10 ml-1 h-[248px] w-[186px] -rotate-2 overflow-hidden rounded-xl bg-ink shadow-md ring-1 ring-black/15 ring-inset sm:ml-2 sm:h-[312px] sm:w-[234px]">
+                    <div className="relative z-10 ml-1 h-[15.5rem] w-[11.625rem] -rotate-2 overflow-hidden rounded-xl bg-ink shadow-md ring-1 ring-black/15 ring-inset sm:ml-2 sm:h-[19.5rem] sm:w-[14.625rem]">
                       <Image
                         src={imgKryolBook}
                         alt="Portada del libro Mek Wi Rayt Wi Langwich: Limon Kryol Alfabet — Alfabeto ilustrado del criollo limonense, editado por René Zúñiga A. y Gloria Thompson D."
@@ -1030,7 +1030,7 @@ export default function Culture() {
                     </div>
 
                     {/* Recorte transparente en B/N granulado de Gloria Thompson D. apoyado sobre la línea editorial inferior */}
-                    <div className="relative z-20 -mt-20 ml-auto h-[176px] w-[240px] sm:-mt-28 sm:h-[220px] sm:w-[300px]">
+                    <div className="relative z-20 -mt-20 ml-auto h-[11rem] w-[15rem] sm:-mt-28 sm:h-[13.75rem] sm:w-[18.75rem]">
                       <BrushStroke className="pointer-events-none absolute right-2 bottom-3 -z-10 h-12 w-44 rotate-[-4deg] text-ember/80 sm:h-14 sm:w-52" />
                       <Image
                         src={imgGloriaThompson}

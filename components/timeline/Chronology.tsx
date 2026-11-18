@@ -163,13 +163,13 @@ export default function Chronology() {
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.15}
           onDragEnd={onSwipe}
-          className="relative mx-auto mt-4 grid h-[260px] max-w-6xl touch-pan-y place-items-center md:mt-8 md:h-[460px]"
+          className="relative mx-auto mt-4 grid h-[16.25rem] max-w-6xl touch-pan-y place-items-center md:mt-8 md:h-[28.75rem]"
         >
           <Ribbon />
           <AsteriskMask id={maskId} />
 
           <div
-            className="relative aspect-square w-[190px] md:w-[300px]"
+            className="relative aspect-square w-[11.875rem] md:w-[18.75rem]"
             style={{ clipPath: `url(#${maskId})` }}
           >
             <AnimatePresence initial={false}>
@@ -220,7 +220,7 @@ export default function Chronology() {
           </span>
 
           {/* Note card (desktop) */}
-          <div className="absolute right-8 bottom-0 hidden h-[196px] w-64 flex-col justify-start rounded-xl bg-cream p-5 text-ink shadow-sm lg:flex">
+          <div className="absolute right-8 bottom-0 hidden h-[12.25rem] w-64 flex-col justify-start rounded-xl bg-cream p-5 text-ink shadow-sm lg:flex">
             <AsteriskIcon className="size-7 shrink-0 text-moss" />
             <div className="mt-2.5 grid text-sm leading-snug font-medium">
               <AnimatePresence initial={false}>
@@ -282,14 +282,14 @@ export default function Chronology() {
           ref={railRef}
           className="mt-6 overflow-x-auto [scrollbar-width:none] md:mt-14"
         >
-          <ol className="relative mx-auto grid w-[720px] grid-cols-6 px-6 md:w-auto md:max-w-6xl">
+          <ol className="relative mx-auto grid w-[45rem] grid-cols-6 px-6 md:w-auto md:max-w-6xl">
             <span
               aria-hidden
-              className="pointer-events-none absolute inset-x-6 top-[37px] h-px bg-cream/15"
+              className="pointer-events-none absolute inset-x-6 top-[2.3125rem] h-px bg-cream/15"
             />
             <motion.span
               aria-hidden
-              className="pointer-events-none absolute top-[37px] left-6 h-px origin-left bg-sky"
+              className="pointer-events-none absolute top-[2.3125rem] left-6 h-px origin-left bg-sky"
               // From the first dot to the last one (dots sit at each column's start)
               style={{ width: "calc((100% - 3rem) * 5 / 6)" }}
               animate={{ scaleX: progress }}

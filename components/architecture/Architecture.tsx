@@ -30,7 +30,7 @@ function BuildingCard({
 }: BuildingCardProps) {
   return (
     <li
-      className={`relative isolate w-[78vw] max-w-[340px] shrink-0 sm:w-[340px] md:w-[370px] ${
+      className={`relative isolate w-[78vw] max-w-[21.25rem] shrink-0 sm:w-[21.25rem] md:w-[23.125rem] ${
         snap ? "snap-start" : ""
       }`}
     >
@@ -134,7 +134,7 @@ function ScrollDrivenBuildings({
       style={{
         height:
           maxScroll > 0
-            ? `calc(560px + ${Math.round(maxScroll * 0.85)}px)`
+            ? `calc(35rem + ${Math.round(maxScroll * 0.85)}px)`
             : "240svh",
       }}
     >
@@ -174,15 +174,16 @@ function ScrollDrivenBuildings({
 }
 
 type NativeHorizontalBuildingsProps = {
+  scrollerRef: RefObject<HTMLOListElement | null>;
   onOpen: (building: Building) => void;
   className?: string;
 };
 
 function NativeHorizontalBuildings({
+  scrollerRef,
   onOpen,
   className = "",
 }: NativeHorizontalBuildingsProps) {
-  const scrollerRef = useRef<HTMLOListElement>(null);
   const { scrollXProgress } = useScroll({ container: scrollerRef });
 
   return (
@@ -217,18 +218,34 @@ function NativeHorizontalBuildings({
 
 export default function Architecture() {
   const scrollTrackRef = useRef<HTMLDivElement>(null);
+  const mobileScrollerRef = useRef<HTMLOListElement>(null);
+  const savedScrollYRef = useRef<number | null>(null);
   const [maxScroll, setMaxScroll] = useState(0);
   const [activeBuilding, setActiveBuilding] = useState<Building | null>(null);
   const reduceMotion = useReducedMotion();
+
+  const restoreScrollPosition = () => {
+    const targetY = savedScrollYRef.current;
+    if (targetY !== null) {
+      window.scrollTo({ top: targetY, behavior: "instant" });
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: targetY, behavior: "instant" });
+      });
+    }
+  };
 
   useEffect(() => {
     const onPopState = () => {
       const match = window.location.hash.match(/^#edificio-(.+)$/);
       if (match) {
         const found = buildings.find((b) => b.id === match[1]) ?? null;
+        if (savedScrollYRef.current === null) {
+          savedScrollYRef.current = window.scrollY;
+        }
         setActiveBuilding(found);
       } else {
         setActiveBuilding(null);
+        restoreScrollPosition();
       }
     };
 
@@ -236,7 +253,36 @@ export default function Architecture() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
+  const syncCarouselToBuilding = (building: Building) => {
+    const index = buildings.findIndex((b) => b.id === building.id);
+    if (index < 0) return;
+
+    const trackEl = scrollTrackRef.current;
+    if (trackEl && trackEl.offsetHeight > 0 && maxScroll > 0) {
+      const trackTop = trackEl.getBoundingClientRect().top + window.scrollY;
+      const scrollableDistance = Math.max(
+        0,
+        trackEl.offsetHeight - window.innerHeight,
+      );
+      const targetTop =
+        trackTop +
+        (index / Math.max(1, buildings.length - 1)) * scrollableDistance;
+      savedScrollYRef.current = targetTop;
+      window.scrollTo({ top: targetTop, behavior: "instant" });
+    }
+
+    const mobileList = mobileScrollerRef.current;
+    const cardEl = mobileList?.querySelectorAll("li")[index];
+    if (mobileList && cardEl && mobileList.clientWidth > 0) {
+      mobileList.scrollTo({
+        left: Math.max(0, cardEl.offsetLeft - 16),
+        behavior: "instant",
+      });
+    }
+  };
+
   const openBuilding = (building: Building) => {
+    savedScrollYRef.current = window.scrollY;
     setActiveBuilding(building);
     window.history.pushState(
       { buildingId: building.id },
@@ -252,31 +298,19 @@ export default function Architecture() {
       "",
       `#edificio-${building.id}`,
     );
-
-    const trackEl = scrollTrackRef.current;
-    if (trackEl && maxScroll > 0) {
-      const index = buildings.findIndex((b) => b.id === building.id);
-      if (index >= 0) {
-        const trackTop =
-          trackEl.getBoundingClientRect().top + window.scrollY;
-        const scrollableDistance = Math.max(
-          0,
-          trackEl.offsetHeight - window.innerHeight,
-        );
-        const targetTop =
-          trackTop +
-          (index / Math.max(1, buildings.length - 1)) * scrollableDistance;
-        window.scrollTo({ top: targetTop, behavior: "instant" });
-      }
-    }
+    syncCarouselToBuilding(building);
   };
 
   const closeBuilding = () => {
+    setActiveBuilding(null);
     if (window.location.hash.startsWith("#edificio-")) {
-      window.history.back();
-    } else {
-      setActiveBuilding(null);
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${window.location.search}`,
+      );
     }
+    restoreScrollPosition();
   };
 
   return (
@@ -338,10 +372,14 @@ export default function Architecture() {
 
         {/* Mobile: native horizontal swipeable carousel (no vertical scroll-jacking or empty space). Desktop: scroll-driven horizontal gallery (or native horizontal scroll when reduced motion is enabled). */}
         {reduceMotion ? (
-          <NativeHorizontalBuildings onOpen={openBuilding} />
+          <NativeHorizontalBuildings
+            scrollerRef={mobileScrollerRef}
+            onOpen={openBuilding}
+          />
         ) : (
           <>
             <NativeHorizontalBuildings
+              scrollerRef={mobileScrollerRef}
               onOpen={openBuilding}
               className="md:hidden"
             />

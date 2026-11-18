@@ -8,7 +8,7 @@ export function LimonMap() {
   const clipId = useId();
 
   return (
-    <div className="relative isolate mx-auto flex w-full max-w-[260px] flex-col items-center sm:max-w-[320px] lg:max-w-[380px]">
+    <div className="relative isolate mx-auto flex w-full max-w-[16.25rem] flex-col items-center sm:max-w-[20rem] lg:max-w-[23.75rem]">
       {/* Overlapping green brush accents on the edges of the map, as in the reference */}
       <BrushStroke className="pointer-events-none absolute top-[18%] right-[4%] z-10 h-11 w-28 rotate-[10deg] text-moss/90 md:h-14 md:w-36" />
       <BrushStroke className="pointer-events-none absolute bottom-[34%] left-[4%] z-10 h-12 w-32 rotate-[14deg] text-moss/90 md:h-16 md:w-44" />

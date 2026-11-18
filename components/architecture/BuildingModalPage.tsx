@@ -1,19 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import {
-  type RefObject,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Lenis from "lenis";
 import { Highlight } from "@/components/ui/Highlight";
 import { BrushStroke, EditorialArrow, HalfRing } from "@/components/ui/Shapes";
 import type { AccentColor, Building } from "./buildings";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
+const EASE_DRAWER = [0.32, 0.72, 0, 1] as const;
 
 const ACCENT_STYLES: Record<
   AccentColor,
@@ -116,21 +112,6 @@ function BuildingNavPreview({
   );
 }
 
-function ScrollResetOnNavigate({
-  buildingId,
-  containerRef,
-}: {
-  buildingId: string;
-  containerRef: RefObject<HTMLDivElement | null>;
-}) {
-  useLayoutEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = 0;
-    }
-  }, [buildingId, containerRef]);
-  return null;
-}
-
 type BuildingModalPageProps = {
   building: Building | null;
   buildings: Building[];
@@ -145,10 +126,13 @@ export function BuildingModalPage({
   onNavigate,
 }: BuildingModalPageProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const contentWrapperRef = useRef<HTMLDivElement>(null);
+  const modalLenisRef = useRef<Lenis | null>(null);
   const prevOverflowRef = useRef<string | null>(null);
   const reduceMotion = useReducedMotion();
 
   const buildingId = building?.id ?? null;
+  const isModalOpen = buildingId !== null;
 
   const restoreBodyOverflow = useCallback(() => {
     if (prevOverflowRef.current !== null) {
@@ -161,6 +145,15 @@ export function BuildingModalPage({
     restoreBodyOverflow();
   }, [restoreBodyOverflow]);
 
+  const resetModalScroll = useCallback(() => {
+    if (modalLenisRef.current) {
+      modalLenisRef.current.scrollTo(0, { immediate: true });
+      modalLenisRef.current.resize();
+    } else if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, []);
+
   const handleNavigate = (target: Building) => {
     onNavigate(target);
   };
@@ -171,6 +164,26 @@ export function BuildingModalPage({
       document.body.style.overflow = "hidden";
     }
   }, [buildingId]);
+
+  useEffect(() => {
+    if (!isModalOpen || reduceMotion) return;
+    const wrapper = scrollContainerRef.current;
+    const content = contentWrapperRef.current;
+    if (!wrapper || !content) return;
+
+    const lenis = new Lenis({
+      wrapper,
+      content,
+      autoRaf: true,
+      lerp: 0.1,
+    });
+    modalLenisRef.current = lenis;
+
+    return () => {
+      lenis.destroy();
+      modalLenisRef.current = null;
+    };
+  }, [isModalOpen, reduceMotion]);
 
   useEffect(() => {
     return () => {
@@ -231,41 +244,61 @@ export function BuildingModalPage({
           aria-labelledby="building-modal-title"
           data-lenis-prevent
           className="fixed inset-0 z-50 overflow-y-auto bg-ink text-cream [scrollbar-width:none] [-webkit-overflow-scrolling:touch]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.22, ease: EASE_OUT }}
+          initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+          animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }}
+          transition={{ duration: 0.34, ease: EASE_DRAWER }}
         >
-          <ScrollResetOnNavigate
-            buildingId={building.id}
-            containerRef={scrollContainerRef}
-          />
-          {/* Sticky top bar */}
-          <header className="sticky top-0 z-20 border-b border-cream/10 bg-ink/90 backdrop-blur-md">
-            <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
-              <span className="font-display text-lg leading-none text-cream sm:text-xl">
-                Puerto
-                <br />
-                Limón
-              </span>
-              <button
-                type="button"
-                onClick={onClose}
-                className="font-display inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-[5px] bg-cream px-3.5 text-base text-ink transition-transform duration-150 ease-out active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream sm:h-10 sm:px-4 sm:text-lg [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-px"
-              >
-                <EditorialArrow direction="left" className="h-3 w-4" />
-                <span>Volver</span>
-                <span className="hidden sm:inline">a arquitectura</span>
-              </button>
-            </div>
-          </header>
+          <div ref={contentWrapperRef} className="min-h-full">
+            {/* Sticky top bar */}
+            <header className="sticky top-0 z-20 border-b border-cream/10 bg-ink/90 backdrop-blur-md">
+              <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4">
+                <span className="font-display text-lg leading-none text-cream sm:text-xl">
+                  Puerto
+                  <br />
+                  Limón
+                </span>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="font-display inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-[5px] bg-cream px-3.5 text-base text-ink transition-transform duration-150 ease-out active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream sm:h-10 sm:px-4 sm:text-lg [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-px"
+                >
+                  <EditorialArrow direction="left" className="h-3 w-4" />
+                  <span>Volver</span>
+                  <span className="hidden sm:inline">a arquitectura</span>
+                </button>
+              </div>
+            </header>
 
-          <motion.article
-            key={building.id}
-            initial={reduceMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, ease: EASE_OUT }}
-          >
+            <AnimatePresence
+              mode="wait"
+              initial={false}
+              onExitComplete={resetModalScroll}
+            >
+              <motion.article
+                key={building.id}
+                initial={
+                  reduceMotion ? { opacity: 0 } : { opacity: 0, y: 14 }
+                }
+                animate={
+                  reduceMotion
+                    ? { opacity: 1 }
+                    : {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.34, ease: EASE_OUT },
+                      }
+                }
+                exit={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : {
+                        opacity: 0,
+                        y: -8,
+                        transition: { duration: 0.2, ease: EASE_OUT },
+                      }
+                }
+              >
             {/* Building Hero */}
             <div className="relative overflow-hidden py-7 sm:py-10 md:py-16">
               <HalfRing
@@ -409,7 +442,9 @@ export function BuildingModalPage({
                 </nav>
               </div>
             </div>
-          </motion.article>
+              </motion.article>
+            </AnimatePresence>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

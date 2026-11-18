@@ -359,7 +359,7 @@ export default function Hero() {
         <div className="animate-rise relative isolate mx-auto w-full max-w-[96rem] pt-[clamp(1.75rem,5svh,4.5rem)] pb-[clamp(5.75rem,13svh,6.5rem)] sm:pb-[clamp(2.5rem,7.5svh,5rem)]">
           <HeroGalleryBackdrop />
 
-          <div className="mx-auto grid h-[clamp(10.5rem,25svh,13.5rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11rem,26svh,18rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
+          <div className="mx-auto grid h-[clamp(10.5rem,25svh,13.5rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11.5rem,27svh,19rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
             {heroGallery.map((item, idx) => (
               <div
                 key={item.alt}
