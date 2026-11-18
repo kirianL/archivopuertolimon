@@ -307,49 +307,59 @@ export default function Hero() {
       <section
         id="inicio"
         aria-labelledby="hero-title"
-        className="relative flex min-h-[calc(100lvh+3.5rem)] flex-col justify-between overflow-hidden bg-moss text-ink sm:min-h-lvh"
+        className="relative flex min-h-[calc(100lvh+5rem)] flex-col justify-between overflow-hidden bg-moss text-ink sm:min-h-lvh"
       >
         <SiteNav />
 
-        {/* Bloque central: título ancho a 2 líneas como la referencia y botones en una sola fila */}
-        <div className="animate-rise relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 pt-1 pb-2 text-center sm:px-8">
+        {/* Bloque central: título más grande y con más presencia, sin huecos vacíos */}
+        <div className="animate-rise relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-center justify-center px-4 pt-2 pb-1 text-center sm:px-8">
           <h1
             id="hero-title"
-            className="font-hero w-full text-[clamp(1.7rem,7.2vw,4.8rem)] leading-[1.08] font-normal text-cream"
+            className="font-hero w-full text-[clamp(2.15rem,8.6vw,4.8rem)] leading-[1.08] font-normal text-cream sm:text-[clamp(2.75rem,min(5.2vw,6.8svh),4.8rem)]"
           >
-            <span className="block whitespace-nowrap">El Caribe que hizo a</span>
-            <span className="block whitespace-nowrap">Costa Rica</span>
+            <span className="block sm:hidden">
+              <span className="block whitespace-nowrap">Puerto Limón,</span>
+              <span className="block whitespace-nowrap">el Caribe que hizo</span>
+              <span className="block whitespace-nowrap">a Costa Rica</span>
+            </span>
+            <span className="hidden sm:block">
+              <span className="block whitespace-nowrap">
+                Puerto Limón, el Caribe
+              </span>
+              <span className="block whitespace-nowrap">
+                que hizo a Costa Rica
+              </span>
+            </span>
           </h1>
 
-          <p className="mt-3 max-w-[42ch] text-xs leading-relaxed font-medium text-pretty text-cream/90 sm:mt-4 sm:max-w-[56ch] sm:text-base md:text-lg">
-            Un archivo vivo de Puerto Limón: su gente afrocaribeña, el tren, el
-            puerto, la cocina y el criollo limonense que todavía se habla en sus
-            calles.
+          <p className="mt-4 max-w-[38ch] text-sm leading-relaxed font-medium text-pretty text-cream/90 sm:mt-4 sm:max-w-[56ch] sm:text-base md:text-lg">
+            Un archivo vivo de su gente afrocaribeña, el tren, el puerto, la
+            cocina y el criollo limonense que todavía se habla en sus calles.
           </p>
 
-          <div className="mt-4 flex flex-nowrap items-center justify-center gap-2.5 sm:mt-6 sm:gap-4">
+          <div className="mt-5 flex flex-nowrap items-center justify-center gap-2.5 sm:mt-6 sm:gap-4">
             <Button
               href="#historia"
               variant="dark"
-              className="h-10 px-4 text-sm whitespace-nowrap sm:h-11 sm:px-6 sm:text-lg"
+              className="h-11 px-4 text-base whitespace-nowrap sm:h-11 sm:px-6 sm:text-lg"
             >
               Explorar la historia
             </Button>
             <Button
               href="#cultura"
               variant="light"
-              className="h-10 px-4 text-sm whitespace-nowrap sm:h-11 sm:px-6 sm:text-lg"
+              className="h-11 px-4 text-base whitespace-nowrap sm:h-11 sm:px-6 sm:text-lg"
             >
               Recorrer cultura
             </Button>
           </div>
         </div>
 
-        {/* Escenario inferior conectado hasta el borde inferior (cubre detrás de la barra flotante de iOS) */}
-        <div className="animate-rise relative isolate mx-auto w-full max-w-[96rem] pt-[clamp(2rem,6svh,5rem)] pb-[clamp(4.5rem,11svh,5.25rem)] sm:pb-[clamp(2.5rem,7.5svh,5rem)]">
+        {/* Escenario inferior más grande y pegado al bloque superior, cubriendo por completo detrás de la barra de iOS */}
+        <div className="animate-rise relative isolate mx-auto w-full max-w-[96rem] pt-[clamp(1.75rem,5svh,4.5rem)] pb-[clamp(5.75rem,13svh,6.5rem)] sm:pb-[clamp(2.5rem,7.5svh,5rem)]">
           <HeroGalleryBackdrop />
 
-          <div className="mx-auto grid h-[clamp(8.25rem,21svh,12rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11rem,26svh,18rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
+          <div className="mx-auto grid h-[clamp(10.5rem,25svh,13.5rem)] w-[94%] grid-cols-[0.76fr_1fr_1fr_1fr_0.76fr] gap-1.5 sm:h-[clamp(11rem,26svh,18rem)] sm:w-[88%] sm:gap-2.5 md:gap-3">
             {heroGallery.map((item, idx) => (
               <div
                 key={item.alt}
