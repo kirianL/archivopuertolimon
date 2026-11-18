@@ -30,15 +30,25 @@ import imgCalypsonian from "@/public/Limón - images/Parade/Musicos y cantantes/
 import imgMaracas from "@/public/Limón - images/Parade/Musicos y cantantes/540004486_754962117313867_1346397361303001633_n.jpg";
 import imgComparsaFeather from "@/public/Limón - images/Parade/Trajes/540455199_759706376839441_6626957489670622357_n.jpg";
 import imgGalaCrown from "@/public/Limón - images/Parade/Trajes/540589295_759705376839541_8886161950268267501_n.jpg";
-import imgDomino from "@/public/Limón - images/CasaDomino.png";
-import imgBigBoy from "@/public/Limón - images/BigBoy.png";
+import imgDomino from "@/public/Limón - images/patrimonio/partida-domino-manos-fichas.jpg";
+import imgBigBoy from "@/public/Limón - images/patrimonio/estadio-big-boy-diamante.jpg";
 import imgBoxeo from "@/public/Limón - images/Boxeo.jpg";
 import imgComunidad from "@/public/Limón - images/Comunidad-vidacotidiana.png";
-import imgArte from "@/public/Limón - images/arteLimon.png";
+import imgArte from "@/public/Limón - images/patrimonio/pasaje-cristal-pintores-limon.jpg";
 import imgTeatro from "@/public/Limón - images/teatro.png";
 import imgDosAguas from "@/public/Limón - images/DosAguas.png";
 import imgCenizaNegra from "@/public/Limón - images/CenizaNegra.png";
 import imgFergusonPortrait from "@/public/Limón - images/a-Ferguson1.jpg";
+import imgEsculturaGemelo from "@/public/Limón - images/patrimonio/esculturas-reciclaje-gemelo-ballestero.jpg";
+import imgTurbantes from "@/public/Limón - images/patrimonio/artesania-turbantes-afrocaribenos.jpg";
+import imgCocoTortuga from "@/public/Limón - images/patrimonio/artesania-coco-tortuga-limon.jpg";
+import imgCacao from "@/public/Limón - images/patrimonio/gastronomia-cacao.jpg";
+import imgRiceAndBeans from "@/public/Limón - images/patrimonio/gastronomia-rice-and-beans.jpg";
+import imgBochinche from "@/public/Limón - images/patrimonio/gastronomia-bochinche.jpg";
+import imgPatiPlato from "@/public/Limón - images/patrimonio/gastronomia-pati.jpg";
+import imgQuiribri from "@/public/Limón - images/patrimonio/isla-quiribri-panoramica.jpg";
+import imgCruceroMuelle from "@/public/Limón - images/patrimonio/crucero-muelle-puerto-limon.jpg";
+import imgCacaoTour from "@/public/Limón - images/patrimonio/turismo-cacao-chocolate-company.jpg";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
@@ -282,20 +292,55 @@ const radioStations = [
 
 const artPillars = [
   {
-    label: "Murales con símbolos afrocaribeños",
-    note: "Color y memoria en fachadas y espacios barriales.",
+    label: "Pasaje Cristal · Pintura",
+    note: "Corredor de 1908 (César Rivaflecha, La Gaceta N° 16 de 1999) donde exhiben Edgar León, William Durán, Germán Mora, Honorio Cabraca y Virginia Araya.",
   },
   {
-    label: "Poesía y narrativa oral",
-    note: "Relatos transmitidos de generación en generación.",
+    label: "Escultura reciclada · «Gemelo»",
+    note: "En el 2.º nivel del edificio sur de la UFC, el artista limonense Ballestero («Gemelo») crea esculturas con piezas de bicicletas y abanicos en desuso.",
   },
   {
-    label: "Danza y música comunitaria",
-    note: "Cuerpo, tambor y comparsa como lenguaje colectivo.",
+    label: "Artesanía en coco y turbantes",
+    note: "Obras en coco, bambú, tela y madera en los antiguos edificios de la UFC que rescatan oficios y símbolos afrocaribeños.",
   },
   {
-    label: "Talleres culturales abiertos",
-    note: "Formación artística abierta para niñas, niños y jóvenes.",
+    label: "Literatura · Nation y Duncan",
+    note: "Desde los ensayos en inglés de Samuel Charles Nation (1912–1942) hasta Quince Duncan (El negro en Costa Rica, 1972), Joaquín Gutiérrez y Ana Cristina Rossi.",
+  },
+] as const;
+
+const gastronomyDishes = [
+  {
+    name: "Rice and Beans",
+    tag: "Leche de coco y chile panameño",
+    detail:
+      "Arroz y frijoles cocinados en leche de coco con ajo, tomillo y chile panameño, acompañados de pollo condimentado con especias, apio, chile dulce y cebolla.",
+    image: imgRiceAndBeans,
+    alt: "Plato tradicional de Rice and Beans limonense con pollo y ensalada",
+  },
+  {
+    name: "Patí",
+    tag: "Repostería inglesa y tradición africana",
+    detail:
+      "Pastel de harina, manteca y margarina relleno de carne de res molida, especias y pimiento picante, fusión de la repostería inglesa y la cocina afrodescendiente.",
+    image: imgPatiPlato,
+    alt: "Patí limonense recién horneado",
+  },
+  {
+    name: "Bochinche",
+    tag: "Variación territorial del casado",
+    detail:
+      "Plato característico limonense que combina espagueti, frijoles molidos, ensalada verde, patacones y una porción de carne de res, pescado o pollo.",
+    image: imgBochinche,
+    alt: "Plato de Bochinche limonense con patacones, frijoles molidos y espagueti",
+  },
+  {
+    name: "Cacao",
+    tag: "Herencia originaria Huetar Caribe",
+    detail:
+      "Cultivo heredado de los pueblos originarios de las regiones Huetar Caribe, Norte y Brunca, hoy vivo en experiencias como G&E Chocolate Adventure Company.",
+    image: imgCacao,
+    alt: "Mazorcas de cacao cultivadas en la provincia de Limón",
   },
 ] as const;
 
@@ -303,7 +348,7 @@ const keyDates = [
   {
     date: "7 de mayo",
     title: "Día Nacional del Calipso Limonense",
-    note: "Homenaje al legado de Walter Ferguson y los calipseros del Caribe.",
+    note: "Declarado Patrimonio Cultural Inmaterial el 12 de diciembre de 2012 (La Gaceta N° 240); homenaje a los calypsonians como cronistas en inglés criollo.",
     image: imgFergusonPortrait,
     alt: "Walter Ferguson interpretando calipso limonense",
     tiltClass: "-rotate-3",
@@ -312,7 +357,7 @@ const keyDates = [
   {
     date: "31 de agosto",
     title: "Día de la Persona Negra y la Cultura Afrocostarricense",
-    note: "Celebración nacional de la herencia, historia y aportes afrocaribeños.",
+    note: "Celebrado con el Grand Parade de Gala en conmemoración de la Primera Convención Internacional sobre la Situación de los Negros en Nueva York.",
     image: imgGalaCrown,
     alt: "Gala y trajes tradicionales afrocostarricenses en Limón",
     tiltClass: "rotate-2",
@@ -320,8 +365,8 @@ const keyDates = [
   },
   {
     date: "Octubre",
-    title: "Carnaval de Limón",
-    note: "Comparsas, tambores y alegría toman las calles frente al mar.",
+    title: "Carnaval de Limón e Isla Quiribrí",
+    note: "Mes de comparsas frente al mar y de memoria frente a la Isla Quiribrí (Uvita), declarada Monumento Nacional el 26 de setiembre de 1985 (La Gaceta N° 183).",
     image: imgCarnaval,
     alt: "Comparsas en el Carnaval de Puerto Limón",
     tiltClass: "-rotate-2",
@@ -1400,12 +1445,13 @@ export default function Culture() {
 
                   <div>
                     <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
-                      Se juega en casas, bares y esquinas. Las partidas mezclan
-                      golpes de fichas, bromas e historias. En Limón, el dominó
-                      une.
+                      En La Casa del Dominó (Club Guillermo Cole Scarlett, Calle
+                      5) las partidas en parejas duran hasta 8 horas: un golpe
+                      fuerte avisa que se lleva ficha similar y uno suave que no
+                      hay más juego.
                     </p>
                     <span className="mt-3 block text-right text-xs font-bold tracking-wider text-moss underline underline-offset-4 uppercase">
-                      Esquina y mesa
+                      Club Guillermo Cole Scarlett
                     </span>
                   </div>
                 </div>
@@ -1445,11 +1491,12 @@ export default function Culture() {
 
                   <div>
                     <p className="text-xs leading-relaxed text-ink/80 sm:text-sm">
-                      Limón es la cuna del béisbol en Costa Rica. El Estadio Big
-                      Boy simboliza tradición y comunidad barrial.
+                      Con cancha desde 1887 y terreno donado por la UFC en 1897,
+                      honra a Bancroft «Big Boy» Scott Watson y Danny Hayling
+                      Shaw. Patrimonio desde 2002 (La Gaceta N° 138).
                     </p>
                     <span className="mt-3 block text-right text-xs font-bold tracking-wider text-moss underline underline-offset-4 uppercase">
-                      Estadio Big Boy
+                      Estadio Big Boy · 1897
                     </span>
                   </div>
                 </div>
@@ -1700,7 +1747,146 @@ export default function Culture() {
                   Cultura, el teatro estudiantil y comunitario narra historias
                   vinculadas a la identidad afrocaribeña y la memoria local.
                 </p>
+
+                {/* Mosaico de técnicas artísticas del estudio patrimonial del TEC (Edificio Sur UFC) */}
+                <div className="mt-6 grid grid-cols-3 gap-2.5 border-t border-ink/15 pt-5">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10">
+                    <Image
+                      src={imgEsculturaGemelo}
+                      alt="Esculturas en metal reciclado del artista limonense Ballestero (Gemelo) en el edificio sur de la UFC"
+                      fill
+                      placeholder="blur"
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10">
+                    <Image
+                      src={imgTurbantes}
+                      alt="Artesanías y turbantes afrocaribeños en los antiguos edificios de la UFC"
+                      fill
+                      placeholder="blur"
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-ink/10">
+                    <Image
+                      src={imgCocoTortuga}
+                      alt="Artesanía limonense tallada en cáscara de coco"
+                      fill
+                      placeholder="blur"
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
               </article>
+            </div>
+
+            {/* =================================================================
+                GASTRONOMÍA PATRIMONIAL E ISLA QUIRIBRÍ (DEL ESTUDIO DEL TEC)
+               ================================================================= */}
+            <div className="mt-16 border-t border-ink/15 pt-14 sm:mt-24 sm:pt-16">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <div>
+                  <span className="text-xs font-bold tracking-widest text-moss uppercase">
+                    Patrimonio gastronómico y natural
+                  </span>
+                  <h4 className="font-hero mt-2 text-3xl leading-[1.08] font-normal text-ink sm:text-5xl">
+                    Sabores de <Highlight color="text-ember">origen</Highlight> e Isla Quiribrí
+                  </h4>
+                </div>
+                <p className="max-w-[46ch] text-xs leading-relaxed text-ink/75 sm:text-sm">
+                  Fusión de tradiciones culinarias afrodescendientes, indígenas,
+                  europeas, hindúes y chinas adaptadas a los frutos del Caribe.
+                </p>
+              </div>
+
+              <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {gastronomyDishes.map((dish) => (
+                  <article
+                    key={dish.name}
+                    className="group flex flex-col justify-between rounded-2xl border border-ink/12 bg-ink/[0.03] p-3.5 transition-colors duration-200 [@media(hover:hover)_and_(pointer:fine)]:hover:border-ink/30"
+                  >
+                    <div>
+                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-ink">
+                        <Image
+                          src={dish.image}
+                          alt={dish.alt}
+                          fill
+                          placeholder="blur"
+                          sizes="(min-width: 1024px) 250px, 45vw"
+                          className="object-cover transition-transform duration-300 ease-out [@media(hover:hover)_and_(pointer:fine)]:group-hover:scale-105"
+                        />
+                      </div>
+                      <h5 className="font-display mt-3.5 text-2xl text-ink">
+                        {dish.name}
+                      </h5>
+                      <p className="text-[11px] font-bold tracking-wider text-moss uppercase">
+                        {dish.tag}
+                      </p>
+                    </div>
+                    <p className="mt-2 text-xs leading-relaxed text-ink/75">
+                      {dish.detail}
+                    </p>
+                  </article>
+                ))}
+              </div>
+
+              {/* Isla Quiribrí (Uvita) + Turismo cultural y de cacao */}
+              <div className="mt-8 grid gap-6 rounded-2xl bg-ink p-6 text-cream sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+                <div>
+                  <span className="text-xs font-bold tracking-widest text-sand uppercase">
+                    Monumento Nacional · La Gaceta N° 183 (1985)
+                  </span>
+                  <h5 className="font-hero mt-2 text-2xl leading-[1.08] font-normal text-cream sm:text-4xl">
+                    Isla Quiribrí (Uvita) y ruta cultural
+                  </h5>
+                  <p className="mt-3 text-xs leading-relaxed text-pretty text-cream/85 sm:text-sm">
+                    Ubicada a menos de 2 km de Puerto Limón sobre un arrecife
+                    coralino fósil con 18 especies de corales, fue bautizada «La
+                    Huerta» por Cristóbal Colón en 1502 y en 1986 recuperó su
+                    topónimo indígena original: Quiribrí. Junto con la llegada
+                    de cruceros desde el siglo XIX y experiencias locales como
+                    G&amp;E Chocolate Adventure Company, articula el patrimonio
+                    natural y vivo del puerto.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2.5">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-cream/10">
+                    <Image
+                      src={imgQuiribri}
+                      alt="Vista panorámica de la Isla Quiribrí (Uvita) frente a Puerto Limón"
+                      fill
+                      placeholder="blur"
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-cream/10">
+                    <Image
+                      src={imgCruceroMuelle}
+                      alt="Llegada de crucero y recorrido urbano en el muelle de Puerto Limón"
+                      fill
+                      placeholder="blur"
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-xl bg-cream/10">
+                    <Image
+                      src={imgCacaoTour}
+                      alt="Demostración cultural de cacao en G&E Chocolate Adventure Company"
+                      fill
+                      placeholder="blur"
+                      sizes="180px"
+                      className="object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

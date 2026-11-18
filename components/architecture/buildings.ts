@@ -4,13 +4,15 @@ import imgEpiscopal from "@/public/Limón - images/CasaEpiscopal.png";
 import imgCultura from "@/public/Limón - images/Casa de la Cultura.png";
 import imgBlackStar from "@/public/Limón - images/BlackStarLine.png";
 import imgPalacio from "@/public/Limón - images/PalacioMunicipal.png";
-import imgParque from "@/public/Limón - images/ParqueVargas.png";
+import imgParque from "@/public/Limón - images/patrimonio/parque-vargas-quiosco.jpg";
 import imgPortuaria from "@/public/Limón - images/AutoridadPortuaria.png";
-import imgDomino from "@/public/Limón - images/CasaDomino.png";
+import imgDomino from "@/public/Limón - images/patrimonio/casa-del-domino-cole-scarlett.jpg";
 import imgEscuela from "@/public/Limón - images/EscuelaTomasGuardia.png";
-import imgPension from "@/public/Limón - images/PensionCostaRica.png";
-import imgBigBoy from "@/public/Limón - images/BigBoy.png";
-import imgBautista from "@/public/Limón - images/CasaMisioneraBautista.png";
+import imgPension from "@/public/Limón - images/patrimonio/arquitectura-caribena-madera-1.jpg";
+import imgBigBoy from "@/public/Limón - images/patrimonio/estadio-big-boy-fachada.jpg";
+import imgBautista from "@/public/Limón - images/patrimonio/arquitectura-caribena-madera-2.jpg";
+import imgUfcEdificios from "@/public/Limón - images/patrimonio/ufc-exterior.jpg";
+import imgPasajeCristal from "@/public/Limón - images/patrimonio/pasaje-cristal-pintores-limon.jpg";
 
 export type AccentColor = "moss" | "sky" | "ember" | "sand";
 
@@ -50,23 +52,63 @@ export const buildings: Building[] = [
   },
   {
     id: "parque-vargas",
-    name: "Parque Vargas y Quiosco",
+    name: "Parque Balvanero Vargas Molina",
     year: "1895",
-    style: "Victoriano",
+    style: "Ecléctico · Art Nouveau y Neoclásico",
     summary:
-      "Espacio público frente al mar Caribe, célebre por su quiosco victoriano y sus palmas reales. Punto de encuentro social, musical y festivo de Limón desde finales del siglo XIX.",
+      "Diseñado en 1895 por el francés Andrés Bonife en 16 800 m² donados por la United Fruit Company, con árboles traídos por capitanes desde Cuba y Jamaica y quiosco de César Rivaflecha.",
     history: [
-      "Trazado a finales del siglo XIX en honor al gobernador Balvanero Vargas, este parque frente al mar Caribe nació como el salón al aire libre de la ciudad portuaria. Sus palmas reales, jardines tropicales y el muro del malecón enmarcan el horizonte hacia Isla Uvita.",
-      "En el centro se alza su icónico quiosco victoriano de hierro y madera, escenario histórico de retretas, discursos cívicos y celebraciones del Carnaval. Durante más de un siglo ha sido punto de encuentro cotidiano entre familias, músicos de calypso y viajeros.",
+      "Diseñado en 1895 por el francés Andrés Bonife y construido en un terreno de 16 800 m² donado por la United Fruit Company durante la gobernación de Balvanero Vargas. Sus especies tropicales —principalmente laureles de la India y crotones— fueron contribuciones de capitanes de barcos que trajeron árboles desde Cuba y Jamaica.",
+      "Su quiosco de estilo ecléctico con influencia art nouveau y neoclásica fue construido por el arquitecto César Rivaflecha, quien incorporó decoraciones vegetales y animales. Bautizado en 1905 en honor al gobernador Balvanero Vargas, recibió la declaratoria de interés histórico arquitectónico el 26 de junio de 1995 según La Gaceta N° 121 (MCJ, 1995).",
     ],
     highlights: [
-      { label: "Año de trazo", value: "1895" },
-      { label: "Estilo", value: "Victoriano caribeño" },
-      { label: "Rol urbano", value: "Plaza y retreta costera" },
+      { label: "Diseño", value: "1895 · Andrés Bonife" },
+      { label: "Quiosco", value: "Arq. César Rivaflecha" },
+      { label: "Declaratoria", value: "La Gaceta N° 121 (1995)" },
     ],
-    location: "Frente al malecón, calles 1 y 2",
+    location: "Frente al malecón, calles 1 y 2 (16 800 m²)",
     accent: "sky",
     image: imgParque,
+  },
+  {
+    id: "edificios-ufc",
+    name: "Antiguos Edificios de la UFC",
+    year: "1903",
+    style: "Industrial portuario · Boston",
+    summary:
+      "Construidos entre 1903 y 1904 al costado oeste del Parque Vargas con tipología elaborada en Boston: estructura metálica, ladrillo a tizón y soga, bahareque francés y monitor de ventilación.",
+    history: [
+      "Declarados patrimonio histórico arquitectónico según La Gaceta N° 34 del 18 de febrero de 1999, los antiguos edificios de la United Fruit Company fueron construidos entre 1903 y 1904 a un costado del Parque Vargas con una tipología arquitectónica elaborada por la compañía en Boston, Estados Unidos.",
+      "El edificio norte se utilizó para el almacenaje de la producción bananera y el edificio sur albergó las oficinas administrativas (MCJ, 1999). Combinan estructura metálica principal, paredes exteriores de ladrillo a tizón y soga, interiores en bahareque francés o madera, balcones y un monitor en cubierta que facilita la ventilación de los mezanines. Hoy el segundo nivel del edificio sur acoge talleres, artesanías y esculturas.",
+    ],
+    highlights: [
+      { label: "Construcción", value: "1903–1904" },
+      { label: "Tipología", value: "UFC Boston · Ladrillo y metal" },
+      { label: "Declaratoria", value: "La Gaceta N° 34 (1999)" },
+    ],
+    location: "Costado oeste del Parque Balvanero Vargas",
+    accent: "ember",
+    image: imgUfcEdificios,
+  },
+  {
+    id: "pasaje-cristal",
+    name: "Edificio Pasaje Cristal",
+    year: "1908",
+    style: "Industrial comercial",
+    summary:
+      "Corredor arquitectónico peatonal en ladrillo y armadura metálica construido en la primera década del siglo XX por el Arq. César Rivaflecha Zavala; hoy galería viva de pintores limonenses.",
+    history: [
+      "Declarado patrimonio histórico arquitectónico de Costa Rica desde el 25 de enero de 1999 (La Gaceta N° 16), el Edificio Pasaje Cristal fue construido en la primera década del siglo XX por el arquitecto César Rivaflecha Zavala con tipología industrial en ladrillo y armadura metálica.",
+      "Además de conservar su vocación de corredor comercial peatonal, desde hace varios años funciona como taller y galería donde artistas como Edgar León, William Durán, Germán Mora, Honorio Cabraca y Virginia Araya exhiben pintura sobre costumbres, oficios y paisajes afrocaribeños.",
+    ],
+    highlights: [
+      { label: "Arquitecto", value: "César Rivaflecha Zavala" },
+      { label: "Declaratoria", value: "La Gaceta N° 16 (1999)" },
+      { label: "Vocación", value: "Corredor y galería de arte" },
+    ],
+    location: "Casco histórico de Puerto Limón",
+    accent: "moss",
+    image: imgPasajeCristal,
   },
   {
     id: "black-star-line",
@@ -232,39 +274,39 @@ export const buildings: Building[] = [
     id: "big-boy",
     name: "Estadio de Béisbol Big Boy",
     year: "1897",
-    style: "Funcional deportivo",
+    style: "Patrimonio deportivo",
     summary:
-      "Cuna del béisbol limonense impulsado por trabajadores ferroviarios y bananeros. Bautizado en honor al legendario jugador local Bancroft “Big Boy” Scott.",
+      "Con cancha desde 1887 y terreno donado por la UFC en 1897, fue escenario del primer partido de béisbol en Costa Rica. Bautizado en honor a Bancroft «Big Boy» Scott Watson.",
     history: [
-      "Desde 1897 los trabajadores del ferrocarril y las plantaciones bananeras llevaron el béisbol a los diamantes limonenses, convirtiendo el deporte en una pasión popular única frente al resto del país. El terreno evolucionó hasta consolidarse como estadio en la década de 1940.",
-      "Lleva el nombre de Bancroft “Big Boy” Scott, referente histórico de la pelota caribeña. Sus graderías han sido semillero de selecciones nacionales, rivalidades barriales y orgullo deportivo de la provincia.",
+      "El béisbol llegó a Limón a finales del siglo XIX por influencia de empleados estadounidenses. Hacia 1887 se inauguró una cancha y en 1897 la United Fruit Company donó el terreno a la Municipalidad de Limón. El primer partido celebrado en Costa Rica enfrentó allí a los trabajadores de la United Fruit Company y de la compañía ferrocarrilera.",
+      "En la década de 1940 las instalaciones se remodelaron y cerraron perimetralmente, bautizándose como Estadio de Béisbol «Big Boy» en homenaje al destacado pelotero Bancroft Scott Watson, donde también brilló Donald «Danny» Hayling Shaw (MCJ, 2000). El 18 de julio de 2002 (La Gaceta N° 138) fue declarado patrimonio histórico arquitectónico.",
     ],
     highlights: [
-      { label: "Origen", value: "1897" },
-      { label: "Homenaje", value: "Bancroft “Big Boy” Scott" },
-      { label: "Identidad", value: "Catedral del béisbol" },
+      { label: "Hitos", value: "1887 cancha · 1897 donación UFC" },
+      { label: "Homenaje", value: "Bancroft «Big Boy» Scott Watson" },
+      { label: "Declaratoria", value: "La Gaceta N° 138 (2002)" },
     ],
-    location: "Sector sur del centro de Limón",
+    location: "Casco histórico de Puerto Limón",
     accent: "moss",
     image: imgBigBoy,
   },
   {
     id: "casa-domino",
-    name: "Casa del Dominó",
+    name: "La Casa del Dominó",
     year: "1960",
-    style: "Espacio social tradicional",
+    style: "Vernáculo caribeño en madera",
     summary:
-      "Punto de reunión de ferroviarios y estibadores desde los años 60, donde el dominó se convirtió en patrimonio vivo de conversación e identidad limonense.",
+      "Ubicada en Calle 5 frente a la Casa Misionera Bautista y dedicada al jugador Guillermo Cole Scarlett; punto de encuentro para partidas de dominó, ajedrez, tablero y tertulia política.",
     history: [
-      "Nacida en la década de 1960 como refugio cotidiano tras las jornadas en el muelle y los vagones del tren, la Casa del Dominó institucionalizó un juego que en Limón es rito social, música de fichas sobre la mesa y encuentro intergeneracional.",
-      "Restaurada en 2017 para preservar el espacio comunitario, demuestra que el patrimonio arquitectónico también vive en los lugares modestos donde la conversación, el humor y la memoria oral se transmiten día a día.",
+      "Los orígenes del dominó en Limón provienen de las primeras personas afrodescendientes originarias de Jamaica vinculadas a la construcción del ferrocarril. Frente a la Casa Misionera Bautista se levanta «La Casa del Dominó», obra dedicada al jugador Guillermo Cole Scarlett, donde los limonenses se reúnen a jugar dominó, ajedrez y tablero y a conversar sobre política nacional y fútbol.",
+      "Las partidas en parejas pueden extenderse hasta ocho horas seguidas bajo un código propio de gestos y sonidos: un golpe fuerte con la ficha en la mesa avisa a la pareja que se tiene una ficha similar a la colocada, mientras que un golpe suave indica que no hay más fichas que ayuden a mejorar el juego.",
     ],
     highlights: [
-      { label: "Década", value: "1960" },
-      { label: "Restauración", value: "2017" },
-      { label: "Patrimonio", value: "Tradición oral y juego" },
+      { label: "Dedicatoria", value: "Guillermo Cole Scarlett" },
+      { label: "Ubicación", value: "Calle 5, frente a Casa Bautista" },
+      { label: "Código", value: "Golpe fuerte y golpe suave" },
     ],
-    location: "Entorno portuario de Limón",
+    location: "Calle 5, frente a la Casa Misionera Bautista",
     accent: "sand",
     image: imgDomino,
   },
@@ -272,31 +314,31 @@ export const buildings: Building[] = [
 
 export const architectureStats = [
   {
-    value: "12",
+    value: "14",
     unit: "hitos",
     dotClass: "bg-moss",
     description:
-      "Inmuebles y espacios patrimoniales preservados en el corazón histórico del puerto.",
+      "Inmuebles y espacios patrimoniales documentados entre el Casco Histórico y Jamaica Town.",
   },
   {
-    value: "1,5",
-    unit: "km",
+    value: "1870",
+    unit: "",
     dotClass: "bg-sky",
     description:
-      "Ruta caminable continua que conecta los monumentos frente a la costa caribeña.",
+      "Primer trazado urbano en cuadrícula realizado por el Ing. Francisco Kurtze.",
   },
   {
-    value: "1890",
-    unit: "",
+    value: "16 800",
+    unit: "m²",
     dotClass: "bg-ember",
     description:
-      "Año de las estructuras más antiguas aún en pie desde el auge ferroviario.",
+      "Extensión del Parque Balvanero Vargas Molina, diseñado por Andrés Bonife en 1895.",
   },
   {
-    value: "6",
-    unit: "estilos",
+    value: "3",
+    unit: "zonas",
     dotClass: "bg-sand",
     description:
-      "Del victoriano antillano y afrocaribeño en madera al neoclásico y art déco.",
+      "Casco Histórico (1870), Jamaica Town (1880) y Zona Americana (1929).",
   },
 ];

@@ -1,10 +1,10 @@
 import type { StaticImageData } from "next/image";
-import img1854 from "@/public/Limón - images/1854.png";
+import img1854 from "@/public/Limón - images/patrimonio/isla-quiribri-arrecife.jpg";
 import img1890 from "@/public/Limón - images/1890.png";
-import img1906 from "@/public/Limón - images/1906-limon.png";
+import img1905Plano from "@/public/Limón - images/patrimonio/plano-general-limon-1905-peyroutet.jpg";
 import imgBlackStar from "@/public/Limón - images/BlackStarLine.png";
-import imgCommunity from "@/public/Limón - images/Comunidad-vidacotidiana.png";
-import imgCarnival from "@/public/Limón - images/Carnaval.png";
+import imgMapa1967 from "@/public/Limón - images/patrimonio/mapa-pictorico-limon-1967.jpg";
+import imgParadeGala from "@/public/Limón - images/patrimonio/grand-parade-trajes-limon.jpg";
 
 export type Era = {
   years: string;
@@ -17,57 +17,57 @@ export type Era = {
 
 export const eras: Era[] = [
   {
-    years: "1854",
-    period: "Mediados del s. XIX",
-    title: "Nace el puerto",
+    years: "1502–1870",
+    period: "Quiribrí y trazo fundacional",
+    title: "De Quiribrí al puerto",
     summary:
-      "Limón surge como salida estratégica del café hacia Europa. En 1870 se traza como ciudad, en cuadrícula, mirando al mar.",
+      "Frente a la isla Quiribrí (visitada en 1502), Limón surge en 1854 como salida del café. En 1870 el Ing. Francisco Kurtze y Ángel Miguel Velásquez trazan sus primeros cuadrantes frente al mar.",
     image: img1854,
-    alt: "Vista antigua del puerto de Limón a mediados del siglo XIX",
+    alt: "Arrecife coralino de la Isla Quiribrí (Uvita) frente a la costa de Puerto Limón",
   },
   {
     years: "1871–1890",
-    period: "Finales del s. XIX",
-    title: "El tren al Atlántico",
+    period: "Ferrocarril y Jamaica Town",
+    title: "El tren y Jamaica Town",
     summary:
-      "El ferrocarril une el Valle Central con el Caribe y trae a miles de trabajadores de Jamaica y otras islas. Con ellos llega una nueva identidad.",
+      "El ferrocarril al Atlántico atrae a miles de trabajadores jamaiquinos y antillanos. Desde 1880 nace el primer ensanche en la Quinta Keith-Wilson, conocido como Jamaica Town.",
     image: img1890,
-    alt: "Construcción del ferrocarril al Atlántico",
+    alt: "Construcción del ferrocarril al Atlántico y primeros barrios de Limón",
   },
   {
-    years: "1900–1930",
-    period: "Inicios del s. XX",
-    title: "El reino del banano",
+    years: "1895–1929",
+    period: "Casco histórico y enclave",
+    title: "Planos de 1905 y Zona Americana",
     summary:
-      "La United Fruit Company define el urbanismo de la ciudad y consolida un Limón multiétnico, bilingüe y abierto al mundo.",
-    image: img1906,
-    alt: "Puerto Limón en 1906, durante el auge bananero",
+      "El Plano General de 1905 del Ing. H. Peyroutet consolida el casco histórico junto al Parque Vargas (1895), mientras la United Fruit Company levanta sus edificios (1903) y la Zona Americana (1929).",
+    image: img1905Plano,
+    alt: "Plano General de la Ciudad de Limón de 1905 por el ingeniero H. Peyroutet",
   },
   {
-    years: "1900–1949",
-    period: "Primera mitad del s. XX",
-    title: "Exclusión y resistencia",
+    years: "1912–1948",
+    period: "Prensa, UNIA y resistencia",
+    title: "Voz escrita y Liberty Hall",
     summary:
-      "Frente a leyes que limitaban su movilidad, la comunidad afrocaribeña levantó sus propias escuelas en inglés, iglesias y organizaciones.",
+      "Florece la prensa en inglés liderada por Samuel Charles Nation (1912–1942), se levanta el Black Star Line (1922) como sede de la UNIA y en 1948 nace Radio Casino, La Reina del Caribe.",
     image: imgBlackStar,
-    alt: "Edificio de la Black Star Line, sede de la UNIA en Limón",
+    alt: "Edificio histórico del Black Star Line, sede de la UNIA en Puerto Limón",
   },
   {
-    years: "1950–2000",
-    period: "Segunda mitad del s. XX",
-    title: "Ciudadanía y sacudidas",
+    years: "1949–1999",
+    period: "Ciudadanía y declaratorias",
+    title: "Patrimonio y reconocimiento",
     summary:
-      "La Constitución de 1949 reconoce la ciudadanía plena. Llegan décadas de auge y crisis, y el terremoto de 1991 que marcó a toda la provincia.",
-    image: imgCommunity,
-    alt: "Vida cotidiana en las calles de Limón",
+      "Tras la ciudadanía plena de 1949, el Estado declara Monumento Nacional la Isla Quiribrí (1985) y protege como patrimonio histórico el Parque Vargas (1995), Pasaje Cristal y los edificios de la UFC (1999).",
+    image: imgMapa1967,
+    alt: "Mapa pictórico del centenario de la apertura de la bahía de Limón (1867–1967, IGN)",
   },
   {
     years: "2000–hoy",
     period: "Siglo XXI",
-    title: "Limón hoy",
+    title: "Patrimonio cultural vivo",
     summary:
-      "Un crisol caribeño que celebra su historia: calypso, carnaval, rice and beans y un orgullo que se escucha en tres idiomas.",
-    image: imgCarnival,
-    alt: "Desfile del Carnaval de Limón",
+      "Con el Estadio Big Boy declarado patrimonio (2002) y el Calipso Limonense como Patrimonio Cultural Inmaterial (2012), Limón proyecta sus dominios culturales, su cine y su gastronomía al mundo.",
+    image: imgParadeGala,
+    alt: "Trajes tradicionales en el Grand Parade de Gala de Puerto Limón",
   },
 ];
