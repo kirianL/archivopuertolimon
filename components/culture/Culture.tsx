@@ -493,6 +493,21 @@ export default function Culture() {
                 </div>
 
                 <div className="relative isolate overflow-hidden rounded-2xl bg-moss px-5 py-6 text-cream ring-1 ring-white/15 ring-inset sm:px-8 sm:py-8">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 -z-20 size-full object-cover"
+                  >
+                    <source src="/video-cultura.mp4" type="video/mp4" />
+                  </video>
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 -z-10 bg-moss/65"
+                  />
                   <HalfRing
                     side="left"
                     className="pointer-events-none absolute top-1/2 -left-14 -z-10 h-36 -translate-y-1/2 text-ink/20 sm:-left-10 sm:h-44"
