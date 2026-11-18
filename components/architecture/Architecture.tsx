@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { type RefObject, useEffect, useRef, useState } from "react";
 import {
-  LayoutGroup,
   MotionConfig,
   motion,
   useReducedMotion,
@@ -19,7 +18,6 @@ import { LimonMap } from "./LimonMap";
 type BuildingCardProps = {
   item: Building;
   index: number;
-  isActive: boolean;
   onOpen: (building: Building) => void;
   snap?: boolean;
 };
@@ -27,7 +25,6 @@ type BuildingCardProps = {
 function BuildingCard({
   item,
   index,
-  isActive,
   onOpen,
   snap = false,
 }: BuildingCardProps) {
@@ -47,24 +44,19 @@ function BuildingCard({
         onClick={() => onOpen(item)}
         className="group block w-full cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
       >
-        <motion.div
-          layoutId={isActive ? `building-image-${item.id}` : undefined}
-          style={{ borderRadius: 16 }}
-          transition={{ type: "spring", stiffness: 300, damping: 32, mass: 0.85 }}
-          className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink/10"
-        >
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-ink/10">
           <Image
             src={item.image}
             alt={`${item.name} (${item.year})`}
             fill
             placeholder="blur"
-            sizes="(min-width: 768px) 370px, 78vw"
+            sizes="(min-width: 1024px) 520px, 92vw"
             className="object-cover"
           />
           <span className="font-display absolute top-3 left-3 rounded bg-cream px-2.5 py-0.5 text-lg text-ink shadow-xs">
             {item.year}
           </span>
-        </motion.div>
+        </div>
 
         <h3 className="font-display mt-4 text-3xl text-ink">{item.name}</h3>
         <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-pretty text-ink/75">
@@ -83,7 +75,6 @@ function BuildingCard({
 }
 
 type ScrollDrivenBuildingsProps = {
-  activeBuildingId: string | null;
   scrollTrackRef: RefObject<HTMLDivElement | null>;
   maxScroll: number;
   onMaxScrollChange: (maxScroll: number) => void;
@@ -91,7 +82,6 @@ type ScrollDrivenBuildingsProps = {
 };
 
 function ScrollDrivenBuildings({
-  activeBuildingId,
   scrollTrackRef,
   maxScroll,
   onMaxScrollChange,
@@ -163,7 +153,6 @@ function ScrollDrivenBuildings({
                 key={item.id}
                 item={item}
                 index={index}
-                isActive={activeBuildingId === null}
                 onOpen={onOpen}
               />
             ))}
@@ -185,13 +174,11 @@ function ScrollDrivenBuildings({
 }
 
 type NativeHorizontalBuildingsProps = {
-  activeBuildingId: string | null;
   onOpen: (building: Building) => void;
   className?: string;
 };
 
 function NativeHorizontalBuildings({
-  activeBuildingId,
   onOpen,
   className = "",
 }: NativeHorizontalBuildingsProps) {
@@ -209,7 +196,6 @@ function NativeHorizontalBuildings({
             key={item.id}
             item={item}
             index={index}
-            isActive={activeBuildingId === null}
             onOpen={onOpen}
             snap
           />
@@ -295,8 +281,7 @@ export default function Architecture() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <LayoutGroup>
-        <section
+      <section
         id="arquitectura"
         aria-labelledby="architecture-title"
         className="overflow-x-clip bg-cream pt-14 text-ink md:pt-28"
@@ -353,19 +338,14 @@ export default function Architecture() {
 
         {/* Mobile: native horizontal swipeable carousel (no vertical scroll-jacking or empty space). Desktop: scroll-driven horizontal gallery (or native horizontal scroll when reduced motion is enabled). */}
         {reduceMotion ? (
-          <NativeHorizontalBuildings
-            activeBuildingId={activeBuilding?.id ?? null}
-            onOpen={openBuilding}
-          />
+          <NativeHorizontalBuildings onOpen={openBuilding} />
         ) : (
           <>
             <NativeHorizontalBuildings
-              activeBuildingId={activeBuilding?.id ?? null}
               onOpen={openBuilding}
               className="md:hidden"
             />
             <ScrollDrivenBuildings
-              activeBuildingId={activeBuilding?.id ?? null}
               scrollTrackRef={scrollTrackRef}
               maxScroll={maxScroll}
               onMaxScrollChange={setMaxScroll}
@@ -375,13 +355,12 @@ export default function Architecture() {
         )}
       </section>
 
-        <BuildingModalPage
-          building={activeBuilding}
-          buildings={buildings}
-          onClose={closeBuilding}
-          onNavigate={navigateBuilding}
-        />
-      </LayoutGroup>
+      <BuildingModalPage
+        building={activeBuilding}
+        buildings={buildings}
+        onClose={closeBuilding}
+        onNavigate={navigateBuilding}
+      />
     </MotionConfig>
   );
 }

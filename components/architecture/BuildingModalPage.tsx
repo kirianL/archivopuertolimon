@@ -7,7 +7,6 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Highlight } from "@/components/ui/Highlight";
@@ -15,12 +14,6 @@ import { BrushStroke, EditorialArrow, HalfRing } from "@/components/ui/Shapes";
 import type { AccentColor, Building } from "./buildings";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
-const IMAGE_SPRING = {
-  type: "spring",
-  stiffness: 300,
-  damping: 32,
-  mass: 0.85,
-} as const;
 
 const ACCENT_STYLES: Record<
   AccentColor,
@@ -64,16 +57,12 @@ function splitTitle(title: string): { head: string; tail: string } {
 type BuildingNavPreviewProps = {
   item: Building;
   direction: "prev" | "next";
-  isPrimed: boolean;
-  onPrime: (id: string) => void;
   onNavigate: (building: Building) => void;
 };
 
 function BuildingNavPreview({
   item,
   direction,
-  isPrimed,
-  onPrime,
   onNavigate,
 }: BuildingNavPreviewProps) {
   const isNext = direction === "next";
@@ -81,31 +70,24 @@ function BuildingNavPreview({
   return (
     <button
       type="button"
-      onPointerDown={() => onPrime(item.id)}
-      onFocus={() => onPrime(item.id)}
       onClick={() => onNavigate(item)}
       className={`group block w-full cursor-pointer text-left transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink [@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-1 ${
         isNext ? "sm:text-right" : ""
       }`}
     >
-      <motion.div
-        layoutId={isPrimed ? `building-image-${item.id}` : undefined}
-        style={{ borderRadius: 16 }}
-        transition={IMAGE_SPRING}
-        className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-ink/10 sm:rounded-2xl"
-      >
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-ink/10 sm:rounded-2xl">
         <Image
           src={item.image}
           alt={item.name}
           fill
-          placeholder="blur"
-          sizes="(min-width: 1024px) 320px, 46vw"
+          loading="eager"
+          sizes="(min-width: 1024px) 520px, 92vw"
           className="object-cover"
         />
         <span className="font-display absolute top-2.5 left-2.5 rounded bg-cream px-2 py-0.5 text-sm text-ink shadow-xs sm:top-3 sm:left-3 sm:px-2.5 sm:text-base">
           {item.year}
         </span>
-      </motion.div>
+      </div>
 
       <span className="font-display mt-3 block text-xl leading-none text-ink sm:text-2xl md:text-3xl">
         {item.name}
@@ -164,7 +146,6 @@ export function BuildingModalPage({
 }: BuildingModalPageProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const prevOverflowRef = useRef<string | null>(null);
-  const [primedPreviewId, setPrimedPreviewId] = useState<string | null>(null);
   const reduceMotion = useReducedMotion();
 
   const buildingId = building?.id ?? null;
@@ -178,11 +159,9 @@ export function BuildingModalPage({
 
   const handleExitComplete = useCallback(() => {
     restoreBodyOverflow();
-    setPrimedPreviewId(null);
   }, [restoreBodyOverflow]);
 
   const handleNavigate = (target: Building) => {
-    setPrimedPreviewId(target.id);
     onNavigate(target);
   };
 
@@ -250,11 +229,12 @@ export function BuildingModalPage({
           role="dialog"
           aria-modal="true"
           aria-labelledby="building-modal-title"
+          data-lenis-prevent
           className="fixed inset-0 z-50 overflow-y-auto bg-ink text-cream [scrollbar-width:none] [-webkit-overflow-scrolling:touch]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.26, ease: EASE_OUT }}
+          transition={{ duration: 0.22, ease: EASE_OUT }}
         >
           <ScrollResetOnNavigate
             buildingId={building.id}
@@ -280,7 +260,12 @@ export function BuildingModalPage({
             </div>
           </header>
 
-          <article key={building.id}>
+          <motion.article
+            key={building.id}
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, ease: EASE_OUT }}
+          >
             {/* Building Hero */}
             <div className="relative overflow-hidden py-7 sm:py-10 md:py-16">
               <HalfRing
@@ -289,20 +274,9 @@ export function BuildingModalPage({
               />
 
               <div className="relative mx-auto grid max-w-6xl items-center gap-6 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-5">
-                <motion.h1
+                <h1
                   id="building-modal-title"
-                  initial={
-                    reduceMotion
-                      ? { opacity: 0 }
-                      : { opacity: 0, transform: "translate3d(0, -14px, 0)" }
-                  }
-                  animate={
-                    reduceMotion
-                      ? { opacity: 1 }
-                      : { opacity: 1, transform: "translate3d(0, 0px, 0)" }
-                  }
-                  transition={{ duration: 0.32, ease: EASE_OUT }}
-                  className="font-display isolate text-4xl text-balance text-cream sm:text-6xl md:text-7xl lg:col-start-1 lg:row-start-1 lg:self-end"
+                  className="font-hero isolate text-3xl leading-[1.08] font-normal text-balance text-cream sm:text-5xl md:text-6xl lg:col-start-1 lg:row-start-1 lg:self-end"
                 >
                   {head ? (
                     <>
@@ -311,7 +285,7 @@ export function BuildingModalPage({
                   ) : (
                     <Highlight color={accent.brush}>{tail}</Highlight>
                   )}
-                </motion.h1>
+                </h1>
 
                 {/* Framed Photograph */}
                 <div className="relative isolate my-1 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:my-0">
@@ -322,42 +296,24 @@ export function BuildingModalPage({
                     className="pointer-events-none absolute -bottom-3 -left-3 -z-10 h-10 w-36 rotate-[5deg] text-sand/70 sm:-bottom-5 sm:-left-6 sm:h-14 sm:w-48"
                   />
 
-                  <motion.div
-                    layoutId={`building-image-${building.id}`}
-                    style={{ borderRadius: 16 }}
-                    transition={IMAGE_SPRING}
-                    className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-cream/10 shadow-xl ring-1 ring-cream/15"
-                  >
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-cream/10 shadow-xl ring-1 ring-cream/15">
                     <Image
                       src={building.image}
                       alt={`${building.name} (${building.year})`}
                       fill
                       priority
-                      placeholder="blur"
-                      sizes="(min-width: 1024px) 45vw, 100vw"
+                      decoding="sync"
+                      sizes="(min-width: 1024px) 520px, 92vw"
                       className="object-cover"
                     />
                     <span className="font-display absolute top-3 left-3 rounded bg-cream px-2.5 py-0.5 text-lg text-ink shadow-xs sm:px-3 sm:py-1 sm:text-xl">
                       {building.year}
                     </span>
-                  </motion.div>
+                  </div>
                 </div>
 
                 {/* Summary, 3 Key Highlights & Location */}
-                <motion.div
-                  initial={
-                    reduceMotion
-                      ? { opacity: 0 }
-                      : { opacity: 0, transform: "translate3d(0, -14px, 0)" }
-                  }
-                  animate={
-                    reduceMotion
-                      ? { opacity: 1 }
-                      : { opacity: 1, transform: "translate3d(0, 0px, 0)" }
-                  }
-                  transition={{ duration: 0.32, ease: EASE_OUT }}
-                  className="lg:col-start-1 lg:row-start-2 lg:self-start"
-                >
+                <div className="lg:col-start-1 lg:row-start-2 lg:self-start">
                   <p className="max-w-[46ch] text-sm leading-relaxed text-pretty text-cream/80 sm:text-base md:text-lg">
                     {building.summary}
                   </p>
@@ -386,25 +342,12 @@ export function BuildingModalPage({
                     Ubicación:{" "}
                     <span className="text-cream">{building.location}</span>
                   </p>
-                </motion.div>
+                </div>
               </div>
             </div>
 
             {/* Modern History Narrative Body */}
-            <motion.div
-              initial={
-                reduceMotion
-                  ? { opacity: 0 }
-                  : { opacity: 0, transform: "translate3d(0, -14px, 0)" }
-              }
-              animate={
-                reduceMotion
-                  ? { opacity: 1 }
-                  : { opacity: 1, transform: "translate3d(0, 0px, 0)" }
-              }
-              transition={{ duration: 0.32, ease: EASE_OUT }}
-              className="bg-cream py-10 text-ink sm:py-14 md:py-20"
-            >
+            <div className="bg-cream py-10 text-ink sm:py-14 md:py-20">
               <div className="mx-auto max-w-4xl px-4 sm:px-6">
                 <div className="grid gap-5 md:grid-cols-[0.45fr_1fr] md:gap-12">
                   <aside className="relative isolate">
@@ -438,8 +381,6 @@ export function BuildingModalPage({
                     <BuildingNavPreview
                       item={prevBuilding}
                       direction="prev"
-                      isPrimed={primedPreviewId === prevBuilding.id}
-                      onPrime={setPrimedPreviewId}
                       onNavigate={handleNavigate}
                     />
                   ) : (
@@ -460,8 +401,6 @@ export function BuildingModalPage({
                     <BuildingNavPreview
                       item={nextBuilding}
                       direction="next"
-                      isPrimed={primedPreviewId === nextBuilding.id}
-                      onPrime={setPrimedPreviewId}
                       onNavigate={handleNavigate}
                     />
                   ) : (
@@ -469,8 +408,8 @@ export function BuildingModalPage({
                   )}
                 </nav>
               </div>
-            </motion.div>
-          </article>
+            </div>
+          </motion.article>
         </motion.div>
       )}
     </AnimatePresence>
